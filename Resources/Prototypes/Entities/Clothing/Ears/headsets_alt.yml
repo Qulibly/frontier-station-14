@@ -42,6 +42,16 @@
     sprite: Clothing/Ears/Headsets/centcom.rsi
 
 - type: entity
+  parent: ClothingHeadsetAltCentCom
+  id: ClothingHeadsetAltCentComFake
+  suffix: Fake
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - EncryptionKeyCommon
+
+- type: entity
   parent: ClothingHeadsetAlt
   id: ClothingHeadsetAltCommand
   name: command over-ear headset
@@ -95,9 +105,10 @@
   - type: ContainerFill
     containers:
       key_slots:
-      - EncryptionKeySecurity
-      - EncryptionKeyCommand
-      - EncryptionKeyCommon
+#      - EncryptionKeySecurity
+#      - EncryptionKeyCommand
+#      - EncryptionKeyCommon
+      - EncryptionKeyStationMaster
   - type: Sprite
     sprite: Clothing/Ears/Headsets/security.rsi
   - type: Clothing

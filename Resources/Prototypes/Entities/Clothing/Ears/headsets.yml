@@ -21,6 +21,9 @@
     slots:
     - ears
     sprite: Clothing/Ears/Headsets/base.rsi
+  - type: GuideHelp
+    guides:
+    - Radio
 
 - type: entity
   parent: ClothingHeadset
@@ -268,4 +271,6 @@
     sprite: Clothing/Ears/Headsets/service.rsi
   - type: Clothing
     sprite: Clothing/Ears/Headsets/service.rsi
-
+  - type: Tag
+    tags:
+      - PetWearableCat
