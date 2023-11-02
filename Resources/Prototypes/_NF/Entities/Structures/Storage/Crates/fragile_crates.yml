@@ -1,0 +1,35 @@
+- type: entity
+  parent: CrateBaseWeldable
+  id: CratePlasticFragile
+  name: fragile plastic crate
+  components:
+  - type: Icon
+    sprite: Structures/Storage/Crates/plastic.rsi
+  - type: Sprite
+    sprite: Structures/Storage/Crates/plastic.rsi
+    containers:
+    - entity_storage
+  - type: StaticPrice
+    price: 0
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Anchorable
+  - type: Pullable
+  - type: MovedByPressure
+  - type: Physics
+    bodyType: Dynamic
+    fixedRotation: true
+  - type: Fixtures
+    fixtures:
+      slips:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.2,-0.2,0.2,0.2"
+        hard: false
+        layer:
+          - LowImpassable
+  - type: LandMine
+  - type: TriggerOnStepTrigger
+  - type: StepTrigger
+    requiredTriggeredSpeed: 0
+  - type: DeleteOnTrigger
