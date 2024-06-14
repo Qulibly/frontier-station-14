@@ -1,0 +1,40 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                           xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+                           xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
+						   xmlns:ui="clr-namespace:Content.Client._NF.SpaceArtillery"
+						   xmlns:sa="clr-namespace:Content.Shared.SpaceArtillery;assembly=Content.Shared"
+                           Title="{Loc 'space-artillery-copilot-console-window-title'}"
+                           MinSize="300 200">
+    <BoxContainer Orientation="Vertical" >
+        <Label Name="KeypadContainer" Text="{Loc 'iff-console-show-iff-label'}"  StyleClasses="StatusFieldTitle" />
+        <GridContainer Margin="20 0 0 0" Columns="2" HorizontalExpand="True" VerticalExpand="True">
+            <BoxContainer  HorizontalExpand="True" VerticalExpand="True">
+                <GridContainer Margin="4 0 0 0" Columns="1" HorizontalExpand="True" VerticalExpand="True">
+                    <BoxContainer Orientation="Horizontal" MinWidth="120" HorizontalExpand="True" VerticalExpand="True">
+                        <Button Name="CustomButtonOne" Text="1"  />
+                        <Button Name="CustomButtonTwo" Text="2"  />
+                        <Button Name="CustomButtonThree" Text="3" StyleClasses="OpenLeft" />
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" MinWidth="120" HorizontalExpand="True" VerticalExpand="True">
+                        <Button Name="CustomButtonFour" Text="4"  />
+                        <Button Name="CustomButtonFive" Text="5"  />
+                        <Button Name="CustomButtonSix" Text="6"  />
+                    </BoxContainer>
+
+                    <BoxContainer Orientation="Horizontal" MinWidth="120" HorizontalExpand="True" VerticalExpand="True">
+                        <Button Name="CustomButtonSeven" Text="7" StyleClasses="OpenRight" />
+                        <Button Name="CustomButtonEight" Text="8"  />
+                        <Button Name="CustomButtonNine" Text="9"  />
+                    </BoxContainer>
+                </GridContainer>
+            </BoxContainer>
+
+            <BoxContainer Orientation="Vertical" MinWidth="120" HorizontalExpand="True" VerticalExpand="True">
+                <Button Name="CustomButtonTen" Text="10"  />
+                <Button Name="CustomButtonEleven" Text="11"  />
+                <Button Name="CustomButtonTwelve" Text="12"  />
+            </BoxContainer>
+        </GridContainer>
+    </BoxContainer>
+</controls:FancyWindow>

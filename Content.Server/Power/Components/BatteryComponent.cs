@@ -1,4 +1,5 @@
 using Content.Server.Power.EntitySystems;
+using Content.Shared.SpaceArtillery; //Frontier code modification
 
 namespace Content.Server.Power.Components
 {
@@ -7,7 +8,7 @@ namespace Content.Server.Power.Components
     /// </summary>
     [RegisterComponent]
     [Virtual]
-    [Access(typeof(BatterySystem))]
+    [Access(typeof(BatterySystem), typeof(SpaceArtillerySystem))]  //Frontier modification, added acces to SpaceArtillerySystem
     public partial class BatteryComponent : Component
     {
         public string SolutionName = "battery";
