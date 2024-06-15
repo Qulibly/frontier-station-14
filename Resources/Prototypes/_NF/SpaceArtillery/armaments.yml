@@ -261,15 +261,15 @@
     position: Stand
     buckleOffset: "0,0.8"
     maxBuckleDistance: 1
-  - type: UserInterface #internal radar idea will probably get scrapped
-    interfaces:
-        enum.RadarConsoleUiKey.Key:
-        type: RadarConsoleBoundUserInterface
-  - type: IntrinsicUI
-    uis:
-        enum.RadarConsoleUiKey.Key:
-        toggleAction: ActionSpaceArtilleryShowRadar
-  - type: RadarConsole
+#  - type: UserInterface #internal radar idea will probably get scrapped, it has caused severe issues
+#    interfaces:
+#        enum.RadarConsoleUiKey.Key:
+#        type: RadarConsoleBoundUserInterface
+#  - type: IntrinsicUI
+#    uis:
+#        enum.RadarConsoleUiKey.Key:
+#        toggleAction: ActionSpaceArtilleryShowRadar
+#  - type: RadarConsole
 
 - type: entity
   id: Mounted_Machine_Gun_50_WallMounted
@@ -1212,15 +1212,15 @@
 
 
 # Old code attempt at internal mass scanner
-- type: entity
-  id: ActionSpaceArtilleryShowRadar
-  name: Mass Scanner Interface
-  description: View a mass scanner interface.
-  noSpawn: true
-  components:
-  - type: InstantAction
-    icon: { sprite: Structures/Machines/parts.rsi, state: box_0 }
-    iconOn: Structures/Machines/parts.rsi/box_2.png
-    keywords: [ "AI", "console", "interface" ]
-    priority: -10
-    event: !type:ToggleIntrinsicUIEvent { key: enum.RadarConsoleUiKey.Key }
+#- type: entity
+#  id: ActionSpaceArtilleryShowRadar
+#  name: Mass Scanner Interface
+#  description: View a mass scanner interface.
+#  noSpawn: true
+#  components:
+#  - type: InstantAction
+#    icon: { sprite: Structures/Machines/parts.rsi, state: box_0 }
+#    iconOn: Structures/Machines/parts.rsi/box_2.png
+#    keywords: [ "AI", "console", "interface" ]
+#    priority: -10
+#    event: !type:ToggleIntrinsicUIEvent { key: enum.RadarConsoleUiKey.Key }
