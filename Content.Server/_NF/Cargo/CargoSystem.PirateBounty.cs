@@ -3,7 +3,7 @@ using System.Linq;
 using Content.Server._NF.Contraband.Components;
 using Content.Server._NF.Pirate.Components;
 using Content.Server.Labels;
-using Content.Server.Paper;
+using Content.Shared._NF.Bank;
 using Content.Shared._NF.Pirate;
 using Content.Shared._NF.Pirate.Components;
 using Content.Shared._NF.Pirate.Prototypes;
@@ -11,6 +11,7 @@ using Content.Shared._NF.Pirate.Events;
 using Content.Shared.Access.Components;
 using Content.Shared.Database;
 using Content.Shared.NameIdentifier;
+using Content.Shared.Paper;
 using Content.Shared.Whitelist;
 using JetBrains.Annotations;
 using Robust.Shared.Containers;
@@ -141,7 +142,7 @@ public sealed partial class CargoSystem
                 ("item", Loc.GetString(entry.Name)))}", out var _);
         }
         message.PushNewline();
-        message.TryAddMarkup(Loc.GetString("pirate-bounty-console-manifest-reward", ("reward", prototype.Reward)), out var _);
+        message.TryAddMarkup(Loc.GetString("pirate-bounty-console-manifest-reward", ("reward", BankSystemExtensions.ToDoubloonString(prototype.Reward))), out var _);
 
         _metaSystem.SetEntityDescription(uid, message.ToMarkup());
 
@@ -168,8 +169,8 @@ public sealed partial class CargoSystem
                 ("item", Loc.GetString(entry.Name)))}", out var _);
             msg.PushNewline();
         }
-        msg.TryAddMarkup(Loc.GetString("pirate-bounty-console-manifest-reward", ("reward", prototype.Reward)), out var _);
-        _paperSystem.SetContent(uid, msg.ToMarkup(), paper);
+        msg.TryAddMarkup(Loc.GetString("pirate-bounty-console-manifest-reward", ("reward", BankSystemExtensions.ToDoubloonString(prototype.Reward))), out var _);
+        _paperSystem.SetContent((uid, paper), msg.ToMarkup());
     }
 
     private bool TryGetPirateBountyLabel(EntityUid uid,
@@ -507,7 +508,7 @@ public sealed partial class CargoSystem
         component.LastRedeemAttempt = _timing.CurTime;
     }
 
-    class PirateBountyState
+    sealed class PirateBountyState
     {
         public readonly PirateBountyData Data;
         public PirateBountyPrototype Prototype;
@@ -522,7 +523,7 @@ public sealed partial class CargoSystem
         }
     }
 
-    class PirateBountyEntitySearchState
+    sealed class PirateBountyEntitySearchState
     {
         public HashSet<EntityUid> HandledEntities = new();
         public Dictionary<string, PirateBountyState> LooseObjectBounties = new();
@@ -570,8 +571,8 @@ public sealed partial class CargoSystem
                             }
 
                             // Check whitelists for the pirate bounty.
-                            if ((_whitelistSys.IsWhitelistPass(entry.Whitelist, ent) ||
-                                _entProtoIdWhitelist.IsWhitelistPass(entry.IdWhitelist, ent)) &&
+                            if (_whitelistSys.IsWhitelistPassOrNull(entry.Whitelist, ent) &&
+                                _entProtoIdWhitelist.IsWhitelistPassOrNull(entry.IdWhitelist, ent) &&
                                 _whitelistSys.IsBlacklistFailOrNull(entry.Blacklist, ent))
                             {
                                 bounty.Entries[entry.Name]++;
