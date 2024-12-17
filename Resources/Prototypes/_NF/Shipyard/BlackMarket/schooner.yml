@@ -6,6 +6,11 @@
   category: Medium
   group: BlackMarket
   shuttlePath: /Maps/_NF/Shuttles/BlackMarket/schooner.yml
+  guidebookPage: Null
+  class:
+  - Pirate
+  engine:
+  - Uranium
 
 - type: gameMap
   id: Schooner
@@ -22,6 +27,5 @@
             !type:NanotrasenNameGenerator
             prefixCreator: '14'
         - type: StationJobs
-          overflowJobs: []
           availableJobs:
             Pirate: [ 0, 0 ]

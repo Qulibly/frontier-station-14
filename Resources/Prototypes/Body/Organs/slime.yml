@@ -16,6 +16,7 @@
         - id: Food
         - id: Drink
         - id: Medicine
+        - id: Cryogenic # Frontier
         - id: Poison
         - id: Narcotic
         - id: Alcohol
@@ -33,6 +34,9 @@
           reagents:
           - ReagentId: Slime
             Quantity: 10
+    - type: Item
+      size: Small
+      heldPrefix: brain
 
       
 - type: entity
@@ -70,3 +74,6 @@
         reagents:
         - ReagentId: UncookedAnimalProteins
           Quantity: 5
+  - type: Item
+    size: Small
+    heldPrefix: lungs

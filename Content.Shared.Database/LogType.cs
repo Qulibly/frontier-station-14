@@ -98,7 +98,36 @@ public enum LogType
     DeviceNetwork = 89,
     StoreRefund = 90,
 
-    // Frontier Station Spesific
+    /// <summary>
+    /// User was rate-limited for some spam action.
+    /// </summary>
+    /// <remarks>
+    /// This is a default value used by <c>PlayerRateLimitManager</c>, though users can use different log types.
+    /// </remarks>
+    RateLimited = 91,
+
+    /// <summary>
+    /// A player did an item-use interaction of an item they were holding onto another object.
+    /// </summary>
+    InteractUsing = 92,
+
+    /// <summary>
+    /// Storage & entity-storage related interactions
+    /// </summary>
+    Storage = 93,
+
+    /// <summary>
+    /// A player got hit by an explosion and was dealt damage.
+    /// </summary>
+    ExplosionHit = 94,
+
+    // Frontier Station Specific
     ATMUsage = 200,
     ShipYardUsage = 201,
+    ShuttleRecordsUsage = 202,
+
+    /// <summary>
+    /// An admin spawns a refund for a player.
+    /// </summary>
+    AdminRefund = 203,
 }

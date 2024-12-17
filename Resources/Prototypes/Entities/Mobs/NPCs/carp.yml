@@ -15,13 +15,14 @@
           true
     - type: NpcFactionMember
       factions:
-        - SimpleHostile
+      - Dragon
     - type: Sprite
       drawdepth: Mobs
       sprite: Mobs/Aliens/Carps/space.rsi
       layers:
       - map: [ "enum.DamageStateVisualLayers.Base" ]
         state: alive
+    - type: Carriable #DeltaV - this is for you, deltanedas o7
     - type: CombatMode
     - type: Physics
     - type: Fixtures
@@ -39,7 +40,10 @@
     - type: MobThresholds
       thresholds:
         0: Alive
-        50: Dead
+        40: Dead
+    - type: MovementSpeedModifier
+      baseWalkSpeed: 2.5
+      baseSprintSpeed: 3.5
     - type: Stamina
       critThreshold: 100
     - type: DamageStateVisuals
@@ -54,6 +58,9 @@
       spawned:
         - id: FoodMeatFish
           amount: 2
+        - id: MaterialToothSpaceCarp1
+          amount: 1
+          maxAmount: 4
     - type: MeleeWeapon
       altDisarm: false
       angle: 0
@@ -62,8 +69,8 @@
         path: /Audio/Effects/bite.ogg
       damage:
         types:
-          Piercing: 5
-          Slash: 5 # frontier nerf
+          Blunt: 5
+          Slash: 5 # Frontier: 7<5
     - type: TypingIndicator
       proto: alien
     - type: Tag
@@ -83,6 +90,7 @@
 - type: entity
   parent: BaseMobCarp
   id: MobCarp
+  categories: [ HideSpawnMenu ] # Frontier
   components:
   - type: Sprite
     layers:
@@ -103,6 +111,7 @@
   parent: BaseMobCarp
   id: MobCarpMagic
   description: Looks like some kind of fish. Might be magical.
+  categories: [ HideSpawnMenu ] # Frontier
   components:
     - type: Sprite
       sprite: Mobs/Aliens/Carps/magic.rsi
@@ -114,6 +123,7 @@
   parent: BaseMobCarp
   id: MobCarpHolo
   description: Carp made out of holographic energies. Sadly for you, it is very much real.
+  categories: [ HideSpawnMenu ] # Frontier
   components:
     - type: Sprite
       sprite: Mobs/Aliens/Carps/holo.rsi
@@ -137,6 +147,7 @@
   id: MobCarpRainbow
   name: rainbow carp
   description: Wow such a shiny fishie!
+  categories: [ HideSpawnMenu ] # Frontier
   components:
   - type: PointLight
     radius: 1.5
@@ -146,16 +157,15 @@
 
 - type: entity
   id: MobCarpSalvage
-  parent: MobCarp
+  parent: [NFMobRestrictions, MobCarp] # Frontier: add NFMobRestrictions, remove components
   suffix: "Salvage Ruleset"
-  components:
-    - type: SalvageMobRestrictionsNF
 
 - type: entity
   name: space carp
   id: MobCarpDragon
   suffix: DragonBrood
   parent: MobCarp
+  categories: [ HideSpawnMenu ] # Frontier
   components:
     - type: GhostRole
       allowMovement: true
@@ -163,6 +173,9 @@
       makeSentient: true
       name: ghost-role-information-sentient-carp-name
       description: ghost-role-information-sentient-carp-description
+      rules: ghost-role-information-space-dragon-summoned-carp-rules
+      raffle:
+        settings: short
     - type: GhostTakeoverAvailable
     - type: HTN
       rootTask:
@@ -172,6 +185,7 @@
   id: MobCarpDungeon
   parent: MobCarp
   suffix: Dungeon
+  categories: [ HideSpawnMenu ] # Frontier
   components:
   - type: MeleeWeapon
     damage:
@@ -183,6 +197,7 @@
   parent: BaseMobCarp
   id: MobShark
   description: A dangerous shark from the blackness of endless space, who loves to drink blood.
+  categories: [ HideSpawnMenu ] # Frontier
   components:
     - type: Sprite
       sprite: Mobs/Aliens/Carps/sharkminnow.rsi
@@ -206,7 +221,7 @@
     - type: MobThresholds
       thresholds:
         0: Alive
-        80: Dead
+        80: Dead # Frontier: 150<80
     - type: Stamina
       critThreshold: 150
     - type: DamageStateVisuals
@@ -224,15 +239,17 @@
       spawned:
         - id: FoodMeatFish
           amount: 4
+        - id: MaterialToothSharkminnow1
+          amount: 1
+          maxAmount: 3
     - type: MeleeWeapon
       damage:
         types:
-          Slash: 7
+          Slash: 7 # Frontier: 10<7
           Bloodloss: 5
 
 - type: entity
   id: MobSharkSalvage
-  parent: MobShark
+  parent: [NFMobRestrictions, MobShark] # Frontier: add NFMobRestrictions
   suffix: "Salvage Ruleset"
-  components:
-    - type: SalvageMobRestrictionsNF
+  categories: [ HideSpawnMenu ] # Frontier

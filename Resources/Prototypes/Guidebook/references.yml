@@ -1,0 +1,27 @@
+- type: guideEntry
+  id: References
+  name: guide-entry-references
+  text: "/ServerInfo/Guidebook/References.xml"
+  children:
+  - Chemicals
+  - Drinks
+  - FoodRecipes
+  - Writing
+  - MedicalRecipes # Frontier
+
+- type: guideEntry
+  id: Drinks
+  name: guide-entry-drinks
+  text: "/ServerInfo/Guidebook/ReferenceTables/Drinks.xml"
+  filterEnabled: True
+
+- type: guideEntry
+  id: FoodRecipes
+  name: guide-entry-foodrecipes
+  text: "/ServerInfo/_EE/Guidebook/Service/FoodRecipes.xml" # EE: add _EE
+  filterEnabled: True # EE
+
+- type: guideEntry
+  id: Writing
+  name: guide-entry-writing
+  text: "/ServerInfo/Guidebook/Writing.xml"

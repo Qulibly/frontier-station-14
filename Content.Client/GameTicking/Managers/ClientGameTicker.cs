@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Client.Administration.Managers;
 using Content.Client.Gameplay;
 using Content.Client.Lobby;
@@ -17,11 +18,9 @@ namespace Content.Client.GameTicking.Managers
         [Dependency] private readonly IStateManager _stateManager = default!;
         [Dependency] private readonly IClientAdminManager _admin = default!;
         [Dependency] private readonly IClyde _clyde = default!;
-        [Dependency] private readonly SharedMapSystem _map = default!;
         [Dependency] private readonly IUserInterfaceManager _userInterfaceManager = default!;
 
-        private Dictionary<NetEntity, Dictionary<string, uint?>>  _jobsAvailable = new();
-        private Dictionary<NetEntity, string> _stationNames = new();
+        private Dictionary<NetEntity, StationJobInformation> _stationJobInformationList = new();
 
         [ViewVariables] public bool AreWeReady { get; private set; }
         [ViewVariables] public bool IsGameStarted { get; private set; }
@@ -32,13 +31,21 @@ namespace Content.Client.GameTicking.Managers
         [ViewVariables] public TimeSpan StartTime { get; private set; }
         [ViewVariables] public new bool Paused { get; private set; }
 
-        [ViewVariables] public IReadOnlyDictionary<NetEntity, Dictionary<string, uint?>> JobsAvailable => _jobsAvailable;
-        [ViewVariables] public IReadOnlyDictionary<NetEntity, string> StationNames => _stationNames;
+        [ViewVariables] public IReadOnlyDictionary<NetEntity, StationJobInformation> StationJobInformationList => _stationJobInformationList;
+
+        // Frontier addition
+        // Replaced StationNames with a getter that uses _stationJobInformationList
+        [ViewVariables]
+        public IReadOnlyDictionary<NetEntity, string> StationNames =>
+            _stationJobInformationList.ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.StationName
+            );
 
         public event Action? InfoBlobUpdated;
         public event Action? LobbyStatusUpdated;
         public event Action? LobbyLateJoinStatusUpdated;
-        public event Action<IReadOnlyDictionary<NetEntity, Dictionary<string, uint?>>>? LobbyJobsAvailableUpdated;
+        public event Action<IReadOnlyDictionary<NetEntity, StationJobInformation>>? LobbyJobsAvailableUpdated;
 
         public override void Initialize()
         {
@@ -69,7 +76,7 @@ namespace Content.Client.GameTicking.Managers
             // reading the console. E.g., logs like this one could leak the nuke station/grid:
             // > Grid NT-Arrivals 1101 (122/n25896) changed parent. Old parent: map 10 (121/n25895). New parent: FTL (123/n26470)
 #if !DEBUG
-            _map.Log.Level = _admin.IsAdmin() ? LogLevel.Info : LogLevel.Warning;
+            EntityManager.System<SharedMapSystem>().Log.Level = _admin.IsAdmin() ? LogLevel.Info : LogLevel.Warning;
 #endif
         }
 
@@ -86,20 +93,9 @@ namespace Content.Client.GameTicking.Managers
 
         private void UpdateJobsAvailable(TickerJobsAvailableEvent message)
         {
-            _jobsAvailable.Clear();
-
-            foreach (var (job, data) in message.JobsAvailableByStation)
-            {
-                _jobsAvailable[job] = data;
-            }
-
-            _stationNames.Clear();
-            foreach (var weh in message.StationNames)
-            {
-                _stationNames[weh.Key] = weh.Value;
-            }
-
-            LobbyJobsAvailableUpdated?.Invoke(JobsAvailable);
+            _stationJobInformationList.Clear();
+            _stationJobInformationList = message.StationJobList;
+            LobbyJobsAvailableUpdated?.Invoke(StationJobInformationList);
         }
 
         private void JoinLobby(TickerJoinLobbyEvent message)

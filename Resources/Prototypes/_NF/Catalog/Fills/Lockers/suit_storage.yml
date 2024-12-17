@@ -1,34 +1,180 @@
 #SOFTSUITS
-#Paramedic's voidsuit
 - type: entity
-  id: SuitStorageParamedic
-  parent: SuitStorageBase
-  suffix: Paramedic
+  parent: [ SuitStorageBase, StorageFillEVASuitGoblin ]
+  id: SuitStorageEVAGoblin
+  suffix: EVA, Goblin
   components:
-  - type: StorageFill
-    contents:
-        - id: AirTankFilled
-        - id: ClothingOuterHardsuitVoidParamed
-        - id: ClothingMaskBreathMedical
-        - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
   - type: AccessReader
 
-#Hydroponics EVA
 - type: entity
-  id: SuitStorageHydro
-  parent: SuitStorageBase
-  suffix: Hydroponics
+  parent: [ SuitStorageBase, StorageFillEVASuitContractor ]
+  id: SuitStorageEVAContractor
+  suffix: EVA, Contractor
   components:
-  - type: StorageFill
-    contents:
-        - id: AirTankFilled
-        - id: ClothingOuterEVASuitHydro
-        - id: ClothingMaskBreath
-        - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
-#        - id: ClothingShoesBootsMagMercenaryFilled # Frontier - Not adding this to the suit storage so it wont be abused, exists only on role spawn.
   - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitPilot ]
+  id: SuitStorageEVAPilot
+  suffix: EVA, Pilot
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitSr ]
+  id: SuitStorageEVASr
+  suffix: EVA, Station Representative
+  components:
+  - type: AccessReader
+    access: [["HeadOfPersonnel"]]
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitCaptain ]
+  id: SuitStorageEVACaptain
+  suffix: EVA, Captain
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitEngineer ]
+  id: SuitStorageEVAEngineer
+  suffix: EVA, Engineer
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitAtmosTech ]
+  id: SuitStorageEVAAtmosTech
+  suffix: EVA, Atmospherics Technician
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitCargo ]
+  id: SuitStorageEVACargo
+  suffix: EVA, Cargo Technician
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitSalvage ]
+  id: SuitStorageEVASalvage
+  suffix: EVA, Salvage Specialist
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitMedic ]
+  id: SuitStorageEVAMedical
+  suffix: EVA, Medical Doctor
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitParamedic ]
+  id: SuitStorageParamedic
+  suffix: EVA, Paramedic
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitScientist ]
+  id: SuitStorageEVAScientist
+  suffix: EVA, Scientist
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitJanitor ]
+  id: SuitStorageEVAJanitor
+  suffix: EVA, Janitor
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitServiceWorker ]
+  id: SuitStorageEVAServiceWorker
+  suffix: EVA, Service Worker
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitChaplain ]
+  id: SuitStorageEVAChaplain
+  suffix: EVA, Chaplain
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitBoxerRed ]
+  id: SuitStorageEVABoxerRed
+  suffix: EVA, Boxer, Red
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitBoxerGreen ]
+  id: SuitStorageEVABoxerGreen
+  suffix: EVA, Boxer, Green
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitBoxerBlue ]
+  id: SuitStorageEVABoxerBlue
+  suffix: EVA, Boxer, Blue
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitBoxerYellow ]
+  id: SuitStorageEVABoxerYellow
+  suffix: EVA, Boxer, Yellow
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitBoxerRandom ]
+  id: SuitStorageEVABoxerRandom
+  suffix: EVA, Boxer, Random
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitHydro ]
+  id: SuitStorageEVAHydro
+  suffix: EVA, Hydroponics
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitMail ]
+  id: SuitStorageEVAMail
+  suffix: EVA, Mail Carrier
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitMercenary ]
+  id: SuitStorageEVAMercenary
+  suffix: EVA, Mercenary
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitPrivateSec ]
+  id: SuitStorageEVAPrivateSec
+  suffix: EVA, Private Security
+  components:
+  - type: AccessReader
+
+- type: entity
+  parent: [ SuitStorageBase, StorageFillEVASuitNfsd ]
+  id: SuitStorageEVANfsd
+  suffix: EVA, NFSD
+  components:
+  - type: AccessReader
+    access: [["Security"]]
 
 #HARDSUITS
 #Quartermaster hardsuit
@@ -44,7 +190,6 @@
         - id: ClothingOuterHardsuitLuxury
         - id: ClothingMaskGasExplorer
         - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
   - type: AccessReader
 
 #Mining hardsuit
@@ -60,7 +205,6 @@
         - id: ClothingOuterHardsuitSalvage
         - id: ClothingMaskGasExplorer
         - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
   - type: AccessReader
 
 #Mercenary hardsuit
@@ -75,8 +219,7 @@
         - id: ClothingOuterHardsuitMercenary
         - id: ClothingMaskGasMercenary
         - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
-#        - id: ClothingShoesBootsMagMercenaryFilled # Frontier - Not adding this to the suit storage so it wont be abused, exists only on role spawn.
+        - id: ClothingShoesBootsMagMercenaryFilled
   - type: AccessReader
     access: [["Captain"], ["Mercenary"]]
 
@@ -91,8 +234,7 @@
         - id: ClothingOuterHardsuitPrivateSecurity
         - id: ClothingMaskGasSecurity
         - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
-#        - id: ClothingShoesBootsMagCombat # Frontier - Not adding this to the suit storage so it wont be abused, exists only on role spawn.
+        - id: ClothingShoesBootsMagCombat
   - type: AccessReader
     access: [["Captain"], ["Mercenary"]]
 
@@ -108,8 +250,7 @@
         - id: ClothingOuterHardsuitScaf
         - id: ClothingMaskGasMercenary
         - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
-#        - id: ClothingShoesBootsMagMercenaryFilled # Frontier - Not adding this to the suit storage so it wont be abused, exists only on role spawn.
+        - id: ClothingShoesBootsMagMercenaryFilled
   - type: AccessReader
     access: [["Captain"], ["Mercenary"]]
 
@@ -125,7 +266,6 @@
         - id: ClothingOuterHardsuitPilot
         - id: ClothingMaskBreath
         - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
   - type: AccessReader
 
 #Clown hardsuit
@@ -140,7 +280,6 @@
         - id: ClothingOuterHardsuitClown
         - id: ClothingMaskBreath
         - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
   - type: AccessReader
 
 #Cadet hardsuit
@@ -155,7 +294,6 @@
         - id: ClothingOuterHardsuitNfsdBronze # Frontier
         - id: ClothingMaskGasNfsd
         - id: JetpackNfsdFilled
-        - id: HandheldGPSBasic
         - id: ClothingShoesBootsMagNfsd # Frontier
   - type: AccessReader
     access: [["Security"]]
@@ -172,7 +310,6 @@
         - id: ClothingOuterHardsuitNfsdSilver # Frontier
         - id: ClothingMaskGasNfsd 
         - id: JetpackNfsdFilled
-        - id: HandheldGPSBasic
         - id: ClothingShoesBootsMagNfsd # Frontier
   - type: AccessReader
     access: [["Security"]]
@@ -189,7 +326,6 @@
         - id: ClothingOuterHardsuitNfsdBrigmedic # Frontier
         - id: ClothingMaskGasNfsd 
         - id: JetpackNfsdFilled
-        - id: HandheldGPSBasic
         - id: ClothingShoesBootsMagNfsd # Frontier
   - type: AccessReader
     access: [["Security"]]
@@ -206,7 +342,6 @@
         - id: ClothingOuterHardsuitNfsdGold # Frontier
         - id: ClothingMaskGasNfsd 
         - id: JetpackNfsdFilled
-        - id: HandheldGPSBasic
         - id: ClothingShoesBootsMagNfsd # Frontier
   - type: AccessReader
     access: [["Security"]]
@@ -223,7 +358,6 @@
         - id: ClothingOuterHardsuitNfsdGold # Frontier
         - id: ClothingMaskGasNfsd 
         - id: JetpackNfsdFilled
-        - id: HandheldGPSBasic
         - id: ClothingShoesBootsMagNfsd # Frontier
   - type: AccessReader
     access: [["Security"]]
@@ -240,7 +374,6 @@
         - id: ClothingOuterHardsuitNfsdSheriff # Frontier
         - id: ClothingMaskGasSheriff
         - id: JetpackNfsdFilled
-        - id: HandheldGPSBasic
         - id: ClothingShoesBootsMagNfsd # Frontier
   - type: AccessReader
     access: [["Security"]]
@@ -257,7 +390,6 @@
         - id: ClothingOuterHardsuitNfsdCombat # Frontier
         - id: ClothingMaskGasNfsd 
         - id: JetpackNfsdFilled
-        - id: HandheldGPSBasic
         - id: ClothingShoesBootsMagNfsd # Frontier
   - type: AccessReader
     access: [["Security"]]
@@ -274,23 +406,6 @@
         - id: ClothingOuterHardsuitNfsdCommand # Frontier
         - id: ClothingMaskGasNfsd 
         - id: JetpackNfsdFilled
-        - id: HandheldGPSBasic
         - id: ClothingShoesBootsMagNfsd # Frontier
   - type: AccessReader
     access: [["Security"]]
-
-#Mail Carrier hardsuit
-- type: entity
-  id: SuitStorageMailCarrier
-  parent: SuitStorageBase
-  suffix: Mail Carrier
-  components:
-  - type: StorageFill
-    contents:
-        - id: AirTankFilled
-        - id: ClothingOuterEVASuitMailman
-        - id: ClothingMaskBreath
-        - id: JetpackMiniFilled
-        - id: HandheldGPSBasic
-  - type: AccessReader
-    access: [["Mail"]]

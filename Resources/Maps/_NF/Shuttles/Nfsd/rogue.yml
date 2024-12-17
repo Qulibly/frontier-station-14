@@ -13,7 +13,9 @@ entities:
   - uid: 1
     components:
     - type: MetaData
-      name: grid
+      name: Rogue
+    - type: BecomesStation
+      id: Rogue
     - type: Transform
       pos: 2.2425354,-3.692793
       parent: invalid
@@ -87,19 +89,21 @@ entities:
       data:
         tiles:
           0,0:
-            0: 1911
-            1: 28672
-          0,1:
-            1: 7
-          0,-1:
-            0: 30583
+            0: 34
+            1: 4096
+            2: 24576
           -1,0:
-            1: 52428
+            2: 52428
+          0,1:
+            1: 1
+            2: 6
           -1,1:
-            1: 12
+            2: 12
+          0,-1:
+            0: 8994
           -1,-1:
-            1: 12
-            0: 52416
+            2: 12
+            0: 34816
         uniqueMixes:
         - volume: 2500
           temperature: 293.15
@@ -131,17 +135,32 @@ entities:
           - 0
           - 0
           - 0
+        - volume: 2500
+          immutable: True
+          moles:
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
+          - 0
         chunkSize: 4
     - type: GasTileOverlay
     - type: RadiationGridResistance
-- proto: AirlockExternalGlassLocked
+- proto: AirlockExternalGlassNfsdLocked
   entities:
   - uid: 19
     components:
     - type: Transform
       pos: -0.5,-0.5
       parent: 1
-- proto: AirlockGlassShuttle
+- proto: AirlockGlassShuttleNfsdLocked
   entities:
   - uid: 23
     components:
@@ -164,11 +183,12 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 0.5,-0.5
       parent: 1
-- proto: AtmosDeviceFanTiny
+- proto: AtmosDeviceFanDirectional
   entities:
   - uid: 24
     components:
     - type: Transform
+      rot: 3.141592653589793 rad
       pos: -0.5,-0.5
       parent: 1
   - uid: 25
@@ -272,6 +292,14 @@ entities:
     components:
     - type: Transform
       pos: 2.5,3.5
+      parent: 1
+- proto: ButtonFrameCautionSecurity
+  entities:
+  - uid: 53
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 0.5,1.5
       parent: 1
 - proto: CableApcExtension
   entities:
@@ -504,12 +532,27 @@ entities:
       rot: 3.141592653589793 rad
       pos: 1.5,0.5
       parent: 1
+- proto: ComputerIFF
+  entities:
+  - uid: 69
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: -1.5,1.5
+      parent: 1
 - proto: ComputerShuttle
   entities:
   - uid: 44
     components:
     - type: Transform
       pos: 1.5,1.5
+      parent: 1
+- proto: ExtinguisherCabinetFilled
+  entities:
+  - uid: 124
+    components:
+    - type: Transform
+      pos: 0.5,-2.5
       parent: 1
 - proto: GeneratorWallmountAPU
   entities:
@@ -530,6 +573,20 @@ entities:
     - type: Transform
       pos: 1.5,3.5
       parent: 1
+- proto: GrenadeEMP
+  entities:
+  - uid: 67
+    components:
+    - type: Transform
+      parent: 54
+    - type: Physics
+      canCollide: False
+  - uid: 68
+    components:
+    - type: Transform
+      parent: 54
+    - type: Physics
+      canCollide: False
 - proto: Grille
   entities:
   - uid: 52
@@ -537,18 +594,6 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 1.5,2.5
-      parent: 1
-  - uid: 53
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 0.5,1.5
-      parent: 1
-  - uid: 54
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 0.5,1.5
       parent: 1
   - uid: 55
     components:
@@ -586,17 +631,31 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -1.5,-1.5
       parent: 1
+- proto: LockableButtonSecurity
+  entities:
+  - uid: 121
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 0.5,1.5
+      parent: 1
+    - type: DeviceLinkSource
+      linkedPorts:
+        54:
+        - Pressed: Trigger
+- proto: MagazineGrenadeEMP
+  entities:
+  - uid: 120
+    components:
+    - type: Transform
+      pos: 0.48425126,3.4548554
+      parent: 1
 - proto: PlastitaniumWindow
   entities:
   - uid: 14
     components:
     - type: Transform
       pos: 1.5,2.5
-      parent: 1
-  - uid: 15
-    components:
-    - type: Transform
-      pos: 0.5,1.5
       parent: 1
   - uid: 16
     components:
@@ -622,31 +681,6 @@ entities:
     components:
     - type: Transform
       pos: -1.5,-1.5
-      parent: 1
-- proto: PowerCellHigh
-  entities:
-  - uid: 124
-    components:
-    - type: Transform
-      pos: -1.676467,1.1426032
-      parent: 1
-  - uid: 125
-    components:
-    - type: Transform
-      pos: -1.2806337,1.1426032
-      parent: 1
-  - uid: 126
-    components:
-    - type: Transform
-      pos: -1.488967,0.89260316
-      parent: 1
-- proto: PowerCellRecharger
-  entities:
-  - uid: 69
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: -1.5,1.5
       parent: 1
 - proto: Poweredlight
   entities:
@@ -690,36 +724,45 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 0.5,3.5
       parent: 1
-- proto: ShuttleGunSvalinnMachineGun
+- proto: ShuttleGunFriendshipNfsd
   entities:
-  - uid: 68
+  - uid: 54
     components:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 0.5,4.5
       parent: 1
-    - type: DeviceLinkSink
-      links:
-      - 121
-- proto: SignalButtonDirectional
+    - type: ContainerContainer
+      containers:
+        machine_board: !type:Container
+          showEnts: False
+          occludes: True
+          ents: []
+        machine_parts: !type:Container
+          showEnts: False
+          occludes: True
+          ents: []
+        ballistic-ammo: !type:Container
+          showEnts: False
+          occludes: True
+          ents:
+          - 67
+          - 68
+    - type: BallisticAmmoProvider
+      entities:
+      - 67
+      - 68
+- proto: SignNfsd
   entities:
-  - uid: 121
+  - uid: 125
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 0.5,1.5
+      pos: 0.5,-3.5
       parent: 1
-    - type: DeviceLinkSource
-      linkedPorts:
-        68:
-        - Pressed: Toggle
-        - Pressed: Trigger
-- proto: SignSecureSmallRed
-  entities:
-  - uid: 120
+  - uid: 126
     components:
     - type: Transform
-      pos: 0.5,1.5
+      pos: 0.5,2.5
       parent: 1
 - proto: SmallGyroscopeNfsd
   entities:
@@ -728,6 +771,13 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 1.5,4.5
+      parent: 1
+- proto: SpawnPointLatejoin
+  entities:
+  - uid: 127
+    components:
+    - type: Transform
+      pos: 1.5,-0.5
       parent: 1
 - proto: SubstationWallBasic
   entities:
@@ -750,12 +800,6 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: -1.5,0.5
-      parent: 1
-  - uid: 67
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: -1.5,1.5
       parent: 1
 - proto: ThrusterNfsd
   entities:
@@ -838,6 +882,12 @@ entities:
     components:
     - type: Transform
       pos: 2.5,2.5
+      parent: 1
+  - uid: 15
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 0.5,1.5
       parent: 1
 - proto: WarpPointShip
   entities:

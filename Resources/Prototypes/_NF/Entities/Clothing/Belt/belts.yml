@@ -1,7 +1,7 @@
 - type: entity
-  parent: ClothingBeltStorageBase
   id: ClothingBeltArcadia
   name: arcadia webbing
+  parent: [ NFClothingBeltStorageBase, BaseC3ContrabandNoValue, ContrabandClothing ]
   description: A webbing created by Arcadia Industries. Seems very capable of fitting many items.
   components:
   - type: Sprite
@@ -10,7 +10,7 @@
     sprite: _NF/Clothing/Belt/arcadia.rsi
 
 - type: entity
-  parent: ClothingBeltStorageBase
+  parent: NFClothingBeltStorageBase
   id: ClothingBeltChaplainSash
   name: chaplain sash
   description: Who knew that scarves can be also tied around your waist?
@@ -19,38 +19,6 @@
     sprite: _NF/Clothing/Belt/chaplain_sash.rsi
   - type: Clothing
     sprite: _NF/Clothing/Belt/chaplain_sash.rsi
-  - type: Storage
-    maxItemSize: Small
-    grid:
-    - 0,0,3,2
-    # TODO: Fill this out more.
-    whitelist:
-      tags:
-      - ObjectOfSpiritualSignificance
-      - Censer
-      - ReligiousSymbol
-      - Crucifix
-      - WeaponMeleeStake
-      - Book
-      - Smokable
-      - Matchstick
-      - Flashlight
-      - Trash
-      - CigPack
-      - Radio
-      - Crayon
-      - Bottle
-      - DrinkBottle
-      components:
-      - BibleComponent
-      - Drink
-      - Smokable
-      - MeleeWeapon
-      - HandheldLight
-      - ExpendableLight
-      - ToggleableLightVisuals
-      - Paper
-      - Stamp
   - type: ItemMapper
     mapLayers:
       book:
@@ -58,7 +26,7 @@
           tags:
           - Book
           components:
-          - BibleComponent
+          - Bible
           - Paper
       bottle:
         whitelist:
@@ -67,6 +35,7 @@
           - DrinkBottle
           components:
           - Drink
+          - Hypospray
       censer:
         whitelist:
           tags:
@@ -83,7 +52,7 @@
   - type: Appearance
 
 - type: entity
-  parent: ClothingBeltStorageBase
+  parent: NFClothingBeltStorageBase
   id: ClothingBeltPilot
   name: pilot webbing
   description: A webbing designed for someone seating a lot.
@@ -94,7 +63,7 @@
     sprite: _NF/Clothing/Belt/pilot.rsi
 
 - type: entity
-  parent: ClothingBeltAssault
+  parent: [ BaseC2ContrabandUnredeemable, ClothingBeltAssault ]
   id: ClothingBeltNfsd
   name: nfsd belt
   description: A tactical assault belt.
@@ -105,7 +74,7 @@
     sprite: _NF/Clothing/Belt/nfsd_belt.rsi
 
 - type: entity
-  parent: ClothingBeltSecurityWebbing
+  parent: [ BaseC2ContrabandUnredeemable, ClothingBeltSecurityWebbing ]
   id: ClothingBeltNfsdWebbing
   name: nfsd webbing
   description: A tactical assault webbing.
@@ -114,32 +83,4 @@
     sprite: _NF/Clothing/Belt/nfsd_webbing.rsi
   - type: Clothing
     sprite: _NF/Clothing/Belt/nfsd_webbing.rsi
-  - type: Tag
-    tags:
-    - CatWearable # Frontier
-
-- type: entity
-  parent: ClothingBeltBase
-  id: ClothingBeltCultForceField
-  name: cult runic belt buckle
-  components:
-  - type: Sprite
-    sprite: _NF/Clothing/Belt/cult_force_field.rsi
-    shader: unshaded
-  - type: Clothing
-    sprite: _NF/Clothing/Belt/cult_force_field.rsi
-  - type: Reflect
-    enabled: true
-    reflectProb: .1
-    spread: 90
-
-- type: entity
-  parent: ClothingBeltStorageBase
-  id: ClothingBeltCultWebbing
-  name: cult webbing
-  description: A webbing with pockets lined with waterproof (water, huh?)  material.
-  components:
-  - type: Sprite
-    sprite: _NF/Clothing/Belt/cult_webbing.rsi
-  - type: Clothing
-    sprite: _NF/Clothing/Belt/cult_webbing.rsi
+  - type: CatWearable

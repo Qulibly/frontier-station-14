@@ -8,13 +8,17 @@
     state: seedextractor
   discipline: CivilianServices
   tier: 1
-  cost: 5000
+  cost: 7500 # Delta Price. 5000 is pre-adjustment.
   recipeUnlocks:
   - BorgModuleGardening
   - BorgModuleHarvesting
+  - PlantBagOfHolding #DeltaV
   - SeedExtractorMachineCircuitboard
   - HydroponicsTrayMachineCircuitboard
   - ReagentGrinderIndustrialMachineCircuitboard
+  - PlantAnalyzer # Frontier
+  - NFBlueprintPlantAnalyzerEmpty # Frontier
+  - NFBlueprintPlantBagOfHolding # Frontier
 
 - type: technology
   id: CritterMechs
@@ -51,7 +55,6 @@
   - ElectricGrillMachineCircuitboard
   - BoozeDispenserMachineCircuitboard
   - SodaDispenserMachineCircuitboard
-  - DeepFryerMachineCircuitboard #Nyano - Summary: adds deep fryer circuit board to service research.
 
 - type: technology
   id: AudioVisualCommunication
@@ -113,7 +116,7 @@
   cost: 7500
   recipeUnlocks:
   - FatExtractorMachineCircuitboard
-  - BiofabricatorMachineCircuitboard
+  - BiogeneratorMachineCircuitboard # Frontier BiofabricatorMachineCircuitboard<BiogeneratorMachineCircuitboard
   - BiomassReclaimerMachineCircuitboard
 
 # Tier 2
@@ -161,6 +164,7 @@
   recipeUnlocks:
   - BorgModuleAdvancedTreatment
   - BorgModuleDefibrillator
+  - BorgModuleAdvancedParamedic # Frontier
 
 - type: technology
   id: AdvancedCleaning
@@ -174,6 +178,7 @@
   recipeUnlocks:
   - AdvMopItem
   - MegaSprayBottle
+  - NFBlueprintAdvMopItem # Frontier
 
 - type: technology
   id: HONKMech
@@ -246,3 +251,9 @@
   recipeUnlocks:
   - BluespaceBeaker
   - SyringeBluespace
+  - JugBluespace # Frontier
+  - VialBluespace # Frontier
+  - NFBlueprintBluespaceBeaker # Frontier
+  - NFBlueprintSyringeBluespace # Frontier
+  - NFBlueprintJugBluespace # Frontier
+  - NFBlueprintVialBluespace # Frontier

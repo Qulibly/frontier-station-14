@@ -92,6 +92,19 @@
       - PosterContrabandInterdyne
       - PosterContrabandWaffleCorp
       - PosterContrabandMissingSpacepen
+      - NFPosterContrabandLvhiStation # Frontier
+      - NFPosterContrabandLvhiShuttle # Frontier
+      - NFPosterContrabandLvhiSpace # Frontier
+      - NFPosterContrabandLvhiMountains # Frontier
+      - NFPosterContrabandLvhiPlanetCore # Frontier
+      - NFPosterContrabandLvhiLogo # Frontier
+      - NFPosterContrabandFsbLogo # Frontier
+      - NFPosterContrabandFsbStasis # Frontier
+      - NFPosterContrabandFsbApothecary # Frontier
+      - NFPosterContrabandEatShrooms # Frontier
+      - NFPosterContrabandKillerFashion # Frontier
+      - NFPosterContrabandGoblinFront # Frontier
+      - NFPosterContrabandGoblinate # Frontier
     chance: 1
 
 - type: entity
@@ -150,5 +163,14 @@
       - PosterLegitPeriodicTable
       - PosterLegitRenault
       - PosterLegitNTTGC
-      - NFPosterLegitMagnusWatching
+      - PosterLegitSafetyMothDelam
+      - PosterLegitSafetyMothEpi
+      - PosterLegitSafetyMothPiping
+      - PosterLegitSafetyMothMeth
+      - PosterLegitSafetyMothHardhat
+      - PosterLegitSafetyMothSSD
+      - NFPosterLegitMagnusWatching # Frontier
+      - NFPosterLegitGoblinTinkerer # Frontier
+      - NFPosterLegitBahamaMama # Frontier
+      - NFPosterLegitWinnerWinner # Frontier
     chance: 1

@@ -1,6 +1,6 @@
 # BASE
 - type: entity
-  parent: ClothingBackpack
+  parent: NFClothingMessenger
   id: ClothingBackpackMessengerContractor
   name: contractor messenger bag
   description: A trendy looking messenger bag in tasteful colors.
@@ -38,7 +38,7 @@
         color: "#eeeeee"
 
 - type: entity
-  parent: ClothingBackpack
+  parent: NFClothingMessenger
   id: ClothingBackpackMessenger
   name: messenger bag
   description: A trendy looking messenger bag.
@@ -602,11 +602,29 @@
     - state: icon-unlit
       shader: unshaded
   - type: Clothing
-    equippedPrefix: holding
+    sprite: _NF/Clothing/Back/Messenger/holding.rsi
+    clothingVisuals:
+      back:
+      - state: holding-equipped-BACKPACK
+      - state: holding-equipped-BACKPACK-unlit
+        shader: unshaded
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left
+      - state: inhand-left-unlit
+        shader: unshaded
+      right:
+      - state: inhand-right
+      - state: inhand-right-unlit
+        shader: unshaded
 
 ## Antagonists / Contraband
 - type: entity
-  parent: ClothingBackpackMessengerContractor
+  parent:
+  - BaseC3SyndicateContrabandUnredeemable
+  - ClothingBackpackMessengerContractor
+  - ContrabandClothing
   id: ClothingBackpackMessengerSyndicate
   name: syndicate messenger bag
   description: A robust messenger bag for waging war against oppressors.
@@ -644,7 +662,10 @@
         color: "#7f0101"
 
 - type: entity
-  parent: ClothingBackpackMessengerContractor
+  parent:
+  - BaseC3CultContrabandUnredeemable
+  - ClothingBackpackMessengerContractor
+  - ContrabandClothing
   id: ClothingBackpackMessengerBloodCult
   name: cultist messenger bag
   description: A watertight messenger bag for loyal Nar'Sie followers.
@@ -682,9 +703,9 @@
         color: "#96907c"
 
 - type: entity
-  parent: ClothingBackpackMessengerContractor
   id: ClothingBackpackMessengerArcadia
   name: arcadia messenger bag
+  parent: [ ClothingBackpackMessengerContractor, BaseC3ContrabandNoValue, ContrabandClothing ]
   components:
   - type: Sprite
     sprite: _NF/Clothing/Back/Messenger/color.rsi

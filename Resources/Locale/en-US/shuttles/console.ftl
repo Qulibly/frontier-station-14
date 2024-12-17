@@ -4,6 +4,7 @@ shuttle-pilot-end = Stopped piloting
 shuttle-console-in-ftl = Currently in FTL
 shuttle-console-mass = Too large to FTL
 shuttle-console-prevent = You are unable to pilot this ship
+shuttle-console-static = Grid is static
 
 # NAV
 
@@ -17,8 +18,6 @@ shuttle-console-angular-velocity = Angular velocity:
 shuttle-console-unknown = Unknown
 shuttle-console-iff-label = {$name} ({$distance}m)
 shuttle-console-exclusion = Exclusion area
-
-shuttle-console-iff-search = Search IFF
 
 # Buttons
 shuttle-console-strafing = Strafing mode

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Content.Server.Interaction;
 using Content.Server.Mech.Equipment.Components;
 using Content.Server.Mech.Systems;
@@ -16,6 +16,9 @@ using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
+using Content.Shared.Whitelist; // Frontier
+using Content.Shared.Buckle.Components; // Frontier
+using Content.Shared.Buckle; // Frontier
 
 namespace Content.Server.Mech.Equipment.EntitySystems;
 
@@ -30,6 +33,8 @@ public sealed class MechGrabberSystem : EntitySystem
     [Dependency] private readonly InteractionSystem _interaction = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly TransformSystem _transform = default!;
+    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!; // Frontier
+    [Dependency] private readonly SharedBuckleSystem _buckle = default!; // Frontier
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -40,7 +45,7 @@ public sealed class MechGrabberSystem : EntitySystem
         SubscribeLocalEvent<MechGrabberComponent, MechEquipmentRemovedEvent>(OnEquipmentRemoved);
         SubscribeLocalEvent<MechGrabberComponent, AttemptRemoveMechEquipmentEvent>(OnAttemptRemove);
 
-        SubscribeLocalEvent<MechGrabberComponent, InteractNoHandEvent>(OnInteract);
+        SubscribeLocalEvent<MechGrabberComponent, UserActivateInWorldEvent>(OnInteract);
         SubscribeLocalEvent<MechGrabberComponent, GrabberDoAfterEvent>(OnMechGrab);
     }
 
@@ -85,7 +90,7 @@ public sealed class MechGrabberSystem : EntitySystem
         var (mechPos, mechRot) = _transform.GetWorldPositionRotation(mechxform);
 
         var offset = mechPos + mechRot.RotateVec(component.DepositOffset);
-        _transform.SetWorldPositionRotation(xform, offset, Angle.Zero);
+        _transform.SetWorldPositionRotation(toRemove, offset, Angle.Zero);
         _mech.UpdateUserInterface(mech);
     }
 
@@ -123,10 +128,11 @@ public sealed class MechGrabberSystem : EntitySystem
         args.States.Add(GetNetEntity(uid), state);
     }
 
-    private void OnInteract(EntityUid uid, MechGrabberComponent component, InteractNoHandEvent args)
+    private void OnInteract(EntityUid uid, MechGrabberComponent component, UserActivateInWorldEvent args)
     {
-        if (args.Handled || args.Target is not {} target)
+        if (args.Handled)
             return;
+        var target = args.Target;
 
         if (args.Target == args.User || component.DoAfter != null)
             return;
@@ -137,6 +143,9 @@ public sealed class MechGrabberSystem : EntitySystem
         {
             return;
         }
+
+        if (_whitelist.IsBlacklistPass(component.Blacklist, target)) // Frontier: Blacklist
+            return;
 
         if (Transform(target).Anchored)
             return;
@@ -154,7 +163,7 @@ public sealed class MechGrabberSystem : EntitySystem
             return;
 
         args.Handled = true;
-        component.AudioStream = _audio.PlayPvs(component.GrabSound, uid).Value.Entity;
+        component.AudioStream = _audio.PlayPvs(component.GrabSound, uid)?.Entity;
         var doAfterArgs = new DoAfterArgs(EntityManager, args.User, component.GrabDelay, new GrabberDoAfterEvent(), uid, target: target, used: uid)
         {
             BreakOnMove = true
@@ -180,6 +189,16 @@ public sealed class MechGrabberSystem : EntitySystem
             return;
         if (!_mech.TryChangeEnergy(equipmentComponent.EquipmentOwner.Value, component.GrabEnergyDelta))
             return;
+
+        // Frontier: Remove people from chairs
+        if (TryComp<StrapComponent>(args.Args.Target, out var strapComp) && strapComp.BuckledEntities != null)
+        {
+            foreach (var buckleUid in strapComp.BuckledEntities)
+            {
+                _buckle.Unbuckle(buckleUid, args.Args.User);
+            }
+        }
+        // End Frontier
 
         _container.Insert(args.Args.Target.Value, component.ItemContainer);
         _mech.UpdateUserInterface(equipmentComponent.EquipmentOwner.Value);

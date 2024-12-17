@@ -1,9 +1,10 @@
 - type: entity
-  parent: BaseItem
+  parent: [BaseItem, BaseC2ContrabandUnredeemable, RecyclableItemSteelMedium] # Frontier: BaseRestrictedContraband<BaseC2ContrabandUnredeemable added RecyclableItemSteelMedium
   id: ClusterBang
   name: clusterbang
   description: Can be used only with flashbangs. Explodes several times.
   components:
+  - type: WeaponCaseInsertable # Frontier
   - type: Sprite
     sprite: Objects/Weapons/Grenades/clusterbang.rsi
     state: base-0
@@ -20,7 +21,7 @@
 - type: entity
   parent: GrenadeBase
   id: ClusterBangFull
-  name: ClusterBang
+  name: clusterbang
   description: Launches three flashbangs after the timer runs out.
   suffix: Full
   components:
@@ -50,7 +51,7 @@
       cluster-payload: !type:Container
 
 - type: entity
-  parent: GrenadeBase
+  parent: [GrenadeBase, BaseC3SyndicateContraband] # Frontier: BaseSyndicateContraband<BaseC3SyndicateContraband
   id: ClusterGrenade
   name: clustergrenade
   description: Why use one grenade when you can use three at once!
@@ -77,14 +78,14 @@
   - type: ContainerContainer
     containers:
       cluster-payload: !type:Container
-  - type: Contraband #frontier
 
 - type: entity
-  parent: BaseItem
+  parent: [BaseItem, BaseC3SyndicateContraband] # Frontier: BaseSyndicateContraband<BaseC3SyndicateContraband
   id: ClusterBananaPeel
   name: cluster banana peel
   description: Splits into 6 explosive banana peels after throwing, guaranteed fun!
   components:
+  - type: WeaponCaseInsertable # Frontier
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/banana.rsi
     state: produce
@@ -97,6 +98,7 @@
     damage:
       types:
         Blunt: 10
+  - type: LandAtCursor
   - type: Damageable
     damageContainer: Inorganic
   - type: EmitSoundOnTrigger
@@ -116,7 +118,7 @@
       cluster-payload: !type:Container
 
 - type: entity
-  parent: GrenadeBase
+  parent: [GrenadeBase, BaseC3SyndicateContraband] # Frontier: BaseSecurityContraband<BaseC3SyndicateContraband
   id: GrenadeStinger
   name: stinger grenade
   description: Nothing to see here, please disperse.
@@ -145,7 +147,7 @@
       cluster-payload: !type:Container
 
 - type: entity
-  parent: GrenadeBase
+  parent: [GrenadeBase, BaseC3SyndicateContraband] # Frontier: BaseSyndicateContraband<BaseC3SyndicateContraband
   id: GrenadeIncendiary
   name: incendiary grenade
   description: Guaranteed to light up the mood.
@@ -174,7 +176,7 @@
       cluster-payload: !type:Container
 
 - type: entity
-  parent: GrenadeBase
+  parent: [GrenadeBase, BaseC3SyndicateContraband] # Frontier: BaseSyndicateContraband<BaseC3SyndicateContraband
   id: GrenadeShrapnel
   name: shrapnel grenade
   description: Releases a deadly spray of shrapnel that causes severe bleeding.
@@ -208,6 +210,7 @@
   name: slipocalypse clustersoap
   description: Spreads small pieces of syndicate soap over an area upon landing on the floor.
   components:
+  - type: WeaponCaseInsertable # Frontier
   - type: Sprite
     sprite: Objects/Specific/Janitorial/soap.rsi
     layers:
@@ -225,6 +228,7 @@
     damage:
       types:
         Blunt: 10
+  - type: LandAtCursor
   - type: EmitSoundOnTrigger
     sound:
       path: "/Audio/Effects/flash_bang.ogg"
@@ -242,5 +246,22 @@
   - type: ContainerContainer
     containers:
       cluster-payload: !type:Container
-  - type: Contraband #frontier
 
+- type: entity
+  parent: GrenadeShrapnel
+  id: GrenadeFoamDart
+  name: foam dart grenade
+  description: Releases a bothersome spray of foam darts that cause severe welching.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Grenades/foamdart.rsi
+    layers:
+    - state: icon
+      map: ["Base"]
+    - state: primed
+      map: ["enum.TriggerVisualLayers.Base"]
+  - type: ClusterGrenade
+    fillPrototype: BulletFoam
+    maxGrenadesCount: 30
+    grenadeType: enum.GrenadeType.Throw
+    velocity: 70

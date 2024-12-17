@@ -39,6 +39,8 @@
         prob: 0.3
       - id: SprayPainter
         prob: 0.7
+      - id: MaintenanceJack # Frontier
+        prob: 0.1 # Frontier
 
 - type: entity
   id: LockerElectricalSuppliesFilled
@@ -102,8 +104,9 @@
       - id: ClothingHandsGlovesColorYellow # Frontier
       - id: trayScanner # Frontier
       - id: JetpackMiniFilled # Frontier
-      - id: HandheldGPSBasic # Frontier
       - id: ClothingBeltUtilityEngineering # Frontier
+#     - id: RCD # Frontier
+#     - id: RCDAmmo # Frontier
 
 - type: entity
   id: LockerAtmosphericsFilled
@@ -122,6 +125,8 @@
       - id: ClothingHandsGlovesColorYellow # Frontier
       - id: trayScanner # Frontier
       - id: ClothingBeltUtilityEngineering # Frontier
+#      - id: RCD
+#      - id: RCDAmmo
 
 - type: entity
   id: LockerEngineerFilledHardsuit
@@ -139,7 +144,6 @@
       - id: ClothingShoesBootsMag
       - id: trayScanner # Frontier
       - id: JetpackMiniFilled # Frontier
-      - id: HandheldGPSBasic # Frontier
       - id: ClothingBeltUtilityEngineering # Frontier
 
 - type: entity

@@ -1,13 +1,25 @@
 - type: department
   id: Frontier
-  description: department-Frontier-description
+  name: department-NF
+  description: department-NF-description
   color: "#334E6D"
-  weight: 90
+  weight: 1 # accounted for in jobs
   roles:
-  - StationRepresentative # Frontier
-  - StationTrafficController # Frontier
+  - StationRepresentative
+  - StationTrafficController
   - Valet # nyano
-  - Janitor
+  - NFJanitor
   - MailCarrier # nyano
   - SecurityGuard
-  enabled: true
+
+- type: department
+  id: Antag
+  name: department-NFAntag
+  description: department-NFAntag-description
+  color: "#DE3A3A"
+  weight: -1 # accounted for in jobs
+  roles:
+  - PirateCaptain
+  - PirateFirstMate
+  - Pirate
+  - Prisoner #nyano

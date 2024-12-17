@@ -1,6 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
+using Content.Server.Access.Systems;
 using Content.Server.Forensics;
 using Content.Server.GameTicking;
+using Content.Shared.Access.Components;
 using Content.Shared.Inventory;
 using Content.Shared.PDA;
 using Content.Shared.Preferences;
@@ -8,6 +10,8 @@ using Content.Shared.Roles;
 using Content.Shared.StationRecords;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random; // Frontier
+using Content.Server._NF.SectorServices; // Frontier
 
 namespace Content.Server.StationRecords.Systems;
 
@@ -35,12 +39,19 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly StationRecordKeyStorageSystem _keyStorage = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private readonly IdCardSystem _idCard = default!;
+    [Dependency] private readonly IRobustRandom _robustRandom = default!; // Frontier
+    [Dependency] private readonly SectorServiceSystem _sectorService = default!; // Frontier
+    [Dependency] private readonly ForensicsSystem _forensics = default!; // Frontier
+
+    static readonly ProtoId<JobPrototype>[] FakeJobIds = [ "Contractor", "Pilot", "Mercenary" ]; // Frontier
 
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<PlayerSpawnCompleteEvent>(OnPlayerSpawn);
+        SubscribeLocalEvent<EntityRenamedEvent>(OnRename);
     }
 
     private void OnPlayerSpawn(PlayerSpawnCompleteEvent args)
@@ -49,6 +60,30 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
             return;
 
         CreateGeneralRecord(args.Station, args.Mob, args.Profile, args.JobId, stationRecords);
+    }
+
+    private void OnRename(ref EntityRenamedEvent ev)
+    {
+        // When a player gets renamed their card gets changed to match.
+        // Unfortunately this means that an event is called for it as well, and since TryFindIdCard will succeed if the
+        // given entity is a card and the card itself is the key the record will be mistakenly renamed to the card's name
+        // if we don't return early.
+        if (HasComp<IdCardComponent>(ev.Uid))
+            return;
+
+        if (_idCard.TryFindIdCard(ev.Uid, out var idCard))
+        {
+            if (TryComp(idCard, out StationRecordKeyStorageComponent? keyStorage)
+                && keyStorage.Key is {} key)
+            {
+                if (TryGetRecord<GeneralStationRecord>(key, out var generalRecord))
+                {
+                    generalRecord.Name = ev.NewName;
+                }
+
+                Synchronize(key);
+            }
+        }
     }
 
     private void CreateGeneralRecord(EntityUid station, EntityUid player, HumanoidCharacterProfile profile,
@@ -66,6 +101,30 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
         TryComp<DnaComponent>(player, out var dnaComponent);
 
         CreateGeneralRecord(station, idUid.Value, profile.Name, profile.Age, profile.Species, profile.Gender, jobId, fingerprintComponent?.Fingerprint, dnaComponent?.DNA, profile, records);
+
+        /// Frontier: generate sector-wide station record
+        if (TryComp<SpecialSectorStationRecordComponent>(player, out var specialRecord) && specialRecord.RecordGeneration == RecordGenerationType.NoRecord)
+            return;
+
+        EntityUid serviceEnt = _sectorService.GetServiceEntity();
+
+        if (TryComp(serviceEnt, out StationRecordsComponent? stationRecords))
+        {
+            //Checks if certain information should be faked, if so, fake it.
+            string playerJob = jobId;
+            string? fingerprint = fingerprintComponent?.Fingerprint;
+            string? dna = dnaComponent?.DNA;
+            if (specialRecord != null
+                && specialRecord.RecordGeneration == RecordGenerationType.FalseRecord)
+            {
+                playerJob = _robustRandom.Pick(FakeJobIds);
+                fingerprint = _forensics.GenerateFingerprint();
+                dna = _forensics.GenerateDNA();
+            }
+
+            CreateGeneralRecord(serviceEnt, idUid.Value, profile.Name, profile.Age, profile.Species, profile.Gender, playerJob, fingerprint, dna, profile, stationRecords);
+        }
+        /// End Frontier
     }
 
 
@@ -224,6 +283,17 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
     }
 
     /// <summary>
+    /// Get the name for a record, or an empty string if it has no record.
+    /// </summary>
+    public string RecordName(StationRecordKey key)
+    {
+        if (!TryGetRecord<GeneralStationRecord>(key, out var record))
+           return string.Empty;
+
+        return record.Name;
+    }
+
+    /// <summary>
     ///     Gets all records of a specific type from a station.
     /// </summary>
     /// <param name="station">The station to get the records from.</param>
@@ -332,6 +402,7 @@ public sealed class StationRecordsSystem : SharedStationRecordsSystem
                 && IsFilterWithSomeCodeValue(someRecord.Fingerprint, filterLowerCaseValue),
             StationRecordFilterType.DNA => someRecord.DNA != null
                 && IsFilterWithSomeCodeValue(someRecord.DNA, filterLowerCaseValue),
+            _ => throw new IndexOutOfRangeException(nameof(filter.Type)),
         };
     }
 

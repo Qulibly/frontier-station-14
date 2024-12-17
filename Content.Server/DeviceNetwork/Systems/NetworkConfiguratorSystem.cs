@@ -52,6 +52,8 @@ public sealed class NetworkConfiguratorSystem : SharedNetworkConfiguratorSystem
         //Verbs
         SubscribeLocalEvent<NetworkConfiguratorComponent, GetVerbsEvent<UtilityVerb>>(OnAddInteractVerb);
         SubscribeLocalEvent<DeviceNetworkComponent, GetVerbsEvent<AlternativeVerb>>(OnAddAlternativeSaveDeviceVerb);
+        SubscribeLocalEvent<DeviceLinkSinkComponent, GetVerbsEvent<AlternativeVerb>>(OnAddAlternativeSinkVerb);     // Frontier
+        SubscribeLocalEvent<DeviceLinkSourceComponent, GetVerbsEvent<AlternativeVerb>>(OnAddAlternativeSourceVerb); // Frontier
         SubscribeLocalEvent<NetworkConfiguratorComponent, GetVerbsEvent<AlternativeVerb>>(OnAddSwitchModeVerb);
 
         //UI
@@ -63,7 +65,19 @@ public sealed class NetworkConfiguratorSystem : SharedNetworkConfiguratorSystem
         SubscribeLocalEvent<NetworkConfiguratorComponent, NetworkConfiguratorToggleLinkMessage>(OnToggleLinks);
         SubscribeLocalEvent<NetworkConfiguratorComponent, NetworkConfiguratorButtonPressedMessage>(OnConfigButtonPressed);
 
+        SubscribeLocalEvent<NetworkConfiguratorComponent, BoundUserInterfaceCheckRangeEvent>(OnUiRangeCheck);
+
         SubscribeLocalEvent<DeviceListComponent, ComponentRemove>(OnComponentRemoved);
+    }
+
+    private void OnUiRangeCheck(Entity<NetworkConfiguratorComponent> ent, ref BoundUserInterfaceCheckRangeEvent args)
+    {
+        if (ent.Comp.ActiveDeviceList == null || args.Result == BoundUserInterfaceRangeResult.Fail)
+            return;
+
+        DebugTools.Assert(Exists(ent.Comp.ActiveDeviceList));
+        if (!_interactionSystem.InRangeUnobstructed(args.Actor!, ent.Comp.ActiveDeviceList.Value))
+            args.Result = BoundUserInterfaceRangeResult.Fail;
     }
 
     private void OnShutdown(EntityUid uid, NetworkConfiguratorComponent component, ComponentShutdown args)
@@ -73,23 +87,6 @@ public sealed class NetworkConfiguratorSystem : SharedNetworkConfiguratorSystem
         if (TryComp(component.ActiveDeviceList, out DeviceListComponent? list))
             list.Configurators.Remove(uid);
         component.ActiveDeviceList = null;
-    }
-
-    public override void Update(float frameTime)
-    {
-        base.Update(frameTime);
-
-        var query = EntityQueryEnumerator<NetworkConfiguratorComponent>();
-        while (query.MoveNext(out var uid, out var component))
-        {
-            if (component.ActiveDeviceList != null
-            && EntityManager.EntityExists(component.ActiveDeviceList.Value)
-            && _interactionSystem.InRangeUnobstructed(uid, component.ActiveDeviceList.Value))
-                continue;
-
-            //The network configurator is a handheld device. There can only ever be an ui session open for the player holding the device.
-            _uiSystem.CloseUi(uid, NetworkConfiguratorUiKey.Configure);
-        }
     }
 
     private void OnMapInit(EntityUid uid, NetworkConfiguratorComponent component, MapInitEvent args)
@@ -109,6 +106,13 @@ public sealed class NetworkConfiguratorSystem : SharedNetworkConfiguratorSystem
     private void TryAddNetworkDevice(EntityUid configuratorUid, EntityUid? targetUid, EntityUid userUid, NetworkConfiguratorComponent configurator, DeviceNetworkComponent? device = null)
     {
         if (!targetUid.HasValue || !Resolve(targetUid.Value, ref device, false))
+            return;
+
+        //This checks if the device is marked as having a savable address,
+        //to avoid adding pdas and whatnot to air alarms. This flag is true
+        //by default, so this will only prevent devices from being added to
+        //network configurator lists if manually set to false in the prototype
+        if (!device.SavableAddress)
             return;
 
         var address = device.Address;
@@ -390,8 +394,21 @@ public sealed class NetworkConfiguratorSystem : SharedNetworkConfiguratorSystem
             return;
         }
 
-        if (configurator is { LinkModeActive: true, ActiveDeviceLink: { } }
-        && (HasComp<DeviceLinkSinkComponent>(args.Target) || HasComp<DeviceLinkSourceComponent>(args.Target)))
+        // Frontier: removed check for DeviceSource/DeviceSink into separate verb functions.
+    }
+
+    /// Frontier: DeviceSource/DeviceSink verbs
+    /// <summary>
+    /// Adds link default alt verb to devices with LinkSource components.
+    /// </summary>
+
+    private void OnAddAlternativeSourceVerb(EntityUid uid, DeviceLinkSourceComponent component, GetVerbsEvent<AlternativeVerb> args)
+    {
+        if (!args.CanAccess || !args.CanInteract || !args.Using.HasValue
+            || !TryComp<NetworkConfiguratorComponent>(args.Using.Value, out var configurator))
+            return;
+
+        if (configurator is { LinkModeActive: true, ActiveDeviceLink: { } } && HasComp<DeviceLinkSourceComponent>(args.Target))
         {
             AlternativeVerb verb = new()
             {
@@ -403,6 +420,30 @@ public sealed class NetworkConfiguratorSystem : SharedNetworkConfiguratorSystem
             args.Verbs.Add(verb);
         }
     }
+
+    /// <summary>
+    /// Adds link default alt verb to devices with LinkSink components if they aren't a LinkSource (to prevent duplicates).
+    /// </summary>
+    private void OnAddAlternativeSinkVerb(EntityUid uid, DeviceLinkSinkComponent component, GetVerbsEvent<AlternativeVerb> args)
+    {
+        if (!args.CanAccess || !args.CanInteract || !args.Using.HasValue
+            || !TryComp<NetworkConfiguratorComponent>(args.Using.Value, out var configurator))
+            return;
+
+        if (configurator is { LinkModeActive: true, ActiveDeviceLink: { } }
+        && HasComp<DeviceLinkSinkComponent>(args.Target) && !HasComp<DeviceLinkSourceComponent>(args.Target))
+        {
+            AlternativeVerb verb = new()
+            {
+                Text = Loc.GetString("network-configurator-link-defaults"),
+                Icon = new SpriteSpecifier.Texture(new ResPath("/Textures/Interface/VerbIcons/in.svg.192dpi.png")),
+                Act = () => TryLinkDefaults(args.Using.Value, configurator, args.Target, args.User),
+                Impact = LogImpact.Low
+            };
+            args.Verbs.Add(verb);
+        }
+    }
+    /// End Frontier: DeviceSource/DeviceSink verbs
 
     private void OnAddSwitchModeVerb(EntityUid uid, NetworkConfiguratorComponent configurator, GetVerbsEvent<AlternativeVerb> args)
     {
@@ -428,11 +469,11 @@ public sealed class NetworkConfiguratorSystem : SharedNetworkConfiguratorSystem
         if (Delay(configurator))
             return;
 
-        if (!targetUid.HasValue || !configurator.ActiveDeviceLink.HasValue || !TryComp(userUid, out ActorComponent? actor) || !AccessCheck(targetUid.Value, userUid, configurator))
+        if (!targetUid.HasValue || !configurator.ActiveDeviceLink.HasValue || !AccessCheck(targetUid.Value, userUid, configurator))
             return;
 
 
-        _uiSystem.OpenUi(configuratorUid, NetworkConfiguratorUiKey.Link, actor.PlayerSession);
+        _uiSystem.OpenUi(configuratorUid, NetworkConfiguratorUiKey.Link, userUid);
         configurator.DeviceLinkTarget = targetUid;
 
 

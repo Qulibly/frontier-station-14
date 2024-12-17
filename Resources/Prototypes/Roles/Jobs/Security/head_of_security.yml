@@ -2,7 +2,7 @@
   id: HeadOfSecurity
   name: job-name-hos
   description: job-description-hos
-  playTimeTracker: JobHeadOfSecurityOld
+  playTimeTracker: JobHeadOfSecurityOld # Frontier JobHeadOfSecurity<JobHeadOfSecurityOld
   requirements:
     - !type:RoleTimeRequirement
       role: JobWarden
@@ -18,27 +18,30 @@
   weight: 10
   startingGear: HoSGear
   icon: "JobIconHeadOfSecurity"
-  requireAdminNotify: true
   supervisors: job-supervisors-captain
   canBeAntag: false
-  access:
-  - HeadOfSecurity
-  - Command
-  - Brig
-  - Security
-  - Armory
-  - Maintenance
-  - Service
-  - External
-  - Detective
-  - Cryogenics
-  special:
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant ]
-  - !type:AddComponentSpecial
-    components:
-      - type: CommandStaff
+  ## Frontier: commented out stuff below
+  # access:
+  # - HeadOfSecurity
+  # - Command
+  # - Brig
+  # - Security
+  # - Armory
+  # - Maintenance
+  # - Service
+  # - External
+  # - Detective
+  # - Cryogenics
+  # special:
+  # - !type:AddImplantSpecial
+  #   implants: [ MindShieldImplant ]
+  # - !type:AddComponentSpecial
+  #   components:
+  #     - type: CommandStaff
+  ## Frontier: commented out stuff above
   setPreference: false # Frontier
+  accessGroups: # Frontier
+  - GeneralAccess # Frontier
 
 - type: startingGear
   id: HoSGear
@@ -48,3 +51,7 @@
     gloves: ClothingHandsGlovesCombat
     ears: ClothingHeadsetAltSecurity
     pocket1: WeaponPistolMk58
+  storage:
+    back:
+    - Flash
+    - MagazinePistol

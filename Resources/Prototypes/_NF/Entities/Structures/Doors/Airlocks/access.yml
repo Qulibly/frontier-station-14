@@ -47,6 +47,7 @@
 - type: entity
   parent: [ AirlockEngineering, AirlockFrontierCommandLocked]
   id: AirlockFrontierCommandEngineeringLocked
+  suffix: Frontier Command, Locked
   components:
   - type: ContainerFill
     containers:
@@ -209,6 +210,7 @@
 - type: entity
   parent: [ AirlockEngineeringGlass, AirlockFrontierCommandGlassLocked]
   id: AirlockFrontierCommandEngineeringGlassLocked
+  suffix: Frontier Command, Locked
   components:
   - type: ContainerFill
     containers:
@@ -217,6 +219,7 @@
 - type: entity
   parent: [ AirlockAtmosphericsGlass, AirlockFrontierCommandGlassLocked]
   id: AirlockFrontierCommandAtmosphericsGlassLocked
+  suffix: Frontier Command, Locked
   components:
   - type: ContainerFill
     containers:
@@ -248,3 +251,30 @@
   - type: ContainerFill
     containers:
       board: [ DoorElectronicsMailCarrier ]
+
+- type: entity
+  parent: AirlockExternalGlassNfsd
+  id: AirlockExternalGlassNfsdLocked
+  suffix: NFSD, Glass, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsSecurity ]
+
+- type: entity
+  parent: AirlockShuttleNfsd
+  id: AirlockShuttleNfsdLocked
+  suffix: NFSD, Docking, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsSecurity ]
+
+- type: entity
+  parent: AirlockGlassShuttleNfsd
+  id: AirlockGlassShuttleNfsdLocked
+  suffix: NFSD, Glass, Docking, Locked
+  components:
+  - type: ContainerFill
+    containers:
+      board: [ DoorElectronicsSecurity ]

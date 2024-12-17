@@ -9,6 +9,7 @@ using Content.Shared.Database;
 using Content.Shared.Popups;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Content.Server.Kitchen.EntitySystems;
 
 namespace Content.Server.Access.Systems;
 
@@ -18,20 +19,26 @@ public sealed class IdCardSystem : SharedIdCardSystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly IAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly MicrowaveSystem _microwave = default!;
 
     public override void Initialize()
     {
         base.Initialize();
+
         SubscribeLocalEvent<IdCardComponent, BeingMicrowavedEvent>(OnMicrowaved);
     }
 
     private void OnMicrowaved(EntityUid uid, IdCardComponent component, BeingMicrowavedEvent args)
     {
+        if (!component.CanMicrowave || !TryComp<MicrowaveComponent>(args.Microwave, out var micro) || micro.Broken)
+            return;   
+
         if (TryComp<AccessComponent>(uid, out var access))
         {
             float randomPick = _random.NextFloat();
+
             // if really unlucky, burn card
-            if (randomPick <= 0.15f)
+            if (args.BeingHeated && randomPick <= 0.15f) // Frontier: if not being heated, don't destroy the ID
             {
                 TryComp(uid, out TransformComponent? transformComponent);
                 if (transformComponent != null)
@@ -46,6 +53,21 @@ public sealed class IdCardSystem : SharedIdCardSystem
                 EntityManager.QueueDeleteEntity(uid);
                 return;
             }
+
+            // Frontier: ID accesses only change with radiation
+            if (!args.BeingIrradiated)
+            {
+                return;
+            }
+            // End Frontier
+
+            //Explode if the microwave can't handle it
+            if (!micro.CanMicrowaveIdsSafely)
+            {
+                _microwave.Explode((args.Microwave, micro));
+                return;
+            }
+
             // If they're unlucky, brick their ID
             if (randomPick <= 0.25f)
             {
@@ -70,6 +92,7 @@ public sealed class IdCardSystem : SharedIdCardSystem
 
             _adminLogger.Add(LogType.Action, LogImpact.Medium,
                     $"{ToPrettyString(args.Microwave)} added {random.ID} access to {ToPrettyString(uid):entity}");
+
         }
     }
 }

@@ -1,14 +1,59 @@
-- type: Tag
-  id: CaveFactory
+# Dungeon
 
+- type: Tag
+  id: NFCaveFactory
+
+- type: Tag
+  id: NFSalvageExperiment
+
+- type: Tag
+  id: NFHaunted
+
+- type: Tag
+  id: NFLavaBrig
+
+- type: Tag
+  id: NFLavaMercenary
+
+- type: Tag
+  id: NFMineshaft
+
+- type: Tag
+  id: NFSalvageOutpost
+
+- type: Tag
+  id: NFSnowyLabs
+
+- type: Tag
+  id: NFVirologyLab
+
+- type: Tag
+  id: NFWreck
+
+# Space Armaments
+
+- type: Tag # Frontier Space Artillery
+  id: CartridgeCoolant # Frontier Space Artillery
+
+- type: Tag # Frontier Space Artillery
+  id: CartridgeGPMG # Frontier Space Artillery
+
+- type: Tag # Frontier Space Artillery
+  id: CartridgeMachineGun # Frontier Space Artillery
+ 
+- type: Tag # Frontier Space Artillery
+  id: CartridgeNitroExpress # Frontier Space Artillery
+
+- type: Tag # Frontier Space Artillery
+  id: CartridgeRailgun # Frontier Space Artillery
+
+- type: Tag # Frontier Space Artillery
+  id: CartridgeShell # Frontier Space Artillery
+
+
+# Misc
 - type: Tag
   id: DockTransit
-
-- type: Tag
-  id: LabGrown
-
-- type: Tag
-  id: CatWearable
 
 - type: Tag
   id: BookSpaceLaw
@@ -62,16 +107,52 @@
   id: SecurityUplink
 
 - type: Tag
+  id: PirateUplink
+
+- type: Tag
   id: DroneUsable
 
 - type: Tag
   id: LightReplacer
 
 - type: Tag
-  id: VirologyLab
-
-- type: Tag
   id: HoverbikeKeys
 
 - type: Tag
+  id: WeaponRifleNovaliteC1
+
+- type: Tag
+  id: MagazineNovaliteC1
+
+- type: Tag
+  id: TrackingDart
+
+- type: Tag
   id: SpeedLoaderRifleHeavy
+
+- type: Tag
+  id: MagazineAsmgt
+
+- type: Tag
+  id: ClothingRobesGoblin
+
+- type: Tag
+  id: SmallThrusterMachineCircuitboard
+
+- type: Tag
+  id: BrassKnucklesNF
+
+- type: Tag
+  id: MaterialHideRosyMothroach
+
+- type: Tag
+  id: Sushi
+
+- type: Tag
+  id: NFButterStick
+
+- type: Tag
+  id: NFVGRoidInterior
+
+- type: Tag
+  id: NFFoamRPG

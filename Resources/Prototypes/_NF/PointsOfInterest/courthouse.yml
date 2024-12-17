@@ -1,0 +1,37 @@
+# Author Info
+# GitHub:
+# Discord: Kesiath (??)
+
+# Maintainer Info
+# GitHub: ???
+# Discord: ???
+
+# Notes:
+# 
+- type: pointOfInterest
+  id: Courthouse
+  name: "Courthouse"
+  minimumDistance: 1150
+  maximumDistance: 2050
+  spawnGroup: Required
+  gridPath: /Maps/_NF/POI/courthouse.yml
+  addComponents:
+  - type: IFF
+    color: "#8e6444"
+    readOnly: true
+  - type: Shuttle
+    angularDamping: 999999
+    linearDamping: 999999
+
+- type: gameMap
+  id: Courthouse
+  mapName: "Courthouse"
+  mapPath: /Maps/_NF/POI/courthouse.yml
+  minPlayers: 0
+  stations:
+    Courthouse:
+      stationProto: StandardFrontierOutpost
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: "Courthouse"
+        - type: StationDeadDropHintExempt

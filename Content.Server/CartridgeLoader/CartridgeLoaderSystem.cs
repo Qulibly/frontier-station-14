@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.DeviceNetwork.Systems;
 using Content.Server.PDA;
@@ -164,6 +164,15 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
         if (!Resolve(loaderUid, ref loader))
             return false;
 
+        if (!TryComp(cartridgeUid, out CartridgeComponent? loadedCartridge))
+            return false;
+
+        foreach (var program in GetInstalled(loaderUid))
+        {
+            if (TryComp(program, out CartridgeComponent? installedCartridge) && installedCartridge.ProgramName == loadedCartridge.ProgramName)
+                return false;
+        }
+
         //This will eventually be replaced by serializing and deserializing the cartridge to copy it when something needs
         //the data on the cartridge to carry over when installing
 
@@ -191,7 +200,6 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
         if (container.Count >= loader.DiskSpace)
             return false;
 
-        // TODO cancel duplicate program installations
         var ev = new ProgramInstallationAttempt(loaderUid, prototype);
         RaiseLocalEvent(ref ev);
 
@@ -209,6 +217,13 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
 
         RaiseLocalEvent(installedProgram, new CartridgeAddedEvent(loaderUid));
         UpdateUserInterfaceState(loaderUid, loader);
+
+        if (cartridge.Readonly) // Frontier: Block uninstall
+            cartridge.InstallationStatus = InstallationStatus.Readonly; // Frontier
+
+        if (cartridge.Disposable) // Frontier: Delete the cartridge after install if its disposable.
+            QueueDel(loader.CartridgeSlot.ContainerSlot!.ContainedEntity); // Frontier
+
         return true;
     }
 
@@ -332,6 +347,14 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
         if (args.Container.ID != InstalledContainerId && args.Container.ID != loader.CartridgeSlot.ID)
             return;
 
+        if (TryComp(args.Entity, out CartridgeComponent? cartridge))
+            cartridge.LoaderUid = uid;
+
+        // Frontier: Try to auto install the program when inserted, QOL
+        if (cartridge != null && cartridge.AutoInstall)
+            InstallCartridge(uid, args.Entity, loader);
+        // End Frontier
+
         RaiseLocalEvent(args.Entity, new CartridgeAddedEvent(uid));
         base.OnItemInserted(uid, loader, args);
     }
@@ -351,6 +374,9 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
 
         if (deactivate)
             RaiseLocalEvent(args.Entity, new CartridgeDeactivatedEvent(uid));
+
+        if (TryComp(args.Entity, out CartridgeComponent? cartridge))
+            cartridge.LoaderUid = null;
 
         RaiseLocalEvent(args.Entity, new CartridgeRemovedEvent(uid));
         base.OnItemRemoved(uid, loader, args);
@@ -414,6 +440,7 @@ public sealed class CartridgeLoaderSystem : SharedCartridgeLoaderSystem
     {
         var cartridgeEvent = args.MessageEvent;
         cartridgeEvent.LoaderUid = GetNetEntity(uid);
+        cartridgeEvent.Actor = args.Actor;
 
         RelayEvent(component, cartridgeEvent, true);
     }

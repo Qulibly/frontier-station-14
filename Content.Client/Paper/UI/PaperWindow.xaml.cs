@@ -17,6 +17,7 @@ namespace Content.Client.Paper.UI
     public sealed partial class PaperWindow : BaseWindow
     {
         [Dependency] private readonly IInputManager _inputManager = default!;
+        [Dependency] private readonly IResourceCache _resCache = default!;
 
         [ViewVariables]
         private static Color DefaultTextColor = new(25, 25, 25);
@@ -48,6 +49,20 @@ namespace Content.Client.Paper.UI
 
         public event Action<string>? OnSaved;
 
+        private int _MaxInputLength = -1;
+        public int MaxInputLength
+        {
+            get
+            {
+                return _MaxInputLength;
+            }
+            set
+            {
+                _MaxInputLength = value;
+                UpdateFillState();
+            }
+        }
+
         public PaperWindow()
         {
             IoCManager.InjectDependencies(this);
@@ -63,9 +78,19 @@ namespace Content.Client.Paper.UI
             {
                 if (args.Function == EngineKeyFunctions.MultilineTextSubmit)
                 {
-                    RunOnSaved();
-                    args.Handle();
+                    // SaveButton is disabled when we hit the max input limit. Just check
+                    // that flag instead of trying to calculate the input length again
+                    if (!SaveButton.Disabled)
+                    {
+                        RunOnSaved();
+                        args.Handle();
+                    }
                 }
+            };
+
+            Input.OnTextChanged += args =>
+            {
+                UpdateFillState();
             };
 
             SaveButton.OnPressed += _ =>
@@ -86,11 +111,10 @@ namespace Content.Client.Paper.UI
             // Randomize the placement of any stamps based on the entity UID
             // so that there's some variety in different papers.
             StampDisplay.PlacementSeed = (int)entity;
-            var resCache = IoCManager.Resolve<IResourceCache>();
 
             // Initialize the background:
             PaperBackground.ModulateSelfOverride = visuals.BackgroundModulate;
-            var backgroundImage = visuals.BackgroundImagePath != null? resCache.GetResource<TextureResource>(visuals.BackgroundImagePath) : null;
+            var backgroundImage = visuals.BackgroundImagePath != null? _resCache.GetResource<TextureResource>(visuals.BackgroundImagePath) : null;
             if (backgroundImage != null)
             {
                 var backgroundImageMode = visuals.BackgroundImageTile ? StyleBoxTexture.StretchMode.Tile : StyleBoxTexture.StretchMode.Stretch;
@@ -127,8 +151,9 @@ namespace Content.Client.Paper.UI
 
             PaperContent.ModulateSelfOverride = visuals.ContentImageModulate;
             WrittenTextLabel.ModulateSelfOverride = visuals.FontAccentColor;
+            FillStatus.ModulateSelfOverride = visuals.FontAccentColor;
 
-            var contentImage = visuals.ContentImagePath != null ? resCache.GetResource<TextureResource>(visuals.ContentImagePath) : null;
+            var contentImage = visuals.ContentImagePath != null ? _resCache.GetResource<TextureResource>(visuals.ContentImagePath) : null;
             if (contentImage != null)
             {
                 // Setup the paper content texture, but keep a reference to it, as we can't set
@@ -216,9 +241,9 @@ namespace Content.Client.Paper.UI
         ///     Initialize the paper contents, i.e. the text typed by the
         ///     user and any stamps that have peen put on the page.
         /// </summary>
-        public void Populate(SharedPaperComponent.PaperBoundUserInterfaceState state)
+        public void Populate(PaperComponent.PaperBoundUserInterfaceState state)
         {
-            bool isEditing = state.Mode == SharedPaperComponent.PaperAction.Write;
+            bool isEditing = state.Mode == PaperComponent.PaperAction.Write;
             bool wasEditing = InputContainer.Visible;
             InputContainer.Visible = isEditing;
             EditButtons.Visible = isEditing;
@@ -240,10 +265,19 @@ namespace Content.Client.Paper.UI
                 Input.InsertAtCursor(state.Text);
             }
 
-            for (var i = 0; i <= state.StampedBy.Count * 3 + 1; i++)
+            // for (var i = 0; i <= state.StampedBy.Count * 3 + 1; i++) // Frontier
+            // { // Frontier
+            //     msg.AddMarkupPermissive("\r\n"); // Frontier
+            // } // Frontier
+
+            // Frontier: signatures shouldn't walk off the page
+            if (state.StampedBy.Count > 0)
             {
-                msg.AddMarkupPermissive("\r\n");
+                for (int i = 0; i < 6; i++)
+                    msg.AddMarkupPermissive("\r\n");
             }
+            // End Frontier
+
             WrittenTextLabel.SetMessage(msg, _allowedTags, DefaultTextColor);
 
             WrittenTextLabel.Visible = !isEditing && state.Text.Length > 0;
@@ -253,10 +287,7 @@ namespace Content.Client.Paper.UI
             StampDisplay.RemoveStamps();
             foreach(var stamper in state.StampedBy)
             {
-                if (stamper.StampedBorderless)
-                    StampDisplay.AddStamp(new StampWidget(true) { StampInfo = stamper });
-                else
-                    StampDisplay.AddStamp(new StampWidget { StampInfo = stamper });
+                StampDisplay.AddStamp(new StampWidget { StampInfo = stamper });
             }
         }
 
@@ -298,7 +329,29 @@ namespace Content.Client.Paper.UI
 
         private void RunOnSaved()
         {
+            // Prevent further saving while text processing still in
+            SaveButton.Disabled = true;
             OnSaved?.Invoke(Rope.Collapse(Input.TextRope));
+        }
+
+        private void UpdateFillState()
+        {
+            if (MaxInputLength != -1)
+            {
+                var inputLength = Input.TextLength;
+
+                FillStatus.Text = Loc.GetString("paper-ui-fill-level",
+                    ("currentLength", inputLength),
+                    ("maxLength", MaxInputLength));
+
+                // Disable the save button if we've gone over the limit
+                SaveButton.Disabled = inputLength > MaxInputLength;
+            }
+            else
+            {
+                FillStatus.Text = "";
+                SaveButton.Disabled = false;
+            }
         }
     }
 }

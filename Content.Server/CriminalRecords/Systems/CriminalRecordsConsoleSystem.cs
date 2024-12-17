@@ -10,10 +10,10 @@ using Content.Shared.CriminalRecords.Systems;
 using Content.Shared.Security;
 using Content.Shared.StationRecords;
 using Robust.Server.GameObjects;
-using Robust.Shared.Player;
 using System.Diagnostics.CodeAnalysis;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Security.Components;
+using Content.Server._NF.SectorServices; // Frontier
 
 namespace Content.Server.CriminalRecords.Systems;
 
@@ -26,10 +26,10 @@ public sealed class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleS
     [Dependency] private readonly CriminalRecordsSystem _criminalRecords = default!;
     [Dependency] private readonly PopupSystem _popup = default!;
     [Dependency] private readonly RadioSystem _radio = default!;
-    [Dependency] private readonly SharedIdCardSystem _idCard = default!;
-    [Dependency] private readonly StationRecordsSystem _stationRecords = default!;
-    [Dependency] private readonly StationSystem _station = default!;
+    [Dependency] private readonly StationRecordsSystem _records = default!;
+    // [Dependency] private readonly StationSystem _station = default!; // Frontier
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private readonly SectorServiceSystem _sectorService = default!; // Frontier
 
     public override void Initialize()
     {
@@ -70,6 +70,13 @@ public sealed class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleS
         }
     }
 
+    private void GetOfficer(EntityUid uid, out string officer)
+    {
+        var tryGetIdentityShortInfoEvent = new TryGetIdentityShortInfoEvent(null, uid);
+        RaiseLocalEvent(tryGetIdentityShortInfoEvent);
+        officer = tryGetIdentityShortInfoEvent.Title ?? Loc.GetString("criminal-records-console-unknown-officer");
+    }
+
     private void OnChangeStatus(Entity<CriminalRecordsConsoleComponent> ent, ref CriminalRecordChangeStatus msg)
     {
         // prevent malf client violating wanted/reason nullability
@@ -80,7 +87,7 @@ public sealed class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleS
         if (!CheckSelected(ent, msg.Actor, out var mob, out var key))
             return;
 
-        if (!_stationRecords.TryGetRecord<CriminalRecord>(key.Value, out var record) || record.Status == msg.Status)
+        if (!_records.TryGetRecord<CriminalRecord>(key.Value, out var record) || record.Status == msg.Status)
             return;
 
         // validate the reason
@@ -92,24 +99,22 @@ public sealed class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleS
                 return;
         }
 
+        var oldStatus = record.Status;
+
+        var name = _records.RecordName(key.Value);
+        GetOfficer(mob.Value, out var officer);
+
         // when arresting someone add it to history automatically
         // fallback exists if the player was not set to wanted beforehand
         if (msg.Status == SecurityStatus.Detained)
         {
             var oldReason = record.Reason ?? Loc.GetString("criminal-records-console-unspecified-reason");
             var history = Loc.GetString("criminal-records-console-auto-history", ("reason", oldReason));
-            _criminalRecords.TryAddHistory(key.Value, history);
+            _criminalRecords.TryAddHistory(key.Value, history, officer);
         }
 
-        var oldStatus = record.Status;
-
         // will probably never fail given the checks above
-        _criminalRecords.TryChangeStatus(key.Value, msg.Status, msg.Reason);
-
-        var name = RecordName(key.Value);
-        var officer = Loc.GetString("criminal-records-console-unknown-officer");
-        if (_idCard.TryFindIdCard(mob.Value, out var id) && id.Comp.FullName is { } fullName)
-            officer = fullName;
+        _criminalRecords.TryChangeStatus(key.Value, msg.Status, msg.Reason, officer);
 
         (string, object)[] args;
         if (reason != null)
@@ -145,19 +150,20 @@ public sealed class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleS
             ent.Comp.SecurityChannel, ent);
 
         UpdateUserInterface(ent);
-        UpdateCriminalIdentity(name, msg.Status);
     }
 
     private void OnAddHistory(Entity<CriminalRecordsConsoleComponent> ent, ref CriminalRecordAddHistory msg)
     {
-        if (!CheckSelected(ent, msg.Actor, out _, out var key))
+        if (!CheckSelected(ent, msg.Actor, out var mob, out var key))
             return;
 
         var line = msg.Line.Trim();
         if (line.Length < 1 || line.Length > ent.Comp.MaxStringLength)
             return;
 
-        if (!_criminalRecords.TryAddHistory(key.Value, line))
+        GetOfficer(mob.Value, out var officer);
+
+        if (!_criminalRecords.TryAddHistory(key.Value, line, officer))
             return;
 
         // no radio message since its not crucial to officers patrolling
@@ -181,7 +187,7 @@ public sealed class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleS
     private void UpdateUserInterface(Entity<CriminalRecordsConsoleComponent> ent)
     {
         var (uid, console) = ent;
-        var owningStation = _station.GetOwningStation(uid);
+        var owningStation = _sectorService.GetServiceEntity(); // Frontier: _station.GetOwningStation < _sectorService.GetServiceEntity
 
         if (!TryComp<StationRecordsComponent>(owningStation, out var stationRecords))
         {
@@ -189,15 +195,15 @@ public sealed class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleS
             return;
         }
 
-        var listing = _stationRecords.BuildListing((owningStation.Value, stationRecords), console.Filter);
+        var listing = _records.BuildListing((owningStation, stationRecords), console.Filter); // Frontier: owningStation.Value<owningStation
 
         var state = new CriminalRecordsConsoleState(listing, console.Filter);
         if (console.ActiveKey is { } id)
         {
             // get records to display when a crewmember is selected
-            var key = new StationRecordKey(id, owningStation.Value);
-            _stationRecords.TryGetRecord(key, out state.StationRecord, stationRecords);
-            _stationRecords.TryGetRecord(key, out state.CriminalRecord, stationRecords);
+            var key = new StationRecordKey(id, owningStation); // Frontier: owningStation.Value<owningStation
+            _records.TryGetRecord(key, out state.StationRecord, stationRecords);
+            _records.TryGetRecord(key, out state.CriminalRecord, stationRecords);
             state.SelectedKey = id;
         }
 
@@ -223,24 +229,19 @@ public sealed class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleS
         if (ent.Comp.ActiveKey is not { } id)
             return false;
 
+        // Frontier: sector-wide records
         // checking the console's station since the user might be off-grid using on-grid console
-        if (_station.GetOwningStation(ent) is not { } station)
+        // if (_station.GetOwningStation(ent) is not { } station)
+        //     return false;
+        var station = _sectorService.GetServiceEntity();
+
+        if (!TryComp<StationRecordsComponent>(station, out var stationRecords))
             return false;
+        // End Frontier
 
         key = new StationRecordKey(id, station);
         mob = user;
         return true;
-    }
-
-    /// <summary>
-    /// Gets the name from a record, or empty string if this somehow fails.
-    /// </summary>
-    private string RecordName(StationRecordKey key)
-    {
-        if (!_stationRecords.TryGetRecord<GeneralStationRecord>(key, out var record))
-            return "";
-
-        return record.Name;
     }
 
     /// <summary>
@@ -252,17 +253,22 @@ public sealed class CriminalRecordsConsoleSystem : SharedCriminalRecordsConsoleS
         var name = Identity.Name(uid, EntityManager);
         var xform = Transform(uid);
 
+        // Frontier: sector-wide records
         // TODO use the entity's station? Not the station of the map that it happens to currently be on?
-        var station = _station.GetStationInMap(xform.MapID);
+        // var station = _station.GetStationInMap(xform.MapID);
+        // // var owningStation = _station.GetOwningStation(uid);
 
-        if (station != null && _stationRecords.GetRecordByName(station.Value, name) is { } id)
+        var station = _sectorService.GetServiceEntity();
+        // End Frontier
+
+        if (station.IsValid() && _records.GetRecordByName(station, name) is { } id) // Frontier: "station != null" < station.IsValid(), station.Value < station
         {
-            if (_stationRecords.TryGetRecord<CriminalRecord>(new StationRecordKey(id, station.Value),
+            if (_records.TryGetRecord<CriminalRecord>(new StationRecordKey(id, station), // Frontier: station.Value<station
                     out var record))
             {
                 if (record.Status != SecurityStatus.None)
                 {
-                    SetCriminalIcon(name, record.Status, uid);
+                    _criminalRecords.SetCriminalIcon(name, record.Status, uid);
                     return;
                 }
             }

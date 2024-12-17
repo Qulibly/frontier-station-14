@@ -5,7 +5,13 @@
   price: 24220
   category: Small
   group: Security
+  access: Security
   shuttlePath: /Maps/_NF/Shuttles/Nfsd/templar.yml
+  guidebookPage: Null
+  class:
+  - Pursuit
+  engine:
+  - APU
 
 - type: gameMap
   id: Templar
@@ -22,5 +28,4 @@
             !type:NanotrasenNameGenerator
             prefixCreator: '14'
         - type: StationJobs
-          overflowJobs: []
           availableJobs: {}

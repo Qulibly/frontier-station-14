@@ -1,5 +1,5 @@
 - type: entity
-  name: Rat King
+  name: rat king
   id: MobRatKing
   parent: [ SimpleMobBase, MobCombat ]
   description: He's da rat. He make da roolz.
@@ -48,6 +48,7 @@
       0: Alive
       200: Dead
   - type: MeleeWeapon
+    altDisarm: false
     soundHit:
         path: /Audio/Weapons/Xeno/alien_claw_flesh1.ogg
     angle: 0
@@ -89,7 +90,9 @@
     makeSentient: true
     name: ghost-role-information-rat-king-name
     description: ghost-role-information-rat-king-description
-    rules: ghost-role-information-rat-king-rules
+    rules: ghost-role-information-freeagent-rules
+    raffle:
+      settings: default
   - type: GhostTakeoverAvailable
   - type: Tag
     tags:
@@ -99,6 +102,7 @@
   - type: RatKing
     hungerPerArmyUse: 25
     hungerPerDomainUse: 50
+  - type: Rummager # DeltaV: Make rummaging a generic component
   - type: MobsterAccent
   - type: Speech
     speechVerb: SmallMob
@@ -112,12 +116,13 @@
     nameSegments:
     - RegalRatNameKingdom
     - RegalRatNameTitle
-  - type: GuideHelp
-    guides:
-    - MinorAntagonists
+  # - type: GuideHelp # Frontier: removed from guidebook
+  #   guides: # Frontier: removed from guidebook
+  #   - MinorAntagonists # Frontier: removed from guidebook
   - type: Grammar
     attributes:
       gender: male
+  - type: Sharp
 
 - type: entity
   id: MobRatKingBuff
@@ -139,6 +144,7 @@
       0: Alive
       350: Dead
   - type: MeleeWeapon
+    altDisarm: false
     soundHit:
         path: /Audio/Weapons/Xeno/alien_claw_flesh2.ogg
     angle: 0
@@ -151,17 +157,19 @@
     speedModifierThresholds:
       200: 0.7
       250: 0.5
-  - type: GuideHelp
-    guides:
-    - MinorAntagonists
+  # - type: GuideHelp # Frontier: guidebook removed
+  #   guides: # Frontier: guidebook removed
+  #   - MinorAntagonists # Frontier: guidebook removed
 
 - type: entity
-  name: Rat Servant
+  name: rat servant
   id: MobRatServant
   parent: [ SimpleMobBase, MobCombat ]
   description: He's da mini rat. He don't make da roolz.
-  noSpawn: true #Must be configured to a King or the AI breaks.
+  categories: [ HideSpawnMenu ] #Must be configured to a King or the AI breaks.
   components:
+  - type: Carriable #DeltaV
+    freeHandsRequired: 1
   - type: CombatMode
   - type: MovementSpeedModifier
     baseWalkSpeed : 3.5
@@ -281,25 +289,30 @@
     isBoss: false
   - type: Speech
     speechVerb: SmallMob
-  - type: GuideHelp
-    guides:
-    - MinorAntagonists
+  # - type: GuideHelp # Frontier: guidebook removed
+  #   guides: # Frontier: guidebook removed
+  #   - MinorAntagonists # Frontier: guidebook removed
+  - type: FelinidFood # Nyanotrasen - Felinid, ability to eat rat, see Content.Server/Nyanotrasen/Abilities/Felinid/FelinidSystem.cs
+  - type: Food # Delta V - Make them edible and pickable.
+  - type: Item # Delta V - Make them edible and pickable.
+    size: Tiny # Delta V - Make them edible and pickable.
   - type: FireVisuals
     sprite: Mobs/Effects/onfire.rsi
     normalState: Mouse_burning
 
+
 - type: weightedRandomEntity
   id: RatKingLoot
-  weights:
-    RandomSpawner100: 66 #garbage
-    FoodCheese: 28 #food
-    IngotGold1: 5 #loot
+  weights: # DeltaV: Rebalanced for Rodentia rummaging because we don't have Rat King
+    RandomSpawner100: 100 #garbage
+#    FoodCheeseSlice: 15 #food
+#    RandomSnacks: 10
+#    RandomFoodSingle: 5
 
 - type: entity
   id: ActionRatKingRaiseArmy
   name: Raise Army
   description: Spend some hunger to summon an allied rat to help defend you.
-  noSpawn: true
   components:
   - type: InstantAction
     useDelay: 4
@@ -312,7 +325,6 @@
   id: ActionRatKingDomain
   name: Rat King's Domain
   description: Spend some hunger to release a cloud of ammonia into the air.
-  noSpawn: true
   components:
   - type: InstantAction
     useDelay: 6
@@ -325,7 +337,6 @@
   id: ActionRatKingOrderStay
   name: Stay
   description: Command your army to stand in place.
-  noSpawn: true
   components:
   - type: InstantAction
     useDelay: 1
@@ -344,7 +355,6 @@
   id: ActionRatKingOrderFollow
   name: Follow
   description: Command your army to follow you around.
-  noSpawn: true
   components:
   - type: InstantAction
     useDelay: 1
@@ -363,7 +373,6 @@
   id: ActionRatKingOrderCheeseEm
   name: Cheese 'Em
   description: Command your army to attack whoever you point at.
-  noSpawn: true
   components:
   - type: InstantAction
     useDelay: 1
@@ -382,7 +391,6 @@
   id: ActionRatKingOrderLoose
   name: Loose
   description: Command your army to act at their own will.
-  noSpawn: true
   components:
   - type: InstantAction
     useDelay: 1

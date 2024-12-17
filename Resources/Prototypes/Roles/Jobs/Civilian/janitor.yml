@@ -2,27 +2,21 @@
   id: Janitor
   name: job-name-janitor
   description: job-description-janitor
-  playTimeTracker: JobJanitor
-  requirements:
-    - !type:OverallPlaytimeRequirement
-      time: 10800
+  playTimeTracker: JobJanitorOld
+  setPreference: false # Frontier
   startingGear: JanitorGear
-  alwaysUseSpawner: true
   icon: "JobIconJanitor"
-  supervisors: job-supervisors-sr
-  canBeAntag: false
-  access:
-  - Service
-  - Janitor
-  - Maintenance
-  - External # Frontier
-  - Frontier # Frontier
+  supervisors: job-supervisors-hop
+  # access: # Frontier
+  # - Service # Frontier
+  # - Janitor # Frontier
+  # - Maintenance # Frontier
+  accessGroups: # Frontier
+  - GeneralAccess # Frontier
   special:
   - !type:GiveItemOnHolidaySpecial
     holiday: GarbageDay
     prototype: WeaponRevolverInspector
-  - !type:AddImplantSpecial
-    implants: [ MindShieldImplant ]
 
 - type: startingGear
   id: JanitorGear
@@ -31,6 +25,9 @@
     id: JanitorPDA
     ears: ClothingHeadsetService
     belt: ClothingBeltJanitorFilled
+  #storage:
+    #back:
+    #- Stuff
 
 - type: startingGear
   id: JanitorMaidGear

@@ -6,6 +6,11 @@
   category: Medium
   group: Syndicate
   shuttlePath: /Maps/_NF/Shuttles/Syndicate/infiltrator.yml
+  guidebookPage: Null
+  class:
+  - Syndicate
+  engine:
+  - AME
 
 - type: gameMap
   id: Infiltrator
@@ -22,5 +27,4 @@
             !type:NanotrasenNameGenerator
             prefixCreator: '14'
         - type: StationJobs
-          overflowJobs: []
           availableJobs: {}

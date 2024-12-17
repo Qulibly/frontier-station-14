@@ -1,7 +1,9 @@
 - type: entity
-  parent: ClothingHeadHatHoodWinterBase
+  parent:
+  - ClothingHeadHatHoodWinterBase
+  - ContrabandClothing
   id: ClothingHeadHatHoodArcadia
-  noSpawn: true
+  categories: [ HideSpawnMenu ]
   name: arcadia coat hood
   components:
   - type: Sprite
@@ -9,53 +11,19 @@
   - type: Clothing
     sprite: _NF/Clothing/Head/Hoods/Coat/arcadia.rsi
 
-# Syndicate armored bio suit hood
-- type: entity
-  parent: ClothingHeadHatHoodBioGeneral
-  id: ClothingHeadHatHoodBioArmoredSyndicate
-  name: bio hood
-  suffix: Syndicate
-  description: A hood that protects the head and face from biological contaminants. As well as user's identity.
-  components:
-  - type: IdentityBlocker
-  - type: Sprite
-    sprite: _NF/Clothing/Head/Hoods/Bio/syndicate.rsi
-  - type: Clothing
-    sprite: _NF/Clothing/Head/Hoods/Bio/syndicate.rsi
-  - type: Contraband
-
-- type: entity # for looks only
-  parent: ClothingHeadHatHoodWinterBase
-  id: ClothingHeadHatHoodWinterSyndieUnremoveable
-  noSpawn: true
-  name: syndicate coat hood
-  components:
-  - type: Unremoveable
-  - type: Sprite
-    sprite: Clothing/Head/Hoods/Coat/hoodsyndicate.rsi
-  - type: Clothing
-    sprite: Clothing/Head/Hoods/Coat/hoodsyndicate.rsi
-
 - type: entity
   parent: ClothingHeadBase
-  id: ClothingHeadHatHoodBloodCulthood
-  name: cult hood
-  noSpawn: true
+  id: ClothingHeadHatHoodRosyCloak
+  name: rosy the maple mothroach hood
+  description: The adorable visage of a rosy maple mothroach. You have never felt cuter.
   components:
   - type: Sprite
-    sprite: _NF/Clothing/Head/Hoods/cult.rsi
+    sprite: _NF/Clothing/Head/Hoods/rosy.rsi
   - type: Clothing
-    sprite: _NF/Clothing/Head/Hoods/cult.rsi
+    sprite: _NF/Clothing/Head/Hoods/rosy.rsi
   - type: Tag
     tags:
-    - HidesHair
     - WhitelistChameleon
-  - type: Contraband
-
-- type: entity # for looks only
-  parent: [ ClothingHeadHatHoodBloodCulthood, ClothingHeadHelmetBasic ] # hehe
-  id: ClothingHeadHatHoodBloodCulthoodUnremoveable
-  noSpawn: true
-  name: cult hood
-  components:
-  - type: Unremoveable
+  - type: HideLayerClothing
+    slots:
+    - Hair

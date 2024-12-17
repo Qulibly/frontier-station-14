@@ -42,7 +42,7 @@
   components:
   - type: StorageFill
     contents:
-      - id: EmitterFlatpack # TODO change to flatpack
+      - id: EmitterFlatpack
 
 - type: entity
   id: CrateEngineeringSingularityCollector
@@ -136,7 +136,7 @@
   - type: StorageFill
     contents:
       - id: WallmountSubstationElectronics
-      - id: WallmountGeneratorAPUElectronics
+#      - id: WallmountGeneratorAPUElectronics # Frontier
       - id: HandheldGPSBasic
       - id: InflatableDoorStack1
 
