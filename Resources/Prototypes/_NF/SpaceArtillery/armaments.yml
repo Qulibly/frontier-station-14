@@ -39,7 +39,7 @@
   - type: AmmoCounter
   - type: Battery
     maxCharge: 1000000
-    startingCharge: 1000000
+    startingCharge: 900000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: BallisticAmmoProvider
     autoCycle: true
@@ -135,7 +135,7 @@
   - type: AmmoCounter
   - type: Battery
     maxCharge: 1000000
-    startingCharge: 1000000
+    startingCharge: 900000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: BallisticAmmoProvider
     autoCycle: true
@@ -308,7 +308,7 @@
     increment: 90
   - type: Battery
     maxCharge: 200000
-    startingCharge: 200000
+    startingCharge: 190000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: Appearance
   - type: DeviceNetwork
@@ -413,7 +413,7 @@
   - type: AmmoCounter
   - type: Battery
     maxCharge: 1000000
-    startingCharge: 1000000
+    startingCharge: 900000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: BallisticAmmoProvider
     autoCycle: true
@@ -521,7 +521,7 @@
   - type: AmmoCounter
   - type: Battery
     maxCharge: 100000
-    startingCharge: 100000
+    startingCharge: 90000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: HitscanBatteryAmmoProvider
     proto: Focused_Pulse
@@ -584,10 +584,10 @@
   - type: BatterySelfRecharger
 
 - type: entity
-  id: Mining_Laser
-  name: mining laser
+  id: Salvage_Laser
+  name: salvage laser
   parent: ConstructibleMachine
-  description: Laser Beam utilising crystaline plasma to melt rock down into usable chunks with uncanny precision. Requires coolant to function.
+  description: Laser Beam utilising crystaline plasma to melt metal down into usable chunks with uncanny precision. Requires coolant to function.
   placement:
     mode: SnapgridCenter
   components:
@@ -629,7 +629,7 @@
   - type: AmmoCounter
   - type: Battery
     maxCharge: 100000
-    startingCharge: 100000
+    startingCharge: 90000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: HitscanBatteryAmmoProvider
     proto: Mining
@@ -790,7 +790,7 @@
   - type: ExtensionCableReceiver
   - type: Battery
     maxCharge: 300000
-    startingCharge: 300000
+    startingCharge: 290000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: BatterySelfRecharger
 
@@ -834,7 +834,7 @@
   - type: Appearance
   - type: Battery
     maxCharge: 100000
-    startingCharge: 100000
+    startingCharge: 90000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: ProjectileBatteryAmmoProvider
     proto: BulletBoosterWave
@@ -940,7 +940,7 @@
   - type: Appearance
   - type: Battery
     maxCharge: 100000
-    startingCharge: 100000
+    startingCharge: 90000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: ProjectileBatteryAmmoProvider
     proto: BulletBoosterWave
@@ -1047,7 +1047,7 @@
   - type: Appearance
   - type: Battery
     maxCharge: 100000
-    startingCharge: 100000
+    startingCharge: 90000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: ProjectileBatteryAmmoProvider
     proto: BulletBoosterWave

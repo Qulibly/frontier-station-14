@@ -67,11 +67,13 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
         base.Initialize();
         Sawmill = Logger.GetSawmill("SpaceArtillery");
         SubscribeLocalEvent<SpaceArtilleryComponent, SignalReceivedEvent>(OnSignalReceived);
-        SubscribeLocalEvent<SpaceArtilleryComponent, BuckleChangeEvent>(OnBuckleChange);
+        SubscribeLocalEvent<SpaceArtilleryComponent, StrappedEvent>(OnStrapped);
+        SubscribeLocalEvent<SpaceArtilleryComponent, UnstrappedEvent>(OnUnstrapped);
         SubscribeLocalEvent<SpaceArtilleryComponent, FireActionEvent>(OnFireAction);
         SubscribeLocalEvent<SpaceArtilleryComponent, AmmoShotEvent>(OnShotEvent);
         SubscribeLocalEvent<SpaceArtilleryComponent, OnEmptyGunShotEvent>(OnEmptyShotEvent);
         SubscribeLocalEvent<SpaceArtilleryComponent, PowerChangedEvent>(OnApcChanged);
+        SubscribeLocalEvent<SpaceArtilleryComponent, PowerConsumerReceivedChanged>(ReceivedChanged);
         SubscribeLocalEvent<SpaceArtilleryComponent, ChargeChangedEvent>(OnBatteryChargeChanged);
         SubscribeLocalEvent<SpaceArtilleryComponent, EntInsertedIntoContainerMessage>(OnCoolantSlotChanged);
         SubscribeLocalEvent<SpaceArtilleryComponent, EntRemovedFromContainerMessage>(OnCoolantSlotChanged);
@@ -217,24 +219,27 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
             OnMalfunction(uid, component);
     }
 
-    private void OnBuckleChange(EntityUid uid, SpaceArtilleryComponent component, ref BuckleChangeEvent args)
+    private void OnStrapped(EntityUid uid, SpaceArtilleryComponent component, ref StrappedEvent args)
     {
         // Once Gunner buckles
-        if (args.Buckling)
+        var gunnerUid = args.Buckle.Owner;
+
+        // Update actions
+
+        if (TryComp<ActionsComponent>(gunnerUid, out var actions))
         {
-
-            // Update actions
-
-            if (TryComp<ActionsComponent>(args.BuckledEntity, out var actions))
-            {
-                _actionsSystem.AddAction(args.BuckledEntity, ref component.FireActionEntity, component.FireAction, uid, actions);
-            }
-            return;
+            _actionsSystem.AddAction(gunnerUid, ref component.FireActionEntity, component.FireAction, uid, actions);
         }
 
+    }
+
+    private void OnUnstrapped(EntityUid uid, SpaceArtilleryComponent component, ref UnstrappedEvent args)
+    {
         // Once gunner unbuckles
+        var gunnerUid = args.Buckle.Owner;
+
         // Clean up actions
-        _actionsSystem.RemoveProvidedActions(args.BuckledEntity, uid);
+        _actionsSystem.RemoveProvidedActions(gunnerUid, uid);
 
     }
 
@@ -278,6 +283,31 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
         {
 
             if (args.Powered)
+            {
+                component.IsCharging = true;
+                batteryCharger.AutoRecharge = true;
+                batteryCharger.AutoRechargeRate = component.PowerChargeRate;
+            }
+            else
+            {
+                component.IsCharging = false;
+                batteryCharger.AutoRecharge = true;
+                batteryCharger.AutoRechargeRate = component.PowerUsePassive * -1;
+
+                if (TryComp<BatteryComponent>(uid, out var battery))
+                    battery.CurrentCharge -= component.PowerUsePassive; //It is done so that BatterySelfRecharger will get start operating instead of being blocked by fully charged battery
+            }
+        }
+    }
+
+
+    private void ReceivedChanged(EntityUid uid, SpaceArtilleryComponent component, ref PowerConsumerReceivedChanged args)
+    {
+
+        if (TryComp<BatterySelfRechargerComponent>(uid, out var batteryCharger))
+        {
+
+            if (args.ReceivedPower >= args.DrawRate)
             {
                 component.IsCharging = true;
                 batteryCharger.AutoRecharge = true;
@@ -425,7 +455,8 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
     ///TOD add check for args.FiredProjectiles
     private void OnShotEvent(EntityUid uid, SpaceArtilleryComponent component, AmmoShotEvent args)
     {
-        if (args.FiredProjectiles.Count == 0)
+
+        if ((args.FiredProjectiles.Count == 0) && !(HasComp<HitscanBatteryAmmoProviderComponent>(uid)))
         {
             OnMalfunction(uid, component);
             return;
@@ -580,7 +611,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
 
                         iffComponent.IsDisabled = true;
 
-                        var ev = new AnchorStateChangedEvent(transformComponent);
+                        var ev = new AnchorStateChangedEvent(uid, transformComponent, false);
                         RaiseLocalEvent(uid, ref ev, false);
                     }
                 }
@@ -622,7 +653,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
 
                                 comp.IsDisabled = false;
 
-                                var ev = new AnchorStateChangedEvent(transformComponent);
+                                var ev = new AnchorStateChangedEvent(uid, transformComponent, false);
                                 RaiseLocalEvent(uid, ref ev, false);
                             }
                         }
@@ -672,7 +703,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
 
                             comp.IsDisabled = true;
 
-                            var ev = new AnchorStateChangedEvent(transformComponent);
+                            var ev = new AnchorStateChangedEvent(uid, transformComponent, false);
                             RaiseLocalEvent(uid, ref ev, false);
                         }
                     }
