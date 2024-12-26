@@ -253,6 +253,7 @@
     isPowerRequiredForMount: false
     isPowerRequiredToFire: false
     isPowerRequiredForSignal: false
+    isCapableOfSendingSignal: false
   - type: BatterySelfRecharger
   - type: Actions
   - type: CombatMode
@@ -667,6 +668,7 @@
       path: /Audio/Items/hiss.ogg
   - type: SpaceArtillery
     isArmed: true
+    isDestructive: false
     isCoolantRequiredToFire: true
     coolantStored: 90
     isPowerRequiredToFire: true
@@ -729,19 +731,38 @@
     increment: 45
   - type: Appearance
   - type: Storage
-    capacity: 120
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,19,12
+    containerWhitelist: [gas_tank]
+    mapLayers:
+      tank:
+        whitelist:
+          components:
+          - GasTank
   - type: UserInterface
     interfaces:
       enum.StorageUiKey.Key:
         type: StorageBoundUserInterface
+  - type: ItemSlots
+    slots:
+      gas_tank:
+        name: pneumatic-cannon-component-itemslot-name
+        whitelist:
+          components:
+          - GasTank
+        insertSound:
+          path: /Audio/Weapons/click.ogg
+          params:
+            volume: -3
   - type: ContainerContainer
     containers:
       storagebase: !type:Container
         ents: []
+      gas_tank: !type:ContainerSlot
   - type: ContainerAmmoProvider
     container: storagebase
   - type: PneumaticCannon
-    gasUsage: 0
     baseProjectileSpeed: 70
     toolModifyPower: Screwing
   - type: DeviceNetwork
@@ -773,6 +794,7 @@
       path: /Audio/Items/hiss.ogg
   - type: SpaceArtillery
     isArmed: true
+    isDestructive: false
     powerChargeRate: 2000
     powerUsePassive: 1000
     powerUseActive: 10000

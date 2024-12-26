@@ -45,7 +45,7 @@
   id: CartridgeNitroExpress # Frontier Space Artillery
 
 - type: Tag # Frontier Space Artillery
-  id: CartridgeRailgun # Frontier Space Artillery
+  id: CartridgeRail # Frontier Space Artillery
 
 - type: Tag # Frontier Space Artillery
   id: CartridgeShell # Frontier Space Artillery

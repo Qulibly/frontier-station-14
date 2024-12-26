@@ -1,0 +1,145 @@
+# 50. cal machinegun boxes
+
+- type: entity
+  parent: [BaseItem, RecyclableItemCardboard] # Frontier: added RecyclableItemCardboard
+  id: MagazineBoxMachineGunArmorPiercing
+  name: ammo can (.50 Machine Gun Armor-Piercing)
+  components:
+  - type: BallisticAmmoProvider
+    mayTransfer: true
+    whitelist:
+      tags:
+        - CartridgeMachineGun
+    proto: CartridgeMachineGunArmorPiercing
+    capacity: 60
+  - type: Item
+    size: Large
+    shape:
+    - 0,0,4,3
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+  - type: Sprite
+    scale: 1.2, 1.2
+    sprite: Objects/Weapons/Guns/Ammunition/Boxes/anti_materiel.rsi
+    layers:
+    - state: base-b
+      map: ["enum.GunVisualLayers.Base"]
+    - state: magb-1
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Icon # Frontier
+    sprite: _NF/Objects/Weapons/Guns/Ammunition/Boxes/anti_materiel.rsi # Frontier
+    state: bigdisplay # Frontier
+  - type: MagazineVisuals
+    magState: magb
+    steps: 4
+    zeroVisible: false
+  - type: Appearance
+
+- type: entity
+  parent: [BaseItem, RecyclableItemCardboard] # Frontier: added RecyclableItemCardboard
+  id: MagazineBoxMachineGunHighExplosive
+  name: ammo can (.50 Machine Gun High-Explosive)
+  components:
+  - type: BallisticAmmoProvider
+    mayTransfer: true
+    whitelist:
+      tags:
+        - CartridgeMachineGun
+    proto: CartridgeMachineGunHighExplosive
+    capacity: 60
+  - type: Item
+    size: Large
+    shape:
+    - 0,0,4,3
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+  - type: Sprite
+    scale: 1.2, 1.2
+    sprite: Objects/Weapons/Guns/Ammunition/Boxes/anti_materiel.rsi
+    layers:
+    - state: base-b
+      map: ["enum.GunVisualLayers.Base"]
+    - state: magb-1
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Icon # Frontier
+    sprite: _NF/Objects/Weapons/Guns/Ammunition/Boxes/anti_materiel.rsi # Frontier
+    state: bigdisplay # Frontier
+  - type: MagazineVisuals
+    magState: magb
+    steps: 4
+    zeroVisible: false
+  - type: Appearance
+
+- type: entity
+  parent: [BaseItem, RecyclableItemCardboard] # Frontier: added RecyclableItemCardboard
+  id: MagazineBoxMachineGunEMP
+  name: ammo can (.50 Machine Gun EMP)
+  components:
+  - type: BallisticAmmoProvider
+    mayTransfer: true
+    whitelist:
+      tags:
+        - CartridgeMachineGun
+    proto: CartridgeMachineGunEMP
+    capacity: 60
+  - type: Item
+    size: Large
+    shape:
+    - 0,0,4,3
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+  - type: Sprite
+    scale: 1.2, 1.2
+    sprite: Objects/Weapons/Guns/Ammunition/Boxes/anti_materiel.rsi
+    layers:
+    - state: base-b
+      map: ["enum.GunVisualLayers.Base"]
+    - state: magb-1
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Icon # Frontier
+    sprite: _NF/Objects/Weapons/Guns/Ammunition/Boxes/anti_materiel.rsi # Frontier
+    state: bigdisplay # Frontier
+  - type: MagazineVisuals
+    magState: magb
+    steps: 4
+    zeroVisible: false
+  - type: Appearance
+
+- type: entity
+  parent: [BaseItem, RecyclableItemCardboard] # Frontier: added RecyclableItemCardboard
+  id: MagazineBoxMachineGunPractice
+  name: ammo can (.50 Machine Gun Practice)
+  components:
+  - type: BallisticAmmoProvider
+    mayTransfer: true
+    whitelist:
+      tags:
+        - CartridgeMachineGun
+    proto: CartridgeMachineGunPractice
+    capacity: 60
+  - type: Item
+    size: Large
+    shape:
+    - 0,0,4,3
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+  - type: Sprite
+    scale: 1.2, 1.2
+    sprite: Objects/Weapons/Guns/Ammunition/Boxes/anti_materiel.rsi
+    layers:
+    - state: base-b
+      map: ["enum.GunVisualLayers.Base"]
+    - state: magb-1
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Icon # Frontier
+    sprite: _NF/Objects/Weapons/Guns/Ammunition/Boxes/anti_materiel.rsi # Frontier
+    state: bigdisplay # Frontier
+  - type: MagazineVisuals
+    magState: magb
+    steps: 4
+    zeroVisible: false
+  - type: Appearance

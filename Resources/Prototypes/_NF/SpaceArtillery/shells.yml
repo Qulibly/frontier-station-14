@@ -6,7 +6,7 @@
   id: BulletShellEmp
   name: shell
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -36,7 +36,9 @@
     tags:
       - CartridgeShell
   - type: Item
-    size: 60
+    size: Large
+    shape:
+    - 0,0,1,4
   - type: CartridgeAmmo
     proto: BulletShellEmp
     deleteOnSpawn: false
@@ -55,7 +57,7 @@
   id: BulletShellArmorPiercing
   name: shell
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -93,7 +95,9 @@
       - CartridgeShell
       - Cartridge
   - type: Item
-    size: 60
+    size: Large
+    shape:
+    - 0,0,1,4
   - type: CartridgeAmmo
     proto: BulletShellArmorPiercing
     deleteOnSpawn: false
@@ -111,7 +115,7 @@
   id: BulletShellHighExplosive
   name: shell
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -149,7 +153,9 @@
       - CartridgeShell
       - Cartridge
   - type: Item
-    size: 60
+    size: Large
+    shape:
+    - 0,0,1,4
   - type: CartridgeAmmo
     proto: BulletShellHighExplosive
     deleteOnSpawn: false
@@ -167,7 +173,7 @@
   id: BulletShellPractice
   name: shell
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -205,7 +211,9 @@
       - CartridgeShell
       - Cartridge
   - type: Item
-    size: 60
+    size: Large
+    shape:
+    - 0,0,1,4
   - type: CartridgeAmmo
     proto: BulletShellPractice
     deleteOnSpawn: false
@@ -223,7 +231,7 @@
   id: BulletMachineGunEMP
   name: 50 Machine Gun EMP bullet
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -258,7 +266,9 @@
       - CartridgeMachineGun
       - Cartridge
   - type: Item
-    size: 2
+    size: Small
+    shape:
+    - 0,0,0,2
   - type: CartridgeAmmo
     proto: BulletMachineGunEMP
     deleteOnSpawn: false
@@ -276,7 +286,7 @@
   id: BulletMachineGunArmorPiercing
   name: 50 Machine Gun Armor-Piercing bullet
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -314,7 +324,9 @@
       - CartridgeMachineGun
       - Cartridge
   - type: Item
-    size: 2
+    size: Small
+    shape:
+    - 0,0,0,2
   - type: CartridgeAmmo
     proto: BulletMachineGunArmorPiercing
     deleteOnSpawn: false
@@ -332,7 +344,7 @@
   id: BulletMachineGunHighExplosive
   name: 50 Machine Gun High-Explosive bullet
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -370,7 +382,9 @@
       - CartridgeMachineGun
       - Cartridge
   - type: Item
-    size: 2
+    size: Small
+    shape:
+    - 0,0,0,2
   - type: CartridgeAmmo
     proto: BulletMachineGunHighExplosive
     deleteOnSpawn: false
@@ -388,7 +402,7 @@
   id: BulletMachineGunPractice
   name: 50 Machine Gun Practice bullet
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -426,7 +440,9 @@
       - CartridgeMachineGun
       - Cartridge
   - type: Item
-    size: 2
+    size: Small
+    shape:
+    - 0,0,0,2
   - type: CartridgeAmmo
     proto: BulletMachineGunPractice
     deleteOnSpawn: false
@@ -446,7 +462,7 @@
   id: BulletRailEMP
   name: rail
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -481,7 +497,9 @@
       - CartridgeRail
       - Cartridge
   - type: Item
-    size: 120
+    size: Huge
+    shape:
+    - 0,0,4,7
   - type: MultiHandedItem
   - type: CartridgeAmmo
     proto: BulletRailEMP
@@ -501,7 +519,7 @@
   id: BulletRailArmorPiercing
   name: rail
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -539,7 +557,9 @@
       - CartridgeRail
       - Cartridge
   - type: Item
-    size: 120
+    size: Huge
+    shape:
+    - 0,0,4,7
   - type: MultiHandedItem
   - type: CartridgeAmmo
     proto: BulletRailArmorPiercing
@@ -559,7 +579,7 @@
   id: BulletRailHighExplosive
   name: rail
   parent: BaseBulletTrigger
-  noSpawn: true
+  abstract: true
   components:
   - type: Projectile
     damage:
@@ -597,7 +617,9 @@
       - CartridgeRail
       - Cartridge
   - type: Item
-    size: 120
+    size: Huge
+    shape:
+    - 0,0,4,7
   - type: MultiHandedItem
   - type: CartridgeAmmo
     proto: BulletRailHighExplosive
@@ -617,7 +639,7 @@
   name: booster wave
   id: BulletBoosterWave
   parent: BaseBullet
-  noSpawn: true
+  abstract: true
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Projectiles/projectiles_tg.rsi
@@ -679,6 +701,10 @@
         mask:
         - ItemMask
   - type: Appearance
+  - type: Item
+    size: Large
+    shape:
+    - 0,0,1,2
 
 - type: material
   id: Coolant
@@ -693,8 +719,7 @@
   name: coolant
   icon: { sprite: /Textures/Objects/Economy/cash.rsi, state: cash }
   spawn: CoolantCartridge
-  maxCount: 30
-  itemSize: 4
+  maxCount: 60
 
 
 - type: entity
@@ -719,4 +744,14 @@
   - type: Stack
     count: 30
 
+- type: entity
+  parent: CoolantCartridge
+  id: CoolantCartridge60
+  suffix: 60
+  components:
+  - type: Icon
+    sprite: Objects/Economy/cash.rsi
+    state: cash_500
+  - type: Stack
+    count: 60
 
