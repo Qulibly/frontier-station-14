@@ -10,6 +10,7 @@
       soundGroups:
         Brute:
           collection: MetalGlassBreak
+    - type: Copilot
     - type: Computer
     - type: ApcPowerReceiver
       powerLoad: 200
@@ -38,6 +39,25 @@
           computerLayerKeys:
             True: { visible: true, shader: unshaded }
             False: { visible: true, shader: shaded }
+    - type: DeviceNetwork
+      deviceNetId: Wireless
+      receiveFrequencyId: BasicDevice
+    - type: WirelessNetworkConnection
+      range: 600
+    - type: DeviceLinkSource
+      ports:
+        - CopilotCustomButtonOne
+        - CopilotCustomButtonTwo
+        - CopilotCustomButtonThree
+        - CopilotCustomButtonFour
+        - CopilotCustomButtonFive
+        - CopilotCustomButtonSix
+        - CopilotCustomButtonSeven
+        - CopilotCustomButtonEight
+        - CopilotCustomButtonNine
+        - CopilotCustomButtonTen
+        - CopilotCustomButtonEleven
+        - CopilotCustomButtonTwelve
     - type: LitOnPowered
     - type: PointLight
       radius: 1.5

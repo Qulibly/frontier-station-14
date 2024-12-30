@@ -6,7 +6,7 @@
   id: BulletShellEmp
   name: shell
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -57,7 +57,7 @@
   id: BulletShellArmorPiercing
   name: shell
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -115,7 +115,7 @@
   id: BulletShellHighExplosive
   name: shell
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -173,7 +173,7 @@
   id: BulletShellPractice
   name: shell
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -231,7 +231,7 @@
   id: BulletMachineGunEMP
   name: 50 Machine Gun EMP bullet
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -286,7 +286,7 @@
   id: BulletMachineGunArmorPiercing
   name: 50 Machine Gun Armor-Piercing bullet
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -344,7 +344,7 @@
   id: BulletMachineGunHighExplosive
   name: 50 Machine Gun High-Explosive bullet
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -402,7 +402,7 @@
   id: BulletMachineGunPractice
   name: 50 Machine Gun Practice bullet
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -462,7 +462,7 @@
   id: BulletRailEMP
   name: rail
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -519,7 +519,7 @@
   id: BulletRailArmorPiercing
   name: rail
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -579,7 +579,7 @@
   id: BulletRailHighExplosive
   name: rail
   parent: BaseBulletTrigger
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
     damage:
@@ -639,7 +639,7 @@
   name: booster wave
   id: BulletBoosterWave
   parent: BaseBullet
-  abstract: true
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: Objects/Weapons/Guns/Projectiles/projectiles_tg.rsi

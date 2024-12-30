@@ -28,6 +28,20 @@ public sealed class CopilotConsoleBoundUserInterface : BoundUserInterface
         _window.OnClose += Close;
         _window.ShowCopilot += SendCopilotMessage;
         _window.ShowVessel += SendVesselMessage;
+
+        _window.CopilotCustomButtonOnePressed += OnCopilotCustomButtonOnePressed;
+        _window.CopilotCustomButtonTwoPressed += OnCopilotCustomButtonTwoPressed;
+        _window.CopilotCustomButtonThreePressed += OnCopilotCustomButtonThreePressed;
+        _window.CopilotCustomButtonFourPressed += OnCopilotCustomButtonFourPressed;
+        _window.CopilotCustomButtonFivePressed += OnCopilotCustomButtonFivePressed;
+        _window.CopilotCustomButtonSixPressed += OnCopilotCustomButtonSixPressed;
+        _window.CopilotCustomButtonSevenPressed += OnCopilotCustomButtonSevenPressed;
+        _window.CopilotCustomButtonEightPressed += OnCopilotCustomButtonEightPressed;
+        _window.CopilotCustomButtonNinePressed += OnCopilotCustomButtonNinePressed;
+        _window.CopilotCustomButtonTenPressed += OnCopilotCustomButtonTenPressed;
+        _window.CopilotCustomButtonElevenPressed += OnCopilotCustomButtonElevenPressed;
+        _window.CopilotCustomButtonTwelvePressed += OnCopilotCustomButtonTwelvePressed;
+
         _window.OpenCenteredLeft();
     }
 
@@ -56,6 +70,59 @@ public sealed class CopilotConsoleBoundUserInterface : BoundUserInterface
             Show = obj,
         });*/
     }
+
+
+
+    private void OnCopilotCustomButtonOnePressed()
+    {
+        SendMessage(new CopilotCustomButtonOneMessage());
+    }
+    private void OnCopilotCustomButtonTwoPressed()
+    {
+        SendMessage(new CopilotCustomButtonTwoMessage());
+    }
+  private void OnCopilotCustomButtonThreePressed()
+    {
+        SendMessage(new CopilotCustomButtonThreeMessage());
+    }
+  private void OnCopilotCustomButtonFourPressed()
+    {
+        SendMessage(new CopilotCustomButtonFourMessage());
+    }
+  private void OnCopilotCustomButtonFivePressed()
+    {
+        SendMessage(new CopilotCustomButtonFiveMessage());
+    }
+  private void OnCopilotCustomButtonSixPressed()
+    {
+        SendMessage(new CopilotCustomButtonSixMessage());
+    }
+  private void OnCopilotCustomButtonSevenPressed()
+    {
+        SendMessage(new CopilotCustomButtonSevenMessage());
+    }
+  private void OnCopilotCustomButtonEightPressed()
+    {
+        SendMessage(new CopilotCustomButtonEightMessage());
+    }
+  private void OnCopilotCustomButtonNinePressed()
+    {
+        SendMessage(new CopilotCustomButtonNineMessage());
+    }
+  private void OnCopilotCustomButtonTenPressed()
+    {
+        SendMessage(new CopilotCustomButtonTenMessage());
+    }
+  private void OnCopilotCustomButtonElevenPressed()
+    {
+        SendMessage(new CopilotCustomButtonElevenMessage());
+    }
+  private void OnCopilotCustomButtonTwelvePressed()
+    {
+        SendMessage(new CopilotCustomButtonTwelveMessage());
+    }
+
+
 
     protected override void Dispose(bool disposing)
     {

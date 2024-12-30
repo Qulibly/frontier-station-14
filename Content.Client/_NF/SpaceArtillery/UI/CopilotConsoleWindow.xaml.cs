@@ -20,6 +20,19 @@ public sealed partial class CopilotConsoleWindow : FancyWindow,
     public event Action<bool>? ShowCopilot;
     public event Action<bool>? ShowVessel;
 
+    public event Action? CopilotCustomButtonOnePressed;
+    public event Action? CopilotCustomButtonTwoPressed;
+    public event Action? CopilotCustomButtonThreePressed;
+    public event Action? CopilotCustomButtonFourPressed;
+    public event Action? CopilotCustomButtonFivePressed;
+    public event Action? CopilotCustomButtonSixPressed;
+    public event Action? CopilotCustomButtonSevenPressed;
+    public event Action? CopilotCustomButtonEightPressed;
+    public event Action? CopilotCustomButtonNinePressed;
+    public event Action? CopilotCustomButtonTenPressed;
+    public event Action? CopilotCustomButtonElevenPressed;
+    public event Action? CopilotCustomButtonTwelvePressed;
+
     public CopilotConsoleWindow()
     {
         RobustXamlLoader.Load(this);
@@ -33,6 +46,19 @@ public sealed partial class CopilotConsoleWindow : FancyWindow,
         ShowVesselOnButton.Group = _showVesselButtonGroup;
         ShowVesselOnButton.OnPressed += args => ShowVesselPressed(true);
         ShowVesselOffButton.OnPressed += args => ShowVesselPressed(false);*/
+
+        CustomButtonOne.OnPressed += _ => CopilotCustomButtonOnePressed?.Invoke();
+        CustomButtonTwo.OnPressed += _ => CopilotCustomButtonTwoPressed?.Invoke();
+        CustomButtonThree.OnPressed += _ => CopilotCustomButtonThreePressed?.Invoke();
+        CustomButtonFour.OnPressed += _ => CopilotCustomButtonFourPressed?.Invoke();
+        CustomButtonFive.OnPressed += _ => CopilotCustomButtonFivePressed?.Invoke();
+        CustomButtonSix.OnPressed += _ => CopilotCustomButtonSixPressed?.Invoke();
+        CustomButtonSeven.OnPressed += _ => CopilotCustomButtonSevenPressed?.Invoke();
+        CustomButtonEight.OnPressed += _ => CopilotCustomButtonEightPressed?.Invoke();
+        CustomButtonNine.OnPressed += _ => CopilotCustomButtonNinePressed?.Invoke();
+        CustomButtonTen.OnPressed += _ => CopilotCustomButtonTenPressed?.Invoke();
+        CustomButtonEleven.OnPressed += _ => CopilotCustomButtonElevenPressed?.Invoke();
+        CustomButtonTwelve.OnPressed += _ => CopilotCustomButtonTwelvePressed?.Invoke();
     }
 
     private void ShowCopilotPressed(bool pressed)

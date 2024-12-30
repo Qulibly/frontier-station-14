@@ -12,3 +12,67 @@
   id: SpaceArtilleryDetectedSafetyChange
   name: signal-port-name-space-artillery-detected-safety-change
   description: signal-port-description-space-artillery-detected-safety-change
+
+
+
+# Copilot console signals
+- type: sourcePort
+  id: CopilotCustomButtonOne
+  name: "Custom Button 1 PLACEHOLDER"
+  description: "Sends signal from button 1 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonTwo
+  name: "Custom Button 2 PLACEHOLDER"
+  description: "Sends signal from button 2 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonThree
+  name: "Custom Button 3 PLACEHOLDER"
+  description: "Sends signal from button 3 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonFour
+  name: "Custom Button 4 PLACEHOLDER"
+  description: "Sends signal from button 4 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonFive
+  name: "Custom Button 5 PLACEHOLDER"
+  description: "Sends signal from button 5 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonSix
+  name: "Custom Button 6 PLACEHOLDER"
+  description: "Sends signal from button 6 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonSeven
+  name: "Custom Button 7 PLACEHOLDER"
+  description: "Sends signal from button 7 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonEight
+  name: "Custom Button 8 PLACEHOLDER"
+  description: "Sends signal from button 8 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonNine
+  name: "Custom Button 9 PLACEHOLDER"
+  description: "Sends signal from button 9 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonTen
+  name: "Custom Button 10 PLACEHOLDER"
+  description: "Sends signal from button 10 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonEleven
+  name: "Custom Button 11 PLACEHOLDER"
+  description: "Sends signal from button 11 to linked device PLACEHOLDER"
+
+- type: sourcePort
+  id: CopilotCustomButtonTwelve
+  name: "Custom Button 12 PLACEHOLDER"
+  description: "Sends signal from button 12 to linked device PLACEHOLDER"
+
