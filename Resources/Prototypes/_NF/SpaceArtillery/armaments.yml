@@ -76,7 +76,7 @@
     soundEmpty:
       path: /Audio/Items/hiss.ogg
   - type: SpaceArtillery
-    isArmed: true
+    #isArmed: true
     powerChargeRate: 2000
     powerUsePassive: 3000
     isPowerRequiredForSignal: true
@@ -172,7 +172,7 @@
     soundEmpty:
       path: /Audio/Items/hiss.ogg
   - type: SpaceArtillery
-    isArmed: true
+    #isArmed: true
     powerChargeRate: 2000
     powerUsePassive: 3000
     isPowerRequiredForSignal: true
@@ -247,7 +247,7 @@
     soundEmpty:
       path: /Audio/Items/hiss.ogg
   - type: SpaceArtillery
-    isArmed: true
+    #isArmed: true
     powerChargeRate: 0
     powerUsePassive: 0
     isPowerRequiredForMount: false
@@ -347,7 +347,7 @@
     soundEmpty:
       path: /Audio/Items/hiss.ogg
   - type: SpaceArtillery
-    isArmed: true
+    #isArmed: true
     powerChargeRate: 1500
     powerUsePassive: 500
     isPowerRequiredForMount: false
@@ -452,7 +452,7 @@
     soundEmpty:
       path: /Audio/Items/hiss.ogg
   - type: SpaceArtillery
-    isArmed: true
+    #isArmed: true
     powerChargeRate: 14000
     powerUsePassive: 6000
     powerUseActive: 500000
@@ -461,8 +461,8 @@
     isCoolantRequiredToFire: true
     coolantConsumed: 30
     maxCoolantStored: 120
-    linearRecoilGrid: 900
-    angularInstabilityGrid: 30
+    linearRecoilGrid: 2000
+    angularInstabilityGrid: 60
     SpaceArtillery-CoolantSlot:
             name:  SpaceArtillery-CoolantSlot
             insertSound: /Audio/Machines/scanning.ogg
@@ -521,8 +521,8 @@
   - type: Appearance
   - type: AmmoCounter
   - type: Battery
-    maxCharge: 100000
-    startingCharge: 90000 #Lower than max so that power systems are properly initialised
+    maxCharge: 250000
+    startingCharge: 240000 #Lower than max so that power systems are properly initialised
   - type: ExaminableBattery
   - type: HitscanBatteryAmmoProvider
     proto: Focused_Pulse
@@ -559,7 +559,7 @@
     soundEmpty:
       path: /Audio/Items/hiss.ogg
   - type: SpaceArtillery
-    isArmed: true
+    #isArmed: true
     isCoolantRequiredToFire: true
     coolantConsumed: 10
     isPowerRequiredToFire: true

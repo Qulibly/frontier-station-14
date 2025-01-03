@@ -11,7 +11,7 @@
   - type: Projectile
     damage:
       types:
-        Structural: 100
+        Structural: 200
         Blunt: 20
   - type: TimedDespawn
     lifetime: 20
@@ -62,7 +62,7 @@
   - type: Projectile
     damage:
       types:
-        Structural: 1000
+        Structural: 1600
         #currently explosion deals roughly 60 damage
   - type: TimedDespawn
     lifetime: 20
@@ -120,7 +120,7 @@
   - type: Projectile
     damage:
       types:
-        Structural: 100
+        Structural: 300
         #currently explosion deals roughly 30 damage per tile in large AoE
   - type: TimedDespawn
     lifetime: 20
@@ -291,8 +291,9 @@
   - type: Projectile
     damage:
       types:
-        Structural: 35
+        Structural: 50 
         #currently explosion deals 30 damage
+        #old structural 35 damage
   - type: TimedDespawn
     lifetime: 20
     #roughly 600m range
@@ -479,7 +480,7 @@
   - type: EmpOnTrigger
     range: 12
     energyConsumption: 1000000
-    disableDuration: 120
+    disableDuration: 60
   - type: PointLight
     radius: 3.5
     color: orange
