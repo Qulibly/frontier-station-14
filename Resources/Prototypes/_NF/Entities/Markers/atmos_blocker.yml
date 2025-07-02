@@ -121,7 +121,7 @@
           shader: unshaded
         - sprite: Markers/atmos.rsi
           shader: unshaded # }
-          state: freeze
+          state: carbondioxide
     - type: AtmosFixMarker
       mode: 15
 
@@ -211,7 +211,7 @@
           shader: unshaded
         - sprite: Markers/atmos.rsi
           shader: unshaded # }
-          state: freeze
+          state: nitrous
     - type: AtmosFixMarker
       mode: 20
 
