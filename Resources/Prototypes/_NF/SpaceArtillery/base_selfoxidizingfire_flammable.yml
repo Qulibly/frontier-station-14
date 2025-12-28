@@ -1,0 +1,10 @@
+- type: entity
+  id: NF_BaseSelfOxidizingFireFlammable
+  abstract: true
+  components:
+  - type: Appearance
+  - type: SelfOxidizingFireVisuals #Frontier for SOF
+  - type: FlammableSelfOxidizingFire #Frontier for SOF
+  - type: Reactive
+    groups:
+      Extinguish: [Touch] #Frontier for SOF

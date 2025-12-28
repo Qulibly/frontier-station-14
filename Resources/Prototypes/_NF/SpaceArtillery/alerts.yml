@@ -1,0 +1,6 @@
+- type: alert
+  id: SelfOxidizingFire
+  icons: [ /Textures/_NF/Objects/SpaceArtillery/SelfOxidizingFire/selfoxidizingfire.png ]
+  clickEvent: !type:ResistFireAlertEvent
+  name: "Self Oxidising Fire PLACEHOLDER"
+  description: "You have sticky fire. It won't be easy to extinguish PLACEHOLDER"

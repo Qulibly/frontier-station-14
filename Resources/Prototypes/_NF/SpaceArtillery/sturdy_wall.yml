@@ -1,0 +1,92 @@
+- type: entity
+  id: WallSturdyWall
+  name: sturdy wall
+  placement:
+    mode: SnapgridCenter
+  components:
+#######
+  - type: Transform
+    anchored: true
+  - type: Clickable
+  - type: Physics
+    bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.5,-0.5,0.5,0.5"
+        mask:
+        - MachineMask
+        - FullTileMask
+        layer:
+        - MidImpassable
+        - LowImpassable
+        - WallLayer
+        density: 1000
+  - type: Pullable
+  - type: RangedDamageSound
+    soundGroups:
+      Brute:
+        collection:
+          MetalBulletImpact
+    soundTypes:
+      Heat:
+        collection:
+          MetalLaserImpact
+  - type: StaticPrice
+    price: 25 # Frontier 75<25
+  - type: RadiationBlocker
+    resistance: 2
+  - type: BlockWeather
+  - type: PlacementReplacement
+    key: walls
+#######
+  - type: Tag
+    tags:
+      - Wall
+      - Structure
+  - type: Damageable
+    damageContainer: StructuralInorganic
+    damageModifierSet: StructuralMetallicStrong
+  - type: Destructible #issue here
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 600
+      behaviors:
+      - !type:SpawnGasBehavior
+        gasMixture:
+          volume: 1000
+          moles:
+            - 0 # oxygen
+            - 0 # nitrogen
+            - 0 # carbon dioxide
+            - 240 # Plasma
+            - 100 # Tritium
+            - 300 # WaterVapor
+            - 0 # Ammonia
+            - 0 # NitrousOxide
+            - 0 # Frezon
+          temperature: 873.15
+  - type: Sprite
+    sprite: _NF/Objects/SpaceArtillery/sturdy_wall.rsi
+    drawdepth: Walls
+  - type: Icon
+    sprite: _NF/Objects/SpaceArtillery/sturdy_wall.rsi
+    state: full
+  - type: IconSmooth
+    key: walls
+    base: state
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ShuttleWallVisuals.DeconstructionStage:
+        ShuttleWallVisualLayers.Deconstruction:
+          -1: { visible: false }
+          0: { state: shuttle_construct-0, visible: true}
+          1: { state: shuttle_construct-1, visible: true}
+          2: { state: shuttle_construct-2, visible: true}
+          3: { state: shuttle_construct-3, visible: true}
+          4: { state: shuttle_construct-4, visible: true}
+          5: { state: shuttle_construct-5, visible: true}

@@ -1,0 +1,12 @@
+- type: explosion
+  id: SOFexplosion
+  damagePerIntensity:
+    types:
+      Heat: 1
+      Cold: 1
+      Structural: 1
+  lightColor: Blue
+  texturePath: /Textures/_NF/Objects/SpaceArtillery/self_oxidizing_fire.rsi
+  fireStates: 0
+  fireStacks: 0
+  selfOxidizingFireFuel: 10
