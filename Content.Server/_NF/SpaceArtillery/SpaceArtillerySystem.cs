@@ -496,8 +496,12 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
                     var oldLinearRelativeVelocity = (float) Math.Sqrt((oldLinearVelocity.X * oldLinearVelocity.X) + (oldLinearVelocity.Y * oldLinearVelocity.Y));
 
                     //Check if grid isn't flying faster already than the velocity limit
+                    //If it is. Then ensure it doesnt go faster than already shuttle is
+                    //while allowing to change the direction
                     if (oldLinearRelativeVelocity >= linearVelocityLimitGrid)
-                        return;
+                    {
+                        linearVelocityLimitGrid = oldLinearRelativeVelocity;
+                    }
 
                     var targetSpotRecoil = new Vector2(worldPosX - component.LinearRecoilGrid * (float) Math.Sin(worldRot), worldPosY + component.LinearRecoilGrid * (float) Math.Cos(worldRot));
                     var recoilX = (worldPosX - targetSpotRecoil.X);
