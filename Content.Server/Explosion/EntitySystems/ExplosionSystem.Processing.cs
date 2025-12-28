@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Explosion.Components;
+using Content.Server._NF.SelfOxidizingFire; // Frontier
 using Content.Shared.CCVar;
 using Content.Shared.Damage;
 using Content.Shared.Database;
@@ -211,7 +212,8 @@ public sealed partial class ExplosionSystem
         HashSet<EntityUid> processed,
         string id,
         float? fireStacks,
-        EntityUid? cause)
+        EntityUid? cause,
+        float? selfOxidizingFireFuel) //Frontier added float? selfOxidizingFireFuel
     {
         var size = grid.Comp.TileSize;
         var gridBox = new Box2(tile * size, (tile + 1) * size);
@@ -230,7 +232,7 @@ public sealed partial class ExplosionSystem
         // process those entities
         foreach (var (uid, xform) in list)
         {
-            ProcessEntity(uid, epicenter, damage, throwForce, id, xform, fireStacks, cause);
+            ProcessEntity(uid, epicenter, damage, throwForce, id, xform, fireStacks, cause, selfOxidizingFireFuel);
         }
 
         // process anchored entities
@@ -240,7 +242,7 @@ public sealed partial class ExplosionSystem
         foreach (var entity in _anchored)
         {
             processed.Add(entity);
-            ProcessEntity(entity, epicenter, damage, throwForce, id, null, fireStacks, cause);
+            ProcessEntity(entity, epicenter, damage, throwForce, id, null, fireStacks, cause, selfOxidizingFireFuel);
         }
 
         // Walls and reinforced walls will break into girders. These girders will also be considered turf-blocking for
@@ -276,7 +278,7 @@ public sealed partial class ExplosionSystem
         {
             // Here we only throw, no dealing damage. Containers n such might drop their entities after being destroyed, but
             // they should handle their own damage pass-through, with their own damage reduction calculation.
-            ProcessEntity(uid, epicenter, null, throwForce, id, xform, null, cause);
+            ProcessEntity(uid, epicenter, null, throwForce, id, xform, null, cause, selfOxidizingFireFuel);
         }
 
         return !tileBlocked;
@@ -313,7 +315,8 @@ public sealed partial class ExplosionSystem
         HashSet<EntityUid> processed,
         string id,
         float? fireStacks,
-        EntityUid? cause)
+        EntityUid? cause,
+        float? selfOxidizingFireFuel) //Frontier added float? selfOxidizingFireFuel
     {
         var gridBox = Box2.FromDimensions(tile * DefaultTileSize, new Vector2(DefaultTileSize, DefaultTileSize));
         var worldBox = spaceMatrix.TransformBox(gridBox);
@@ -329,7 +332,7 @@ public sealed partial class ExplosionSystem
         foreach (var (uid, xform) in state.Item1)
         {
             processed.Add(uid);
-            ProcessEntity(uid, epicenter, damage, throwForce, id, xform, fireStacks, cause);
+            ProcessEntity(uid, epicenter, damage, throwForce, id, xform, fireStacks, cause, selfOxidizingFireFuel);
         }
 
         if (throwForce <= 0)
@@ -343,7 +346,7 @@ public sealed partial class ExplosionSystem
 
         foreach (var (uid, xform) in list)
         {
-            ProcessEntity(uid, epicenter, null, throwForce, id, xform, fireStacks, cause);
+            ProcessEntity(uid, epicenter, null, throwForce, id, xform, fireStacks, cause, selfOxidizingFireFuel);
         }
     }
 
@@ -442,7 +445,8 @@ public sealed partial class ExplosionSystem
         string id,
         TransformComponent? xform,
         float? fireStacksOnIgnite,
-        EntityUid? cause)
+        EntityUid? cause,
+        float? selfOxidizingFireFuel) //Frontier added float? selfOxidizingFireFuel
     {
         if (originalDamage != null)
         {
@@ -476,6 +480,21 @@ public sealed partial class ExplosionSystem
             {
                 flammable.FireStacks += fireStacksOnIgnite.Value;
                 _flammableSystem.Ignite(uid, uid, flammable);
+            }
+        }
+
+        // ignite - Frontier
+        // self oxidizing fire
+        if (selfOxidizingFireFuel != null)
+        {
+            if (TryComp<SelfOxidizingFireComponent>(uid, out var selfOxdFire))
+            {
+                //TODO remove magic values
+                selfOxdFire.Fuel += 25;
+            }
+            else if(TryComp<FlammableSelfOxidizingFireComponent>(uid, out var __))
+            {
+                AddComp<SelfOxidizingFireComponent>(uid);
             }
         }
 
@@ -850,7 +869,7 @@ sealed class Explosion
                     tileUpdateList = new();
                     _tileUpdateDict[_currentGrid] = tileUpdateList;
                 }
-
+//SET VALUE IN NULL. NEED TO REMAKE LATER, TODO
                 // damage entities on the tile. Also figures out whether there are any solid entities blocking the floor
                 // from being destroyed.
                 var canDamageFloor = _system.ExplodeTile(_currentLookup,
@@ -862,7 +881,8 @@ sealed class Explosion
                     ProcessedEntities,
                     ExplosionType.ID,
                     ExplosionType.FireStacks,
-                    Cause);
+                    Cause,
+                    ExplosionType.SelfOxidizingFireFuel);
 
                 // If the floor is not blocked by some dense object, damage the floor tiles.
                 if (canDamageFloor)
@@ -881,7 +901,8 @@ sealed class Explosion
                     ProcessedEntities,
                     ExplosionType.ID,
                     ExplosionType.FireStacks,
-                    Cause);
+                    Cause,
+                    ExplosionType.SelfOxidizingFireFuel);
             }
 
             if (!MoveNext())

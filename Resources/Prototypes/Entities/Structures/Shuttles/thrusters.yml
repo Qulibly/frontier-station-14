@@ -1,6 +1,6 @@
 - type: entity
   id: BaseThruster
-  parent: BaseStructureDynamic
+  parent: [BaseStructureDynamic, NF_BaseSelfOxidizingFireFlammable]
   name: thruster
   description: A thruster that allows a shuttle to move.
   abstract: true

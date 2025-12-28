@@ -68,6 +68,9 @@ public sealed partial class ExplosionPrototype : IPrototype
     [DataField("fireColor")]
     public Color? FireColor;
 
+    [DataField("selfOxidizingFireFuel")]
+    public float? SelfOxidizingFireFuel = null;
+
     /// <summary>
     ///     If an explosion finishes in less than this many iterations, play a small sound instead.
     /// </summary>

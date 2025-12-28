@@ -17,7 +17,7 @@
         hard: false
         shape:
           !type:PhysShapeAabb
-          bounds: "-0.4,-0.4,0.4,0.4"
+          bounds: "-0.6,-0.6,0.6,0.6" #raised from 0.4 so that can affect nearby walls
         mask:
         - ItemMask
         layer:

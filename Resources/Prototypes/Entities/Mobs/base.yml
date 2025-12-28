@@ -194,6 +194,7 @@
 - type: entity
   save: false
   id: MobFlammable
+  parent: NF_BaseSelfOxidizingFireFlammable
   abstract: true
   components:
   - type: Flammable

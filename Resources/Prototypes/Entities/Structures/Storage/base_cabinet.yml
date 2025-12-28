@@ -1,6 +1,7 @@
 - type: entity
   abstract: true
   id: BaseItemCabinet
+  parent: NF_BaseSelfOxidizingFireFlammable
   components:
   - type: Openable
     openOnActivate: true

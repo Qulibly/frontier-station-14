@@ -24,7 +24,7 @@
 - type: entity
   name: baseinstrument
   id: BasePlaceableInstrument
-  parent: BaseStructureDynamic
+  parent: [BaseStructureDynamic, NF_BaseSelfOxidizingFireFlammable]
   abstract: true
   components:
   - type: Instrument

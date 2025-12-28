@@ -262,6 +262,10 @@
     position: Stand
     buckleOffset: "0,0.8"
     maxBuckleDistance: 1
+  - type: Reactive
+    groups:
+      Extinguish: [Touch]
+  - type: SelfOxidizingFireVisuals
 #  - type: UserInterface #internal radar idea will probably get scrapped, it has caused severe issues
 #    interfaces:
 #        enum.RadarConsoleUiKey.Key:

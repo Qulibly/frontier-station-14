@@ -2,7 +2,7 @@
   id: OreBox
   name: ore box
   description: A large storage container for collecting and holding unprocessed ores and fragments. # Frontier - was: A large storage container for holding unprocessed ores.
-  parent: BaseStructureDynamic
+  parent: [BaseStructureDynamic, NF_BaseSelfOxidizingFireFlammable]
   components:
   - type: StaticPrice
     price: 625  # Frontier - 500<625

@@ -3,6 +3,7 @@ using Content.Server.Atmos.EntitySystems;
 using Content.Shared.EntityEffects;
 using JetBrains.Annotations;
 using Robust.Shared.Prototypes;
+using Content.Server._NF.SelfOxidizingFire; //Frontier
 
 namespace Content.Server.EntityEffects.Effects
 {
@@ -20,7 +21,17 @@ namespace Content.Server.EntityEffects.Effects
 
         public override void Effect(EntityEffectBaseArgs args)
         {
-            if (!args.EntityManager.TryGetComponent(args.TargetEntity, out FlammableComponent? flammable)) return;
+            //Sawmill.Info($"UPDATE Self Oxidizing Fire update Entity: {ToPrettyString(args.TargetEntity)}");
+            // Frontier
+            if(args.EntityManager.TryGetComponent(args.TargetEntity, out SelfOxidizingFireComponent? sof))
+            {
+                //Sawmill.Info($"EXTINGUISH ATTEMPT Self Oxidizing Fire update Entity: {ToPrettyString(args.TargetEntity)}");
+                var sofSystem = args.EntityManager.System<SelfOxidizingFireSystem>();
+                sofSystem.Extinguish(args.TargetEntity, sof);
+            }
+            // Frontier
+
+            if ((!args.EntityManager.TryGetComponent(args.TargetEntity, out FlammableComponent? flammable))) return;
 
             var flammableSystem = args.EntityManager.System<FlammableSystem>();
             flammableSystem.Extinguish(args.TargetEntity, flammable);

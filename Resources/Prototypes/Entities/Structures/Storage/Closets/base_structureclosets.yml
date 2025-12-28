@@ -1,6 +1,6 @@
 - type: entity
   id: ClosetBase
-  parent: BaseStructureDynamic
+  parent: [BaseStructureDynamic, NF_BaseSelfOxidizingFireFlammable]
   name: closet
   description: A standard-issue Nanotrasen storage unit.
   abstract: true
@@ -208,7 +208,7 @@
 #I am terribly sorry for duplicating the closet almost-wholesale, but the game malds at me if I don't so here we are.
 - type: entity
   id: SuitStorageBase
-  parent: BaseStructure
+  parent: [BaseStructure, NF_BaseSelfOxidizingFireFlammable]
   name: suit storage unit
   description: A fancy hi-tech storage unit made for storing space suits.
   components:

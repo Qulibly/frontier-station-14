@@ -21,6 +21,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using System.Linq;
+using Content.Server._NF.SelfOxidizingFire; //Frontier
 
 using TimedDespawnComponent = Robust.Shared.Spawners.TimedDespawnComponent;
 
@@ -261,38 +262,57 @@ public sealed class SmokeSystem : EntitySystem
         if (!Resolve(smokeUid, ref component))
             return;
 
-        if (!TryComp<BloodstreamComponent>(entity, out var bloodstream))
-            return;
-
-        if (!_solutionContainerSystem.ResolveSolution(entity, bloodstream.ChemicalSolutionName, ref bloodstream.ChemicalSolution, out var chemSolution) || chemSolution.AvailableVolume <= 0)
-            return;
-
-        var blockIngestion = _internals.AreInternalsWorking(entity);
-
-        var cloneSolution = solution.Clone();
-        var availableTransfer = FixedPoint2.Min(cloneSolution.Volume, component.TransferRate);
-        var transferAmount = FixedPoint2.Min(availableTransfer, chemSolution.AvailableVolume);
-        var transferSolution = cloneSolution.SplitSolution(transferAmount);
-
-        foreach (var reagentQuantity in transferSolution.Contents.ToArray())
+        // Frontier, makes it so if entity is burning with fire, it won't check if has blood
+        if(!TryComp<SelfOxidizingFireComponent>(entity, out var sof))
         {
-            if (reagentQuantity.Quantity == FixedPoint2.Zero)
-                continue;
-            var reagentProto = _prototype.Index<ReagentPrototype>(reagentQuantity.Reagent.Prototype);
+            if (!TryComp<BloodstreamComponent>(entity, out var bloodstream))
+                return;
 
-            _reactive.ReactionEntity(entity, ReactionMethod.Touch, reagentProto, reagentQuantity, transferSolution);
-            if (!blockIngestion)
-                _reactive.ReactionEntity(entity, ReactionMethod.Ingestion, reagentProto, reagentQuantity, transferSolution);
-        }
+            if (!_solutionContainerSystem.ResolveSolution(entity, bloodstream.ChemicalSolutionName, ref bloodstream.ChemicalSolution, out var chemSolution) || chemSolution.AvailableVolume <= 0)
+                return;
 
-        if (blockIngestion)
-            return;
+            var blockIngestion = _internals.AreInternalsWorking(entity);
 
-        if (_blood.TryAddToChemicals(entity, transferSolution, bloodstream))
-        {
-            // Log solution addition by smoke
-            _logger.Add(LogType.ForceFeed, LogImpact.Medium, $"{ToPrettyString(entity):target} ingested smoke {SharedSolutionContainerSystem.ToPrettyString(transferSolution)}");
-        }
+            var cloneSolution = solution.Clone();
+            var availableTransfer = FixedPoint2.Min(cloneSolution.Volume, component.TransferRate);
+            var transferAmount = FixedPoint2.Min(availableTransfer, chemSolution.AvailableVolume);
+            var transferSolution = cloneSolution.SplitSolution(transferAmount);
+
+            foreach (var reagentQuantity in transferSolution.Contents.ToArray())
+            {
+                if (reagentQuantity.Quantity == FixedPoint2.Zero)
+                    continue;
+                var reagentProto = _prototype.Index<ReagentPrototype>(reagentQuantity.Reagent.Prototype);
+
+                _reactive.ReactionEntity(entity, ReactionMethod.Touch, reagentProto, reagentQuantity, transferSolution);
+                if (!blockIngestion)
+                    _reactive.ReactionEntity(entity, ReactionMethod.Ingestion, reagentProto, reagentQuantity, transferSolution);
+            }
+
+            if (blockIngestion)
+                return;
+
+            if (_blood.TryAddToChemicals(entity, transferSolution, bloodstream))
+            {
+                // Log solution addition by smoke
+                _logger.Add(LogType.ForceFeed, LogImpact.Medium, $"{ToPrettyString(entity):target} ingested smoke {SharedSolutionContainerSystem.ToPrettyString(transferSolution)}");
+            }
+        } else { //Handles extinguishing using foam
+            var cloneSolution = solution.Clone();
+            var availableTransfer = FixedPoint2.Min(cloneSolution.Volume, component.TransferRate);
+            var transferAmount = availableTransfer;
+            var transferSolution = cloneSolution.SplitSolution(transferAmount);
+
+            foreach (var reagentQuantity in transferSolution.Contents.ToArray())
+            {
+                if (reagentQuantity.Quantity == FixedPoint2.Zero)
+                    continue;
+                var reagentProto = _prototype.Index<ReagentPrototype>(reagentQuantity.Reagent.Prototype);
+
+                _reactive.ReactionEntity(entity, ReactionMethod.Touch, reagentProto, reagentQuantity, transferSolution);
+            }
+
+        } //Frontier
     }
 
     private void ReactOnTile(EntityUid uid, SmokeComponent? component = null, TransformComponent? xform = null)

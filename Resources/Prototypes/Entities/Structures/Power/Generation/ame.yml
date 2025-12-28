@@ -1,6 +1,7 @@
 - type: entity
   id: AmeController
   name: AME controller
+  parent: NF_BaseSelfOxidizingFireFlammable
   description: It's a controller for the antimatter engine.
   placement:
     mode: SnapgridCenter
@@ -121,6 +122,7 @@
 - type: entity
   id: AmeShielding
   name: AME shielding
+  parent: NF_BaseSelfOxidizingFireFlammable
   description: Keeps the antimatter in and the matter out.
   placement:
     mode: SnapgridCenter

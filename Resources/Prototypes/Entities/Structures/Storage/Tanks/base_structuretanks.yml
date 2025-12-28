@@ -1,6 +1,6 @@
 ﻿- type: entity
   id: StorageTank
-  parent: BaseStructureDynamic
+  parent: [BaseStructureDynamic, NF_BaseSelfOxidizingFireFlammable]
   name: storage tank
   description: A liquids storage tank.
   abstract: true
