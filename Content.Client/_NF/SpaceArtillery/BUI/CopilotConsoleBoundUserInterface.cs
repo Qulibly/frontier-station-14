@@ -42,6 +42,8 @@ public sealed class CopilotConsoleBoundUserInterface : BoundUserInterface
         _window.CopilotCustomButtonElevenPressed += OnCopilotCustomButtonElevenPressed;
         _window.CopilotCustomButtonTwelvePressed += OnCopilotCustomButtonTwelvePressed;
 
+        _window.CopilotButtonArmamentActivationPressed += OnCopilotButtonArmamentActivationPressed;
+
         _window.OpenCenteredLeft();
     }
 
@@ -122,6 +124,10 @@ public sealed class CopilotConsoleBoundUserInterface : BoundUserInterface
         SendMessage(new CopilotCustomButtonTwelveMessage());
     }
 
+  private void OnCopilotButtonArmamentActivationPressed()
+    {
+        SendMessage(new CopilotButtonArmamentActivationMessage());
+    }
 
 
     protected override void Dispose(bool disposing)

@@ -11,15 +11,16 @@ using Content.Shared.UserInterface;
 using Content.Server.DeviceLinking.Events;
 using Content.Server.DeviceLinking.Components;
 using Content.Server.DeviceLinking.Systems;
-using Content.Server.DeviceNetwork;
 using Content.Shared.SpaceArtillery;
 using Content.Shared._NF.SpaceArtillery.BUI;
+using Robust.Server.GameObjects;
 
 namespace Content.Server._NF.SpaceArtillery.Copilot;
 
 public sealed class CopilotSystem : EntitySystem
 {
     [Dependency] private readonly DeviceLinkSystem _deviceLink = default!;
+    [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
 
     public override void Initialize()
     {
@@ -30,6 +31,7 @@ public sealed class CopilotSystem : EntitySystem
         // Interaction
         //SubscribeLocalEvent<CopilotComponent, InteractUsingEvent>(OnInteractUsing);
         //SubscribeLocalEvent<CopilotComponent, GotEmaggedEvent>(OnEmagged);
+        SubscribeLocalEvent<CopilotComponent, BoundUIOpenedEvent>(OnConsoleUiOpened);
 
         // UI
         SubscribeLocalEvent<CopilotComponent, CopilotCustomButtonOneMessage>(OnCopilotCustomButtonOnePressed);
@@ -45,9 +47,14 @@ public sealed class CopilotSystem : EntitySystem
         SubscribeLocalEvent<CopilotComponent, CopilotCustomButtonElevenMessage>(OnCopilotCustomButtonElevenPressed);
         SubscribeLocalEvent<CopilotComponent, CopilotCustomButtonTwelveMessage>(OnCopilotCustomButtonTwelvePressed);
 
+        SubscribeLocalEvent<CopilotComponent, CopilotButtonArmamentActivationMessage>(OnCopilotButtonArmamentActivationPressed);
     }
 
 
+    private void OnConsoleUiOpened(EntityUid uid, CopilotComponent component, BoundUIOpenedEvent args)
+    {
+        UpdateConsoleInterface(uid);
+    }
 
     //Copilot button handling
     private void OnCopilotCustomButtonOnePressed(EntityUid uid, CopilotComponent component, CopilotCustomButtonOneMessage args)
@@ -99,5 +106,43 @@ public sealed class CopilotSystem : EntitySystem
         _deviceLink.SendSignal(uid, component.CopilotCustomButtonTwelvePort, false);
     }
 
+    private void OnCopilotButtonArmamentActivationPressed(EntityUid uid, CopilotComponent component, CopilotButtonArmamentActivationMessage args)
+    {
+        if (TryComp<TransformComponent>(uid, out var transformComponent))
+        {
+            var _gridUid = transformComponent.GridUid;
+
+            if (_gridUid is { Valid: true } gridUid)
+            {
+                var activationEvent = new SpaceArtilleryGridActivationEvent();
+                RaiseLocalEvent(gridUid, ref activationEvent);
+            }
+        }
+    }
+
+    private void UpdateConsoleInterface(EntityUid uid)
+    {
+        var state = false;
+        if (TryComp<TransformComponent>(uid, out var transformComponent))
+        {
+            var _gridUid = transformComponent.GridUid;
+
+            if (_gridUid is { Valid: true } gridUid)
+            {
+                if (TryComp<SpaceArtilleryGridComponent>(_gridUid, out var componentGrid))
+                {
+                    state = true;
+                }
+            }
+        }
+
+        _uiSystem.SetUiState(uid,
+            CopilotConsoleUiKey.Copilot,
+            new CopilotConsoleBoundUserInterfaceState()
+            {
+                ArmamentAvailability = state
+            }
+            );
+    }
 
 }

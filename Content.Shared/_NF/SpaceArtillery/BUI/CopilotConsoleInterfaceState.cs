@@ -7,6 +7,7 @@ namespace Content.Shared._NF.SpaceArtillery.BUI;
 [Serializable, NetSerializable]
 public sealed class CopilotConsoleBoundUserInterfaceState : BoundUserInterfaceState
 {
+    public bool ArmamentAvailability = false;
     //public CopilotFlags AllowedFlags;
     //public CopilotFlags Flags;
 }
@@ -63,5 +64,11 @@ public sealed class CopilotCustomButtonElevenMessage : BoundUserInterfaceMessage
 }
 [Serializable, NetSerializable]
 public sealed class CopilotCustomButtonTwelveMessage : BoundUserInterfaceMessage
+{
+}
+
+
+[Serializable, NetSerializable]
+public sealed class CopilotButtonArmamentActivationMessage : BoundUserInterfaceMessage
 {
 }

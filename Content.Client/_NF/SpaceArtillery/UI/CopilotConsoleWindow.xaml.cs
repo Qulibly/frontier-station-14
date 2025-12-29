@@ -33,6 +33,8 @@ public sealed partial class CopilotConsoleWindow : FancyWindow,
     public event Action? CopilotCustomButtonElevenPressed;
     public event Action? CopilotCustomButtonTwelvePressed;
 
+    public event Action? CopilotButtonArmamentActivationPressed;
+
     public CopilotConsoleWindow()
     {
         RobustXamlLoader.Load(this);
@@ -59,6 +61,14 @@ public sealed partial class CopilotConsoleWindow : FancyWindow,
         CustomButtonTen.OnPressed += _ => CopilotCustomButtonTenPressed?.Invoke();
         CustomButtonEleven.OnPressed += _ => CopilotCustomButtonElevenPressed?.Invoke();
         CustomButtonTwelve.OnPressed += _ => CopilotCustomButtonTwelvePressed?.Invoke();
+
+        ButtonArmamentActivation.OnPressed += args => OnCopilotButtonArmamentActivationPressed(true);
+    }
+
+    private void OnCopilotButtonArmamentActivationPressed(bool pressed)
+    {
+        ButtonArmamentActivation.Disabled = pressed;
+        CopilotButtonArmamentActivationPressed?.Invoke();
     }
 
     private void ShowCopilotPressed(bool pressed)
@@ -73,6 +83,14 @@ public sealed partial class CopilotConsoleWindow : FancyWindow,
 
     public void UpdateState(CopilotConsoleBoundUserInterfaceState state)
     {
+        if (state.ArmamentAvailability == true)
+        {
+            ButtonArmamentActivation.Disabled = false;
+        }
+        else
+        {
+            ButtonArmamentActivation.Disabled = true;
+        }
         /*if ((state.AllowedFlags & CopilotFlags.HideLabel) != 0x0)
         {
             ShowCopilotOffButton.Disabled = false;

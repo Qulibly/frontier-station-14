@@ -16,5 +16,6 @@ public sealed partial class FireActionEvent : InstantActionEvent
 [NetSerializable, Serializable]
 public enum CopilotConsoleUiKey : byte
 {
-    Copilot
+    Copilot,
+    ArmamentAvailability
 }
