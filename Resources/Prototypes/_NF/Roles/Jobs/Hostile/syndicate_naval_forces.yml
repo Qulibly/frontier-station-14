@@ -425,7 +425,7 @@
   equipment:
     outerClothing: ClothingOuterHospitalGown
     mask: ClothingMaskMuzzle
-    neck: ClothingNeckHeadphones
+    neck: ClothingMultipleHeadphones
   inhand:
     - ReinforcedShiv
 
@@ -623,7 +623,7 @@
   id: SyndicateNavalDeckhandVoidGear
   equipment:
     head: ClothingHeadHelmetSyndicate
-    outerClothing: ClothingOuterHardsuitSyndicate
+    outerClothing: ClothingOuterEVASuitSyndicate
     jumpsuit: ClothingUniformJumpsuitRecruitSyndieNF
     shoes: ClothingShoesBootsMagSyndie
     gloves: ClothingHandsGlovesColorBlackPistol
@@ -637,7 +637,7 @@
   id: SyndicateNavalEngineerVoidGear
   equipment:
     head: ClothingHeadHelmetSyndicate
-    outerClothing: ClothingOuterHardsuitSyndicate
+    outerClothing: ClothingOuterEVASuitSyndicate
     jumpsuit: ClothingUniformJumpsuitChiefEngineerSyndieNF
     shoes: ClothingShoesBootsMagSyndie
     gloves: ClothingHandsGlovesColorBlackShotgun

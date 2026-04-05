@@ -1,8 +1,8 @@
 using Content.Server.EUI;
-using Content.Shared.CryoSleep;
+using Content.Shared._NF.CryoSleep;
 using Content.Shared.Eui;
 
-namespace Content.Server.CryoSleep;
+namespace Content.Server._NF.CryoSleep;
 
 public sealed class CryoSleepEui : BaseEui
 {
@@ -27,7 +27,7 @@ public sealed class CryoSleepEui : BaseEui
             return;
         }
 
-        if (_body is { Valid: true })
+        if (_body is { Valid: true } && _cryoSystem.IsBodyInCryoPod(_body, _cryopod))
         {
             if (choice.Button == AcceptCryoUiButton.Accept)
             {

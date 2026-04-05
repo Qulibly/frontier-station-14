@@ -28,11 +28,15 @@ comp-pda-ui-footer = Personal Digital Assistant
 
 comp-pda-ui-station = Station: [color=white]{$station}[/color]
 
-comp-pda-ui-station-alert-level = Alert Level: [color={ $color }]{ $level }[/color]
+# Frontier: add "Sector"
+comp-pda-ui-station-alert-level = Sector Alert Level: [color={ $color }]{ $level }[/color]
 
 comp-pda-ui-station-alert-level-instructions = Instructions: [color=white]{ $instructions }[/color]
 
 comp-pda-ui-station-time = Shift duration: [color=white]{ $time }[/color]
+
+# Frontier
+comp-pda-ui-remaining-time = Time until shift end: [color=white]{ $time }[/color]
 
 comp-pda-ui-eject-id-button = Eject ID
 

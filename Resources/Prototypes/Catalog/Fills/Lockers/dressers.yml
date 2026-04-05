@@ -41,6 +41,7 @@
       - id: ClothingEyesGlasses
       - id: ClothingOuterWinterCMO
       - id: ClothingCloakCmo
+      - id: ClothingNeckMantleCMO # Frontier Mom
 
 - type: entity
   id: DresserHeadOfPersonnelFilled
@@ -108,3 +109,5 @@
     contents:
       - id: ClothingHeadHatWarden
       - id: ClothingHeadHatBeretWarden
+      - id: ClothingUniformJumpskirtWarden
+      - id: ClothingUniformJumpsuitWarden

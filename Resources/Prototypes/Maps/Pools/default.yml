@@ -1,4 +1,14 @@
 - type: gameMapPool
   id: DefaultMapPool
   maps:
-  - Frontier
+  - Amber
+  - Bagel
+  - Box
+  - Elkridge
+  - Fland
+  - Marathon
+  - Oasis
+  - Packed
+  - Plasma
+  - Reach
+  - Exo

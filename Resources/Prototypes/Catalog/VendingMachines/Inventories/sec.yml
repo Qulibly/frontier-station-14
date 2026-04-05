@@ -23,9 +23,11 @@
     ForensicScanner: 1 # Frontier
     BoxForensicPad: 1 # Frontier
     ContrabandAppraisalTool: 1 # Frontier
-#    RadioHandheldSecurity: 5 # Frontier 
+#    RadioHandheldSecurity: 5 # Frontier
+    Bola: 2 # Frontier 6<2
   # security officers need to follow a diet regimen!
-#  contrabandInventory:
-#    FoodDonutHomer: 12 # Frontier 
-#    FoodBoxDonut: 2 # Frontier 
+  # contrabandInventory: # Frontier
+  #   WeaponMeleeNeedle: 2 # Frontier
+  #   FoodDonutHomer: 12 # Frontier
+  #   FoodBoxDonut: 2 # Frontier
     #box evidence

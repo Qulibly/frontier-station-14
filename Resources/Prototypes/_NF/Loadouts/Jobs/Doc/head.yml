@@ -1,0 +1,11 @@
+- type: loadout
+  id: DocClothingHeadBeret
+  price: 0
+  equipment:
+    head: ClothingHeadHatBeretCmo
+
+- type: loadout
+  id: DocClothingHeadMirror
+  price: 0
+  equipment:
+    head: ClothingHeadMirror

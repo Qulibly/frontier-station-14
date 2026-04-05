@@ -65,7 +65,7 @@
         collection: BikeHorn
 
 - type: entity
-  parent: [NFClothingDuffel, BaseC2Contraband ] # Frontier: BaseRestrictedContraband<BaseC2Contraband, ClothingBackpackDuffel<NFClothingDuffel
+  parent: [NFClothingDuffel, BaseC1Contraband ] # Frontier: BaseSecurityContraband<BaseC1Contraband, ClothingBackpackDuffel<NFClothingDuffel
   id: ClothingBackpackDuffelSecurity
   name: security duffel bag
   description: A large duffel bag for holding extra security related goods.
@@ -74,7 +74,7 @@
       sprite: Clothing/Back/Duffels/security.rsi
 
 - type: entity
-  parent: [NFClothingDuffel, BaseC2Contraband ] # Frontier: BaseRestrictedContraband<BaseC2Contraband, ClothingBackpackDuffel<NFClothingDuffel
+  parent: [NFClothingDuffel, BaseC2ContrabandUnredeemable ] # Frontier: BaseSecurityContraband<BaseC2ContrabandUnredeemable, ClothingBackpackDuffel<NFClothingDuffel
   id: ClothingBackpackDuffelBrigmedic
   name: brigmedic duffel bag
   description: A large duffel bag for holding extra medical related goods.
@@ -115,12 +115,13 @@
   name: mime duffel bag
   description: A large duffel bag for holding... mime... stuff.
   components:
-    - type: Sprite
-      sprite: Clothing/Back/Duffels/mime.rsi
-      storageOpenSound:
-        collection: null
-      storageInsertSound:
-        collection: null
+  - type: Sprite
+    sprite: Clothing/Back/Duffels/mime.rsi
+  - type: Storage
+    storageOpenSound:
+      collection: null
+    storageInsertSound:
+      collection: null
 
 - type: entity
   parent: NFClothingDuffel # Frontier: ClothingBackpackDuffelNFClothingDuffel
@@ -173,7 +174,7 @@
     - 0,0,8,4
 
 - type: entity
-  parent: NFClothingDuffel # Frontier: ClothingBackpackDuffelNFClothingDuffelSyndicate
+  parent: [ NFClothingDuffel, BaseC3Contraband ] # Frontier: ClothingBackpackDuffelSyndicate>NFClothingDuffel, BaseSyndicateContraband>BaseC3Contraband
   id: ClothingBackpackDuffelSyndicateBundle
   abstract: true
   components:
@@ -181,9 +182,16 @@
       tags: [] # ignore "WhitelistChameleon" tag
 
 - type: entity
-  parent: NFClothingDuffel # Frontier: ClothingBackpackDuffelNFClothingDuffelSyndicate
+  parent: NFClothingDuffel # Frontier: ClothingBackpackDuffel>NFClothingDuffel
+  id: ClothingBackpackDuffelBundle
+  abstract: true
+  components:
+  - type: Tag
+    tags: [] # ignore "WhitelistChameleon" tag
+
+- type: entity
+  parent: ClothingBackpackDuffelSyndicate
   id: ClothingBackpackDuffelSyndicateAmmo
-  name: syndicate duffel bag
   components:
     - type: Sprite
       sprite: Clothing/Back/Duffels/syndicate.rsi
@@ -194,7 +202,7 @@
       equippedPrefix: ammo
 
 - type: entity
-  parent: NFClothingDuffel # Frontier: ClothingBackpackDuffelNFClothingDuffelSyndicateAmmo
+  parent: ClothingBackpackDuffelSyndicateAmmo
   id: ClothingBackpackDuffelSyndicateAmmoBundle
   abstract: true
   components:
@@ -202,9 +210,8 @@
       tags: [] # ignore "WhitelistChameleon" tag
 
 - type: entity
-  parent: NFClothingDuffel # Frontier: ClothingBackpackDuffelNFClothingDuffelSyndicate
+  parent: ClothingBackpackDuffelSyndicate
   id: ClothingBackpackDuffelSyndicateMedical
-  name: syndicate duffel bag
   components:
     - type: Sprite
       sprite: Clothing/Back/Duffels/syndicate.rsi
@@ -215,7 +222,7 @@
       equippedPrefix: med
 
 - type: entity
-  parent: NFClothingDuffel # Frontier: ClothingBackpackDuffelNFClothingDuffelSyndicateMedical
+  parent: ClothingBackpackDuffelSyndicateMedical
   id: ClothingBackpackDuffelSyndicateMedicalBundle
   abstract: true
   components:
@@ -249,7 +256,7 @@
   - type: Storage
     maxItemSize: Huge
     grid:
-    - 0,0,11,4
+    - 0,0,7,7 # Frontier: Was 0,0,19,9
   - type: ClothingSpeedModifier
     sprintModifier: 1 # makes its stats identical to other variants of bag of holding
   - type: HeldSpeedModifier

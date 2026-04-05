@@ -1,6 +1,6 @@
 using Content.Server.Cargo.Components;
 using Content.Server.Mind;
-using Content.Shared.Bank.Components;
+using Content.Shared._NF.Bank.Components; // Frontier
 using Content.Shared.Species.Components;
 using Content.Shared.Body.Events;
 using Content.Shared.Zombies;
@@ -37,7 +37,7 @@ public sealed partial class NymphSystem : EntitySystem
 
         // Get the organs' position & spawn a nymph there
         var coords = Transform(uid).Coordinates;
-        var nymph = EntityManager.SpawnAtPosition(entityProto.ID, coords);
+        var nymph = SpawnAtPosition(entityProto.ID, coords);
 
         if (HasComp<ZombieComponent>(args.OldBody)) // Zombify the new nymph if old one is a zombie
             _zombie.ZombifyEntity(nymph);
@@ -48,14 +48,12 @@ public sealed partial class NymphSystem : EntitySystem
             _mindSystem.TransferTo(mindId, nymph, mind: mind);
 
 
-            // Frontier
+            // Frontier: bank account transfer, mob setup
             EnsureComp<CargoSellBlacklistComponent>(nymph);
 
-            // Frontier: bank account transfer
             if (HasComp<BankAccountComponent>(args.OldBody))
-            {
                 EnsureComp<BankAccountComponent>(nymph);
-            }
+            // End Frontier
         }
 
         // Delete the old organ

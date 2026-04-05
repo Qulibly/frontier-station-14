@@ -1,5 +1,6 @@
 using Content.Server.Power.EntitySystems;
 using Content.Shared.SpaceArtillery; //Frontier code modification
+using Content.Shared.Guidebook;
 
 namespace Content.Server.Power.Components
 {
@@ -17,6 +18,7 @@ namespace Content.Server.Power.Components
         /// Maximum charge of the battery in joules (ie. watt seconds)
         /// </summary>
         [DataField]
+        [GuidebookData]
         public float MaxCharge;
 
         /// <summary>
@@ -26,16 +28,10 @@ namespace Content.Server.Power.Components
         public float CurrentCharge;
 
         /// <summary>
-        /// True if the battery is fully charged.
-        /// </summary>
-        [ViewVariables]
-        public bool IsFullyCharged => MathHelper.CloseToPercent(CurrentCharge, MaxCharge);
-
-        /// <summary>
         /// The price per one joule. Default is 1 credit for 10kJ.
         /// </summary>
         [DataField]
-        public float PricePerJoule = 0.0001f;
+        public float PricePerJoule = 0.0f; // Frontier: 0.0001f<0.0f
     }
 
     /// <summary>
@@ -43,4 +39,30 @@ namespace Content.Server.Power.Components
     /// </summary>
     [ByRefEvent]
     public readonly record struct ChargeChangedEvent(float Charge, float MaxCharge);
+
+    /// <summary>
+    ///     Raised when it is necessary to get information about battery charges.
+    /// </summary>
+    [ByRefEvent]
+    public sealed class GetChargeEvent : EntityEventArgs
+    {
+        public float CurrentCharge;
+        public float MaxCharge;
+    }
+
+    /// <summary>
+    ///     Raised when it is necessary to change the current battery charge to a some value.
+    /// </summary>
+    [ByRefEvent]
+    public sealed class ChangeChargeEvent : EntityEventArgs
+    {
+        public float OriginalValue;
+        public float ResidualValue;
+
+        public ChangeChargeEvent(float value)
+        {
+            OriginalValue = value;
+            ResidualValue = value;
+        }
+    }
 }

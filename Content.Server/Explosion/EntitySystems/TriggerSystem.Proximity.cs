@@ -36,7 +36,7 @@ public sealed partial class TriggerSystem
         // Re-check for contacts as we cleared them.
         else if (TryComp<PhysicsComponent>(uid, out var body))
         {
-            _broadphase.RegenerateContacts(uid, body);
+            _broadphase.RegenerateContacts((uid, body));
         }
     }
 
@@ -69,6 +69,9 @@ public sealed partial class TriggerSystem
         if (args.OurFixtureId != TriggerOnProximityComponent.FixtureID)
             return;
 
+        if (_whitelist.IsWhitelistFail(component.Whitelist, args.OtherEntity)) // Frontier
+            return;
+
         component.Colliding[args.OtherEntity] = args.OtherBody;
     }
 
@@ -82,7 +85,7 @@ public sealed partial class TriggerSystem
 
     private void SetProximityAppearance(EntityUid uid, TriggerOnProximityComponent component)
     {
-        if (EntityManager.TryGetComponent(uid, out AppearanceComponent? appearance))
+        if (TryComp(uid, out AppearanceComponent? appearance))
         {
             _appearance.SetData(uid, ProximityTriggerVisualState.State, component.Enabled ? ProximityTriggerVisuals.Inactive : ProximityTriggerVisuals.Off, appearance);
         }
@@ -107,7 +110,7 @@ public sealed partial class TriggerSystem
         // Queue a visual update for when the animation is complete.
         component.NextVisualUpdate = curTime + component.AnimationDuration;
 
-        if (EntityManager.TryGetComponent(uid, out AppearanceComponent? appearance))
+        if (TryComp(uid, out AppearanceComponent? appearance))
         {
             _appearance.SetData(uid, ProximityTriggerVisualState.State, ProximityTriggerVisuals.Active, appearance);
         }

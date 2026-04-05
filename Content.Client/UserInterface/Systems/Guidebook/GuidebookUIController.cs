@@ -26,7 +26,7 @@ public sealed class GuidebookUIController : UIController, IOnStateEntered<LobbyS
     [Dependency] private readonly IConfigurationManager _configuration = default!;
     [Dependency] private readonly JobRequirementsManager _jobRequirements = default!;
 
-    private const int PlaytimeOpenGuidebook = 60;
+    private const int PlaytimeOpenGuidebook = 180; // Frontier 60<180
 
     private GuidebookWindow? _guideWindow;
     private MenuButton? GuidebookButton => UIManager.GetActiveUIWidgetOrNull<MenuBar.Widgets.GameTopMenuBar>()?.GuidebookButton;
@@ -227,7 +227,7 @@ public sealed class GuidebookUIController : UIController, IOnStateEntered<LobbyS
         {
             if (!_prototypeManager.TryIndex(guideId, out var guide))
             {
-                Logger.Error($"Encountered unknown guide prototype: {guideId}");
+                Log.Error($"Encountered unknown guide prototype: {guideId}");
                 continue;
             }
             guides.Add(guideId, guide);
@@ -257,7 +257,7 @@ public sealed class GuidebookUIController : UIController, IOnStateEntered<LobbyS
 
             if (!_prototypeManager.TryIndex(childId, out var child))
             {
-                Logger.Error($"Encountered unknown guide prototype: {childId} as a child of {guide.Id}. If the child is not a prototype, it must be directly provided.");
+                Log.Error($"Encountered unknown guide prototype: {childId} as a child of {guide.Id}. If the child is not a prototype, it must be directly provided.");
                 continue;
             }
 

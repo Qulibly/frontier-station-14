@@ -91,7 +91,7 @@ namespace Content.Server.Solar.EntitySystems
             UpdateSupply(uid, component);
         }
 
-        public override void Update(float frameTime)
+        public void UpdateUnused(float frameTime) // Frontier: remove override, hide function
         {
             TowardsSun += SunAngularVelocity * frameTime;
             TowardsSun = TowardsSun.Reduced();
@@ -122,7 +122,7 @@ namespace Content.Server.Solar.EntitySystems
         private void UpdatePanelCoverage(Entity<SolarPanelComponent> panel)
         {
             var entity = panel.Owner;
-            var xform = EntityManager.GetComponent<TransformComponent>(entity);
+            var xform = Comp<TransformComponent>(entity);
 
             // So apparently, and yes, I *did* only find this out later,
             // this is just a really fancy way of saying "Lambert's law of cosines".

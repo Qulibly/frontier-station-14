@@ -3,6 +3,8 @@
 - type: latheRecipe
   abstract: true
   id: BaseJumpsuitRecipe
+  categories:
+  - Jumpsuits
   completetime: 4
   materials:
     Cloth: 300
@@ -11,6 +13,9 @@
   abstract: true
   parent: BaseJumpsuitRecipe
   id: BaseCommandJumpsuitRecipe
+  categories:
+  - Jumpsuits
+  - Command
   materials:
     Cloth: 300
     Durathread: 100
@@ -18,6 +23,8 @@
 - type: latheRecipe
   abstract: true
   id: BaseCoatRecipe
+  categories:
+  - Coats
   completetime: 3.2 # don't ask why its faster than a jumpsuit??
   materials:
     Cloth: 500
@@ -27,6 +34,9 @@
   abstract: true
   parent: BaseCoatRecipe
   id: BaseCommandCoatRecipe
+  categories:
+  - Coats
+  - Command
   materials:
     Cloth: 500
     Durathread: 300
@@ -34,14 +44,9 @@
 - type: latheRecipe
   abstract: true
   id: BaseHatRecipe
+  categories:
+  - Hats
   completetime: 2
-  materials:
-    Cloth: 100
-
-- type: latheRecipe
-  abstract: true
-  id: BaseCarpetRecipe
-  completetime: 1
   materials:
     Cloth: 100
 
@@ -49,6 +54,9 @@
   abstract: true
   parent: BaseHatRecipe
   id: BaseCommandHatRecipe
+  categories:
+  - Hats
+  - Command
   materials:
     Cloth: 100
     Durathread: 50
@@ -56,11 +64,13 @@
 - type: latheRecipe
   abstract: true
   id: BaseNeckClothingRecipe
+  categories:
+  - Neck
   completetime: 2
   materials:
     Cloth: 200
 
-# Recipes
+## Recipes
 
 # Jumpsuits/skirts
 - type: latheRecipe
@@ -72,6 +82,11 @@
   parent: BaseJumpsuitRecipe
   id: ClothingUniformJumpskirtColorGrey
   result: ClothingUniformJumpskirtColorGrey
+
+- type: latheRecipe
+  parent: BaseJumpsuitRecipe
+  id: ClothingUniformJumpsuitLoungewear
+  result: ClothingUniformJumpsuitLoungewear
 
 - type: latheRecipe
   parent: BaseJumpsuitRecipe
@@ -229,6 +244,18 @@
   parent: BaseCommandJumpsuitRecipe
   id: ClothingUniformJumpskirtCMOTurtle
   result: ClothingUniformJumpskirtCMOTurtle
+
+## Command (Generic)
+
+- type: latheRecipe
+  parent: BaseCommandJumpsuitRecipe
+  id: ClothingUniformJumpsuitCommandGeneric
+  result: ClothingUniformJumpsuitCommandGeneric
+
+- type: latheRecipe
+  parent: BaseCommandJumpsuitRecipe
+  id: ClothingUniformJumpskirtCommandGeneric
+  result: ClothingUniformJumpskirtCommandGeneric
 
 ## Detective
 
@@ -737,6 +764,65 @@
   id: ClothingOuterWinterSyndieCap
   result: ClothingOuterWinterSyndieCap
 
+# Command Longcoats # Frontier
+
+- type: latheRecipe
+  parent: BaseCommandCoatRecipe
+  id: ClothingLongcoatCMO
+  result: ClothingLongcoatCMO
+
+- type: latheRecipe
+  parent: BaseCommandCoatRecipe
+  id: ClothingLongcoatHoP
+  result: ClothingLongcoatHoP
+
+- type: latheRecipe
+  parent: BaseCommandCoatRecipe
+  id: ClothingLongcoatCE
+  result: ClothingLongcoatCE
+
+# Civilian Longcoats # Frontier
+
+- type: latheRecipe
+  parent: BaseCommandCoatRecipe
+  id: ClothingLongcoatCaptain
+  result: ClothingLongcoatCaptain
+
+- type: latheRecipe
+  parent: BaseCommandCoatRecipe
+  id: ClothingLongcoatQM
+  result: ClothingLongcoatQM
+
+- type: latheRecipe
+  parent: BaseCommandCoatRecipe
+  id: ClothingLongcoatRD
+  result: ClothingLongcoatRD
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingLongcoatArashiLabs
+  result: ClothingLongcoatArashiLabs
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingLongcoatNanoTrasen
+  result: ClothingLongcoatNanoTrasen
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingLongcoatBlack
+  result: ClothingLongcoatBlack
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingLongcoatBrown
+  result: ClothingLongcoatBrown
+
+- type: latheRecipe
+  parent: BaseCoatRecipe
+  id: ClothingLongcoatMedic
+  result: ClothingLongcoatMedic
+
 # Hats
 - type: latheRecipe
   parent: BaseCommandHatRecipe
@@ -807,6 +893,16 @@
   parent: BaseCommandHatRecipe
   id: ClothingHeadHatBeretCmo
   result: ClothingHeadHatBeretCmo
+
+- type: latheRecipe
+  parent: BaseCommandHatRecipe
+  id: ClothingHeadHatBeretCommand
+  result: ClothingHeadHatBeretCommand
+
+- type: latheRecipe
+  parent: BaseCommandHatRecipe
+  id: ClothingHeadHatCommandSoft
+  result: ClothingHeadHatCommandSoft
 
 # Non-command hats
 
@@ -916,49 +1012,3 @@
   parent: BaseNeckClothingRecipe
   id: ClothingNeckScarfStripedPurple
   result: ClothingNeckScarfStripedPurple
-
-# Carpets
-- type: latheRecipe
-  parent: BaseCarpetRecipe
-  id: Carpet
-  result: FloorCarpetItemRed
-
-- type: latheRecipe
-  parent: BaseCarpetRecipe
-  id: CarpetBlack
-  result: FloorCarpetItemBlack
-
-- type: latheRecipe
-  parent: BaseCarpetRecipe
-  id: CarpetPink
-  result: FloorCarpetItemPink
-
-- type: latheRecipe
-  parent: BaseCarpetRecipe
-  id: CarpetBlue
-  result: FloorCarpetItemBlue
-
-- type: latheRecipe
-  parent: BaseCarpetRecipe
-  id: CarpetGreen
-  result: FloorCarpetItemGreen
-
-- type: latheRecipe
-  parent: BaseCarpetRecipe
-  id: CarpetOrange
-  result: FloorCarpetItemOrange
-
-- type: latheRecipe
-  parent: BaseCarpetRecipe
-  id: CarpetPurple
-  result: FloorCarpetItemPurple
-
-- type: latheRecipe
-  parent: BaseCarpetRecipe
-  id: CarpetCyan
-  result: FloorCarpetItemCyan
-
-- type: latheRecipe
-  parent: BaseCarpetRecipe
-  id: CarpetWhite
-  result: FloorCarpetItemWhite

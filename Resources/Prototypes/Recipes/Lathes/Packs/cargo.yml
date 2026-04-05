@@ -1,0 +1,32 @@
+## Static
+
+- type: latheRecipePack
+  id: CargoStatic
+  recipes:
+  - AppraisalTool
+  - Pickaxe
+
+- type: latheRecipePack
+  id: CargoBoardsStatic
+  recipes:
+  - OreProcessorCivilianCircuitboard # Frontier
+  # - SalvageMagnetMachineCircuitboard # Frontier: no point
+
+## Dynamic
+
+- type: latheRecipePack
+  id: Mining
+  recipes:
+  - MiningDrill
+  - MiningDrillDiamond
+  - MineralScannerEmpty
+  - AdvancedMineralScannerEmpty
+  - OreBagOfHolding
+
+- type: latheRecipePack
+  id: CargoBoards
+  recipes:
+  - OreProcessorIndustrialMachineCircuitboard
+  - OreProcessorMachineCircuitboard # Frontier
+  # - CargoTelepadMachineCircuitboard # Frontier
+  # - ShuttleGunKineticCircuitboard # Frontier

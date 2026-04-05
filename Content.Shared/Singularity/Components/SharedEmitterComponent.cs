@@ -5,7 +5,6 @@ using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Dictionary;
 
 namespace Content.Shared.Singularity.Components;
@@ -30,10 +29,10 @@ public sealed partial class EmitterComponent : Component
     /// The entity that is spawned when the emitter fires.
     /// </summary>
     [DataField("boltType", customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
-    public string BoltType = "EmitterBolt";
+    public string BoltType = "NFEmitterBolt"; // Frontier: use NF prefix
 
-    [DataField("selectableTypes", customTypeSerializer: typeof(PrototypeIdListSerializer<EntityPrototype>))]
-    public List<string> SelectableTypes = new();
+    [DataField]
+    public List<EntProtoId> SelectableTypes = new();
 
     /// <summary>
     /// The current amount of power being used.

@@ -2,12 +2,12 @@
   id: CrateServiceJanitorialSupplies
   parent: CratePlasticBiodegradable # Frontier: CratePlastic<CratePlasticBiodegradable
   name: janitorial supplies crate
-  description: Fight back against dirt and grime with Nanotrasen's Janitorial Essentials Plus™! Contains a bucket and two caution signs, a mop, broom, two spray bottles of cleaner, soap, a plunger, and a light replacer. # Frontier: match crate contents
+  description: Fight back against dirt and grime with Nanotrasen's Janitorial Essentials Plus™! Contains a bucket and two caution signs, a mop, broom, two spray bottles of cleaner, soap, a plunger, a light replacer, two wire brushes, and cleaner grenades. # Frontier: match crate contents
   components:
   - type: StorageFill
     contents:
       - id: MopItem
-      - id: MopBucket
+      - id: MopBucketCubeWrapped
       - id: Bucket
         amount: 1 # Frontier 3<1
       - id: WetFloorSign
@@ -21,17 +21,42 @@
         amount: 1
       - id: LightReplacer # Frontier
         amount: 1
+      - id: BoxCleanerGrenades
+      - id: WireBrush
+        amount: 2
+
+- type: entity
+  id: CrateServiceCleanerGrenades
+  parent: CratePlastic
+  name: bulk cleanades crate
+  description: Contains two boxes of cleaner grenades, for those deeply-entrenched stains.
+  components:
+  - type: StorageFill
+    contents:
+      - id: BoxCleanerGrenades
+        amount: 2
 
 - type: entity
   id: CrateServiceReplacementLights
   parent: CrateGenericSteel
   name: replacement lights crate
-  description: May the light of Aether shine upon this station! Or at least, the light of forty two light tubes and twenty one light bulbs.
+  description: May the light of Aether shine upon this station! Or at least, the light of twelve light tubes and twelve light bulbs. # Frontier: use correct quantities
   components:
   - type: StorageFill
     contents:
       - id: BoxLighttube
       - id: BoxLightbulb
+
+- type: entity
+  id: CrateServiceHolidayLights
+  parent: CrateGenericSteel
+  name: holiday lights crate
+  description: Deck the halls with these festive holiday lights!
+  components:
+  - type: StorageFill
+    contents:
+      - id: BoxLighttubeHoliday
+      - id: BoxLighttubeHoliday
 
 - type: entity
   id: CrateMousetrapBoxes
@@ -79,6 +104,7 @@
     contents:
     - id: ClothingUniformJumpskirtPerformer
     - id: ClothingShoesBootsPerformer
+    - id: ClothingHeadPerformerWig
     - id: ClothingOuterSuitMonkey
     - id: ClothingHeadHatAnimalMonkey
     - id: ClothingNeckCloakMoth
@@ -87,7 +113,7 @@
     - id: ClothingShoesClown
     - id: ClothingUniformJumpskirtJanimaid
     - id: ClothingNeckCloakVoid
-    - id: RevolverCapGun
+    - id: NFRevolverCapGun # Frontier: RevolverCapGun<NFRevolverCapGun
     - id: BarberScissors
     - id: ClothingUniformJumpskirtOldDress
     - id: BikeHorn
@@ -131,6 +157,7 @@
     - id: BoxFolderYellow
     - id: NewtonCradle
     - id: BoxEnvelope
+    - id: BrbSign
     - id: RubberStampCaptain # Frontier
 
 - type: entity
@@ -187,7 +214,7 @@
       - id: BookMedicalReferenceBook
       - id: BookHowToSurvive
       - id: BookChemicalCompendium
-      - id: HyperlinkBookSpaceLaw # Frontier: BookSpaceLaw<HyperlinkBookSpaceLaw
+      - id: NFHyperlinkBookSpaceLaw # Frontier: BookSpaceLaw<NFHyperlinkBookSpaceLaw
 
 - type: entity
   id: CrateServiceSodaDispenser
@@ -197,12 +224,12 @@
   components:
     - type: StorageFill
       contents:
-      - id: DrinkCoffeeJug
+      - id: JugNanocaf # Frontier: DrinkCoffeeJug<JugNanocaf
       - id: DrinkColaBottleFull
       - id: DrinkCreamCartonXL
       - id: DrinkDrGibbJug
       - id: DrinkEnergyDrinkJug
-      - id: DrinkGreenTeaJug
+      - id: DrinkGreenTeaJug # Frontier This is the stand in for safe tea.
       - id: DrinkIceJug
       - id: DrinkJuiceLimeCartonXL
       - id: DrinkJuiceOrangeCartonXL
@@ -212,9 +239,9 @@
       - id: DrinkSpaceMountainWindBottleFull
       - id: DrinkSpaceUpBottleFull
       - id: DrinkSugarJug
-      - id: DrinkTeaJug
       - id: DrinkTonicWaterBottleFull
       - id: DrinkWaterMelonJuiceJug
+      - id: JugCaramexinin # Frontier: Caramexinin<JugCaramexinin
 
 - type: entity
   id: CrateServiceBoozeDispenser
@@ -350,3 +377,14 @@
         amount: 2
       - id: BoxCandleSmall
         amount: 2
+
+- type: entity
+  parent: CrateGenericSteel
+  id: CrateServiceColorfulLights
+  name: colorful lights crate
+  description: It's not a party until it's hard to see, a little disorienting, and your ears hurt.
+  components:
+  - type: StorageFill
+    contents:
+    - id: BoxLightbulbColorfulMixed
+    - id: BoxLighttubeColorfulMixed

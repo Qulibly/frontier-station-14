@@ -17,6 +17,7 @@ using Content.Server.NodeContainer.EntitySystems;
 using Content.Shared.Atmos;
 using Content.Shared.Database;
 using Content.Shared.Power;
+using Content.Shared.Construction.Components; // Frontier
 
 namespace Content.Server.Atmos.Portable
 {
@@ -56,6 +57,11 @@ namespace Content.Server.Atmos.Portable
 
             if (!component.Enabled)
                 return;
+
+            // Frontier: check running gas extraction
+            if (!_atmosphereSystem.AtmosInputCanRunOnMap(args.Map))
+                return;
+            // End Frontier
 
             // If we are on top of a connector port, empty into it.
             if (_nodeContainer.TryGetNode(uid, component.PortName, out PortablePipeNode? portableNode)

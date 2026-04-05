@@ -51,10 +51,21 @@ public sealed class ToggleableGhostRoleSystem : EntitySystem
 
         var ghostRole = EnsureComp<GhostRoleComponent>(uid);
         EnsureComp<GhostTakeoverAvailableComponent>(uid);
+
+        //GhostRoleComponent inherits custom settings from the ToggleableGhostRoleComponent
         ghostRole.RoleName = Loc.GetString(component.RoleName);
         ghostRole.RoleDescription = Loc.GetString(component.RoleDescription);
         ghostRole.RoleRules = Loc.GetString(component.RoleRules);
         ghostRole.JobProto = component.JobProto;
+        ghostRole.MindRoles = component.MindRoles;
+        // Frontier
+        if (component.Whitelisted == true)
+        {
+            // Uses a proxy ghost role prototype as a mean to whitelist the GhostRoleComponent
+            // A cleaner solution involves a wide GhostRoleWhitelistSystem refactor
+            ghostRole.Prototype = "WhitelistToggleableGhostRole";
+        }
+        // End Frontier
     }
 
     private void OnExamined(EntityUid uid, ToggleableGhostRoleComponent component, ExaminedEvent args)

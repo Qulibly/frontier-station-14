@@ -1,0 +1,23 @@
+- type: loadout
+  id: SecurityGuardSecurityHelmet
+  price: 0
+  equipment:
+    head: ClothingHeadHelmetBasic
+
+- type: loadout
+  id: SecurityGuardSecurityHat
+  price: 0
+  equipment:
+    head: ClothingHeadHatSecsoft
+
+- type: loadout
+  id: SecurityGuardSecurityBeret
+  price: 0
+  equipment:
+    head: ClothingHeadHatBeretSecurity
+
+- type: loadout
+  id: SecurityGuardTrooperHat
+  price: 0
+  equipment:
+    head: ClothingHeadHatSecurityTrooper

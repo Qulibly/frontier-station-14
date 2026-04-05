@@ -3,6 +3,7 @@ using Robust.Client.Audio;
 using Robust.Client.UserInterface;
 using Robust.Shared.Audio.Components;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Containers; // Frontier
 
 namespace Content.Client.Audio.Jukebox;
 
@@ -43,6 +44,13 @@ public sealed class JukeboxBoundUserInterface : BoundUserInterface
 
         _menu.OnSongSelected += SelectSong;
 
+        // Frontier: Shuffle & Repeat
+        _menu.OnModeChanged += playbackMode =>
+        {
+            SendMessage(new JukeboxSetPlaybackModeMessage(playbackMode));
+        };
+        // End Frontier: Shuffle & Repeat
+
         _menu.SetTime += SetTime;
         PopulateMusic();
         Reload();
@@ -61,7 +69,7 @@ public sealed class JukeboxBoundUserInterface : BoundUserInterface
         if (_protoManager.TryIndex(jukebox.SelectedSongId, out var songProto))
         {
             var length = EntMan.System<AudioSystem>().GetAudioLength(songProto.Path.Path.ToString());
-            _menu.SetSelectedSong(songProto.Name, (float) length.TotalSeconds);
+            _menu.SetSelectedSong(songProto.Name, (float)length.TotalSeconds);
         }
         else
         {
@@ -71,7 +79,30 @@ public sealed class JukeboxBoundUserInterface : BoundUserInterface
 
     public void PopulateMusic()
     {
-        _menu?.Populate(_protoManager.EnumeratePrototypes<JukeboxPrototype>());
+        //_menu?.Populate(_protoManager.EnumeratePrototypes<JukeboxPrototype>());
+        // Frontier: Music Discs
+        if (!EntMan.TryGetComponent<ContainerManagerComponent>(Owner, out var containers))
+            return;
+
+        HashSet<JukeboxPrototype> availableMusic = new();
+
+        foreach (var container in containers.Containers.Values)
+        {
+            foreach (var ent in container.ContainedEntities)
+            {
+                if (!EntMan.TryGetComponent(ent, out JukeboxContainerComponent? tracklist))
+                    continue;
+
+                foreach (var trackID in tracklist.Tracks)
+                {
+                    if (_protoManager.TryIndex<JukeboxPrototype>(trackID, out var track))
+                        availableMusic.Add(track);
+                }
+            }
+        }
+
+        _menu?.Populate(availableMusic);
+        // End Frontier: Music Discs
     }
 
     public void SelectSong(ProtoId<JukeboxPrototype> songid)
@@ -97,5 +128,13 @@ public sealed class JukeboxBoundUserInterface : BoundUserInterface
 
         SendMessage(new JukeboxSetTimeMessage(sentTime));
     }
+
+    // Frontier: Shuffle & Repeat
+    protected override void UpdateState(BoundUserInterfaceState state)
+    {
+        base.UpdateState(state);
+        _menu?.UpdateState(state);
+    }
+    // End Frontier
 }
 

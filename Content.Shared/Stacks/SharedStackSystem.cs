@@ -37,10 +37,16 @@ namespace Content.Shared.Stacks
             SubscribeLocalEvent<StackComponent, ComponentStartup>(OnStackStarted);
             SubscribeLocalEvent<StackComponent, ExaminedEvent>(OnStackExamined);
             SubscribeLocalEvent<StackComponent, InteractUsingEvent>(OnStackInteractUsing);
+            SubscribeLocalEvent<StackComponent, StackCustomSplitAmountMessage>(OnCustomSplitMessage); // cherry-pick #32938
 
             _vvm.GetTypeHandler<StackComponent>()
                 .AddPath(nameof(StackComponent.Count), (_, comp) => comp.Count, SetCount);
         }
+
+        // Cherry-pick #32938 courtesy of Ilya246
+        // client shouldn't try to split stacks so do nothing on client
+        protected virtual void OnCustomSplitMessage(Entity<StackComponent> ent, ref StackCustomSplitAmountMessage message) {}
+        // End cherry-pick #32938 courtesy of Ilya246
 
         public override void Shutdown()
         {
@@ -146,7 +152,7 @@ namespace Content.Shared.Stacks
             }
 
             // This is shit code until hands get fixed and give an easy way to enumerate over items, starting with the currently active item.
-            foreach (var held in Hands.EnumerateHeld(user, hands))
+            foreach (var held in Hands.EnumerateHeld((user, hands)))
             {
                 TryMergeStacks(item, held, out _, donorStack: itemStack);
 
@@ -257,7 +263,7 @@ namespace Content.Shared.Stacks
         public int GetMaxCount(string entityId)
         {
             var entProto = _prototype.Index<EntityPrototype>(entityId);
-            entProto.TryGetComponent<StackComponent>(out var stackComp);
+            entProto.TryGetComponent<StackComponent>(out var stackComp, EntityManager.ComponentFactory);
             return GetMaxCount(stackComp);
         }
 
