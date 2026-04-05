@@ -843,9 +843,17 @@
   - type: Transform
     anchored: true
   - type: Sprite
-    sprite: _NF/Objects/SpaceArtillery/space_artillery.rsi
+    sprite: _NF/Objects/SpaceArtillery/basic_booster.rsi
     layers:
-    - state: space_artillery
+      - state: base
+        map: ["enum.CoolantSpaceArtilleryVisualLayers.Base"]
+      - state: coolant-5
+        visible: true
+        map: ["enum.CoolantSpaceArtilleryVisualLayers.Coolant"]
+  - type: SpaceArtilleryVisuals
+    coolantState: coolant
+    steps: 6
+    zeroVisible: true
   - type: Anchorable
     delay: 10
   - type: Pullable

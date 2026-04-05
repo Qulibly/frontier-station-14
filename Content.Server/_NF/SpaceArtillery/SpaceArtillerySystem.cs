@@ -54,6 +54,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
     [Dependency] private readonly DeviceLinkSystem _deviceLink = default!;
     [Dependency] private readonly IGameTiming _gameTiming = default!; //var variable = _gameTiming.CurTime; - to set with current time
     [Dependency] private readonly SharedShuttleSystem _shuttleSystem = default!;
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
 
     private const float ShootSpeed = 30f;
     private const float distance = 100;
@@ -100,6 +101,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
     {
         if (component.IsCoolantRequiredToFire == true)
             _itemSlotsSystem.AddItemSlot(uid, SpaceArtilleryComponent.CoolantSlotSlotId, component.CoolantSlot);
+        UpdateAppearance(uid, component);
     }
 
     private void OnComponentRemove(EntityUid uid, SpaceArtilleryComponent component, ComponentRemove args)
@@ -298,6 +300,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
                     battery.CurrentCharge -= component.PowerUsePassive; //It is done so that BatterySelfRecharger will get start operating instead of being blocked by fully charged battery
             }
         }
+        UpdateAppearance(uid, component);
     }
 
 
@@ -323,6 +326,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
                     battery.CurrentCharge -= component.PowerUsePassive; //It is done so that BatterySelfRecharger will get start operating instead of being blocked by fully charged battery
             }
         }
+        UpdateAppearance(uid, component);
     }
 
 
@@ -349,6 +353,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
                 apcPowerReceiver.Load = component.PowerUsePassive;
             }
         }
+        UpdateAppearance(uid, component);
     }
 
     private void OnCoolantSlotChanged(EntityUid uid, SpaceArtilleryComponent component, ContainerModifiedMessage args)
@@ -434,6 +439,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
             }
 
         }
+        UpdateAppearance(uid, component);
     }
 
     private void GetInsertedCoolantAmount(SpaceArtilleryComponent component, out int amount)
@@ -576,6 +582,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
                 }
             }
         }
+        UpdateAppearance(uid, component);
     }
 
     private void OnEmptyShotEvent(EntityUid uid, SpaceArtilleryComponent component, OnEmptyGunShotEvent args)
@@ -587,6 +594,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
     {
         if (component.IsCapableOfSendingSignal == true)
             _deviceLink.SendSignal(uid, component.SpaceArtilleryDetectedMalfunctionPort, true);
+        UpdateAppearance(uid, component);
     }
 
 
@@ -713,6 +721,29 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
                     }
                 }
             }
+        }
+    }
+
+    private void UpdateAppearance(EntityUid uid, SpaceArtilleryComponent component)
+    {
+        if (TryComp<AppearanceComponent>(uid, out var appearance))
+        {
+            SpaceArtilleryVisualState state;
+
+            if (component.IsPowered)
+            {
+                state = SpaceArtilleryVisualState.On;
+            }
+            else
+            {
+                state = SpaceArtilleryVisualState.Off;
+            }
+            _appearance.SetData(uid, SpaceArtilleryVisuals.VisualState, state);
+            //Appearance.SetData(uid, AmmoVisuals.AmmoCount, GetBallisticShots(component), appearance);
+
+            _appearance.SetData(uid, SpaceArtilleryVisuals.CoolantCount, component.CoolantStored, appearance);
+            _appearance.SetData(uid, SpaceArtilleryVisuals.CoolantMax, component.MaxCoolantStored, appearance);
+            Sawmill.Info($"Appearance update {SpaceArtilleryVisuals.CoolantCount} = {component.CoolantStored} and {SpaceArtilleryVisuals.CoolantMax} = {component.MaxCoolantStored}");
         }
     }
 }
