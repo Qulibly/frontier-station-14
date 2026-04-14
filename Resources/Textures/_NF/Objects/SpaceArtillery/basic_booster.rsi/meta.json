@@ -34,6 +34,30 @@
 	{
       "name": "coolant-5",
       "directions": 4
+    },
+	{
+      "name": "coolant-unshaded-0",
+      "directions": 4
+    },
+	{
+      "name": "coolant-unshaded-1",
+      "directions": 4
+    },
+	{
+      "name": "coolant-unshaded-2",
+      "directions": 4
+    },
+	{
+      "name": "coolant-unshaded-3",
+      "directions": 4
+    },
+	{
+      "name": "coolant-unshaded-4",
+      "directions": 4
+    },
+	{
+      "name": "coolant-unshaded-5",
+      "directions": 4
     }
 	
   ]

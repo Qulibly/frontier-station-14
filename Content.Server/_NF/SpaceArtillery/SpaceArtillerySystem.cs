@@ -1,5 +1,5 @@
 using Content.Shared.SpaceArtillery;
-using Content.Server.DeviceLinking.Events;
+using Content.Shared.DeviceLinking.Events;
 using Content.Server.Projectiles;
 using Content.Server.Weapons.Ranged.Systems;
 using Content.Shared.Weapons.Ranged.Systems;
@@ -35,6 +35,7 @@ using Robust.Shared.Timing;
 using Content.Shared.Shuttles.Systems;
 using Content.Shared.Shuttles.Components;
 using Content.Server.Shuttles.Components;
+using Content.Shared.Actions.Components;
 
 namespace Content.Shared.SpaceArtillery;
 
@@ -344,7 +345,8 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
 
         if (TryComp<ApcPowerReceiverComponent>(uid, out var apcPowerReceiver) && TryComp<BatteryComponent>(uid, out var battery))
         {
-            if (battery.IsFullyCharged == false)
+            var isFullyCharged = MathHelper.CloseToPercent(battery.CurrentCharge, battery.MaxCharge);
+            if (isFullyCharged == false)
             {
                 apcPowerReceiver.Load = component.PowerUsePassive + component.PowerChargeRate;
             }
@@ -394,6 +396,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
             component.CoolantStored = totalCoolantPresent;
             _containerSystem.CleanContainer(coolantSlot);
         }
+        UpdateAppearance(uid, component);
     }
 
     private void TryFireArtillery(EntityUid uid, SpaceArtilleryComponent component, BatteryComponent battery)
@@ -743,7 +746,6 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
 
             _appearance.SetData(uid, SpaceArtilleryVisuals.CoolantCount, component.CoolantStored, appearance);
             _appearance.SetData(uid, SpaceArtilleryVisuals.CoolantMax, component.MaxCoolantStored, appearance);
-            Sawmill.Info($"Appearance update {SpaceArtilleryVisuals.CoolantCount} = {component.CoolantStored} and {SpaceArtilleryVisuals.CoolantMax} = {component.MaxCoolantStored}");
         }
     }
 }

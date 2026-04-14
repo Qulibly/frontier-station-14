@@ -847,9 +847,10 @@
     layers:
       - state: base
         map: ["enum.CoolantSpaceArtilleryVisualLayers.Base"]
-      - state: coolant-5
-        visible: true
-        map: ["enum.CoolantSpaceArtilleryVisualLayers.Coolant"]
+      - state: coolant-unshaded-5
+        visible: false
+        shader: unshaded
+        map: ["enum.CoolantSpaceArtilleryVisualLayers.CoolantUnshaded"]
   - type: SpaceArtilleryVisuals
     coolantState: coolant
     steps: 6

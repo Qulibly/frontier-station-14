@@ -1,6 +1,6 @@
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 using Robust.Shared.Serialization;
-using Content.Server.DeviceNetwork;
+using Content.Shared.DeviceLinking.Events;
 using Content.Server.DeviceNetwork.Components;
 using Content.Server.DeviceNetwork.Systems;
 using Content.Shared.Interaction;
@@ -8,7 +8,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Content.Shared.Power;
 using Content.Shared.UserInterface;
-using Content.Server.DeviceLinking.Events;
+using Content.Server.DeviceLinking;
 using Content.Server.DeviceLinking.Components;
 using Content.Server.DeviceLinking.Systems;
 using Content.Shared.SpaceArtillery;

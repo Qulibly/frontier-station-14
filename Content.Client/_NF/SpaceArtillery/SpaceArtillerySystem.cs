@@ -1,48 +1,44 @@
 using Content.Shared.Rounding;
+using Content.Shared.SpaceArtillery;
 using Robust.Client.GameObjects;
 
-namespace Content.Shared.SpaceArtillery;
+namespace Content.Client._NF.SpaceArtillery;
 
 
-public sealed class SpaceArtillerySystem : SharedSpaceArtillerySystem
+public sealed class SpaceArtillerySystem : VisualizerSystem<SpaceArtilleryVisualsComponent>//SharedSpaceArtillerySystem
 {
+    [Dependency] private readonly SpriteSystem _sprite = default!;
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<SpaceArtilleryVisualsComponent, ComponentInit>(OnMagazineVisualsInit);
-        SubscribeLocalEvent<SpaceArtilleryVisualsComponent, AppearanceChangeEvent>(OnMagazineVisualsChange);
+        SubscribeLocalEvent<SpaceArtilleryVisualsComponent, ComponentInit>(OnVisualsInit);
     }
 
-    private void OnMagazineVisualsInit(EntityUid uid, SpaceArtilleryVisualsComponent component, ComponentInit args)
+    private void OnVisualsInit(EntityUid uid, SpaceArtilleryVisualsComponent component, ComponentInit args)
     {
         if (!TryComp<SpriteComponent>(uid, out var sprite)) return;
 
-        if (sprite.LayerMapTryGet(CoolantSpaceArtilleryVisualLayers.Coolant, out _))
+        if (_sprite.LayerMapTryGet((uid, sprite), CoolantSpaceArtilleryVisualLayers.Coolant, out var coolantLayer, false))
         {
-            sprite.LayerSetState(CoolantSpaceArtilleryVisualLayers.Coolant, $"{component.CoolantState}-{component.CoolantSteps - 1}");
-            sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.Coolant, false);
+            _sprite.LayerSetRsiState((uid, sprite), CoolantSpaceArtilleryVisualLayers.Coolant, $"{component.CoolantState}-{component.CoolantSteps - 1}");
+            _sprite.LayerSetVisible((uid, sprite), CoolantSpaceArtilleryVisualLayers.Coolant, true);
         }
 
-        if (sprite.LayerMapTryGet(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, out _))
+        if (_sprite.LayerMapTryGet((uid, sprite), CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, out var coolantUnshadedLayer, false))
         {
-            sprite.LayerSetState(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, $"{component.CoolantState}-unshaded-{component.CoolantSteps - 1}");
-            sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, true);
+            _sprite.LayerSetRsiState((uid, sprite), CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, $"{component.CoolantState}-unshaded-{component.CoolantSteps - 1}");
+            _sprite.LayerSetVisible((uid, sprite), CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, true);
         }
     }
 
-    private void OnMagazineVisualsChange(EntityUid uid, SpaceArtilleryVisualsComponent component, ref AppearanceChangeEvent args)
+    protected override void OnAppearanceChange(EntityUid uid, SpaceArtilleryVisualsComponent component, ref AppearanceChangeEvent args)
     {
-        // tl;dr
-        // 1.If no mag then hide it OR
-        // 2. If step 0 isn't visible then hide it (mag or unshaded)
-        // 3. Otherwise just do mag / unshaded as is
         var sprite = args.Sprite;
 
         if (sprite == null)
         {
-            throw new InvalidOperationException("Sprite is null!!!");
-            //return;
+            return;
         }
 
         if (!args.AppearanceData.TryGetValue(SpaceArtilleryVisuals.CoolantMax, out var capacity))
@@ -54,50 +50,45 @@ public sealed class SpaceArtillerySystem : SharedSpaceArtillerySystem
         {
             current = component.CoolantSteps;
         }
-        //ISSUE WITH LAYERS. LAYER COOLANT DOES NOT EXIST
-        //coolant-5 DOES NOT EXIST
-        //COOLANT LAYER DOES NOT WANT TO BECOME VISIBLE
         var step = ContentHelpers.RoundToLevels((int)current, (int)capacity, component.CoolantSteps);
-        sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, true);
-        sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.Base, false);
-        sprite.LayerSetState(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, $"{component.CoolantState}-unshaded-{step}");
+
+
+
         if (step == 0 && !component.ZeroVisible)
         {
-            if (sprite.LayerMapTryGet(CoolantSpaceArtilleryVisualLayers.Coolant, out _))
+            if (_sprite.LayerMapTryGet((uid, sprite), CoolantSpaceArtilleryVisualLayers.Coolant, out _, false))
             {
-                sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.Coolant, false);
+                _sprite.LayerSetVisible((uid, sprite), CoolantSpaceArtilleryVisualLayers.Coolant, false);
             }
 
-            if (sprite.LayerMapTryGet(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, out _))
+            if (_sprite.LayerMapTryGet((uid, sprite), CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, out _, false))
             {
-                sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, false);
+                _sprite.LayerSetVisible((uid, sprite), CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, false);
             }
 
             return;
         }
 
-        if (sprite.LayerMapTryGet(CoolantSpaceArtilleryVisualLayers.Coolant, out _))
+
+        if (_sprite.LayerMapTryGet((uid, sprite), CoolantSpaceArtilleryVisualLayers.Coolant, out var coolantLayer, false))
         {
-            sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.Coolant, true);
-            sprite.LayerSetState(CoolantSpaceArtilleryVisualLayers.Coolant, $"{component.CoolantState}-{step}");
+            _sprite.LayerSetVisible((uid, sprite), CoolantSpaceArtilleryVisualLayers.Coolant, true);
+            _sprite.LayerSetRsiState((uid, sprite), CoolantSpaceArtilleryVisualLayers.Coolant, $"{component.CoolantState}-{step}");
+        }
+        else
+        {
+            _sprite.LayerSetVisible((uid, sprite), CoolantSpaceArtilleryVisualLayers.Coolant, false);
         }
 
-        if (sprite.LayerMapTryGet(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, out _))
-        {
-            sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, true);
-            sprite.LayerSetState(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, $"{component.CoolantState}-unshaded-{step}");
-        }
-        if (sprite.LayerMapTryGet(CoolantSpaceArtilleryVisualLayers.Coolant, out _))
-        {
-            sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.Coolant, false);
-        }
 
-        if (sprite.LayerMapTryGet(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, out _))
+        if (_sprite.LayerMapTryGet((uid, sprite), CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, out var coolantUnshadedLayer, false))
         {
-            sprite.LayerSetVisible(CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, false);
+            _sprite.LayerSetVisible((uid, sprite), CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, true);
+            _sprite.LayerSetRsiState((uid, sprite), CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, $"{component.CoolantState}-unshaded-{step}");
+        }
+        else
+        {
+            _sprite.LayerSetVisible((uid, sprite), CoolantSpaceArtilleryVisualLayers.CoolantUnshaded, false);
         }
     }
-
-
-
 }

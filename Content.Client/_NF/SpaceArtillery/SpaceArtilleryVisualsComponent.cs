@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Robust.Client.GameObjects;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Utility;
+using Robust.Shared.Serialization;
 
-namespace Content.Shared.SpaceArtillery;
+namespace Content.Client._NF.SpaceArtillery;
 
 /// <summary>
 /// Visualizer for coolant presence; can change states based on filled count or toggle visibility entirely.
