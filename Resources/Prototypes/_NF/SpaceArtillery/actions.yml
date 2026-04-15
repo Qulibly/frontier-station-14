@@ -1,10 +1,12 @@
 ﻿- type: entity
   id: ActionSpaceArtilleryFire
+  parent: BaseAction
   name: Fire
   description: Sends lead downrange
   noSpawn: true
   components:
-  - type: InstantAction
+  - type: Action
     useDelay: 0.1
-    icon: Objects/Fun/bikehorn.rsi/icon.png #To be changed
+    icon: Objects/Fun/bikehorn.rsi/icon.png  #To be changed
+  - type: InstantAction
     event: !type:FireActionEvent
