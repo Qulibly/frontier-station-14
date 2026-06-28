@@ -160,7 +160,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
             }
             if (args.Port == component.SpaceArtilleryToggleSafetyPort)
             {
-                ///WIP TEST DEBUG-----------------------------------------------------------------------------------
+                /*///WIP TEST DEBUG-----------------------------------------------------------------------------------
                 if (TryComp<TransformComponent>(uid, out var transformComponent))
                 {
                     var _gridUid = transformComponent.GridUid;
@@ -171,7 +171,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
                         RaiseLocalEvent(gridUid, ref activationEvent);
                     }
                 }
-
+                */
                 ///TEST DEBUG--------------------------------------------------------------------------------
 
                 if (TryComp<CombatModeComponent>(uid, out var combat))
@@ -682,6 +682,39 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
             {
                 componentGrid.IsCharging = false;
                 componentGrid.IsActive = true;
+
+                if (TryComp<IFFComponent>(GridUid, out var IffComponent))
+                {
+                    //IffComponent.Color = componentGrid.ArmedColor;
+                    //IffComponent.Flags = componentGrid.Flags;
+                    ///TODO have it affect IFF consoles and disable their ability
+                    _shuttleSystem.SetIFFColor(GridUid, componentGrid.ArmedColor, IffComponent);
+                    _shuttleSystem.RemoveIFFFlag(GridUid, IFFFlags.Hide);
+                    _shuttleSystem.RemoveIFFFlag(GridUid, IFFFlags.HideLabel);
+
+                    var query = EntityQueryEnumerator<IFFConsoleComponent>();
+                    while (query.MoveNext(out var uid, out var comp))
+                    {
+                        if (TryComp<TransformComponent>(uid, out var transformComponent))
+                        {
+                            var _gridUid = transformComponent.GridUid;
+
+                            if (_gridUid is { Valid: true } gridUid && gridUid == GridUid && comp.IsDisabled == false)
+                            {
+                                var _oldFlags = comp.AllowedFlags;
+                                var _newFlags = comp.AccessableAllowedFlags;
+
+                                comp.AllowedFlags = _newFlags;
+                                comp.AccessableAllowedFlags = _oldFlags;
+
+                                comp.IsDisabled = true;
+
+                                var ev = new AnchorStateChangedEvent(uid, transformComponent, false);
+                                RaiseLocalEvent(uid, ref ev, false);
+                            }
+                        }
+                    }
+                }
             }
         }
         else
@@ -697,7 +730,7 @@ public sealed partial class SpaceArtillerySystem : EntitySystem
                 //IffComponent.Color = componentGrid.ArmedColor;
                 //IffComponent.Flags = componentGrid.Flags;
                 ///TODO have it affect IFF consoles and disable their ability
-                _shuttleSystem.SetIFFColor(GridUid, componentGrid.ArmedColor, IffComponent);
+                _shuttleSystem.SetIFFColor(GridUid, componentGrid.ChargingColor, IffComponent);
                 _shuttleSystem.RemoveIFFFlag(GridUid, IFFFlags.Hide);
                 _shuttleSystem.RemoveIFFFlag(GridUid, IFFFlags.HideLabel);
 

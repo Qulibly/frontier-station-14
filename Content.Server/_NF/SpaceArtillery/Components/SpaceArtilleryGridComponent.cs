@@ -24,36 +24,40 @@ public sealed partial class SpaceArtilleryGridComponent : Component
 	/// Whether the grid has fully activated the armaments
 	/// </summary>
     [ViewVariables(VVAccess.ReadWrite)] public bool IsActive = false;
-	
+
 	/// <summary>
 	/// Whether the grid started activating the armaments, safety delay
 	/// </summary>
     [ViewVariables(VVAccess.ReadWrite)] public bool IsCharging = false;
-	
+
 	[ViewVariables]
     public TimeSpan LastActivationTime;
-	
+
 	[ViewVariables]
     public TimeSpan ChargeUpDuration = TimeSpan.FromSeconds(30);
-	
+
 	[ViewVariables]
     public TimeSpan ChargeUpEndTime;
-	
+
 	[ViewVariables]
     public TimeSpan CooldownDuration = TimeSpan.FromSeconds(120);
-	
+
 	[ViewVariables]
     public TimeSpan CooldownEndTime;
-	
+
     /// <summary>
     /// Default color to use for IFF if no component is found.
     /// </summary>
     public static readonly Color IFFColor = Color.Aquamarine;
-	
+
 	/// <summary>
     /// Default color to use for activated armament IFF if no component is found.
     /// </summary>
     public static readonly Color IFFArmedColor = Color.Red;
+    /// <summary>
+    /// Default color to use for charging armaments IFF if no component is found.
+    /// </summary>
+    public static readonly Color IFFChargingColor = Color.Orange;
 
     [ViewVariables(VVAccess.ReadWrite), DataField]
     public IFFFlags Flags = IFFFlags.None;
@@ -69,4 +73,10 @@ public sealed partial class SpaceArtilleryGridComponent : Component
     /// </summary>
     [ViewVariables(VVAccess.ReadWrite), DataField]
     public Color ArmedColor = IFFArmedColor;
+
+    /// <summary>
+    /// Color for charging vessel to show up on IFF.
+    /// </summary>
+    [ViewVariables(VVAccess.ReadWrite), DataField]
+    public Color ChargingColor = IFFChargingColor;
 }

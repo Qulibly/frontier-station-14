@@ -194,7 +194,7 @@ public sealed partial class SpaceArtilleryComponent : Component
     /// The action for firing the artillery when mounted
     /// </summary>
 
-    [DataField("fireAction", customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>))]
+    [DataField("fireAction", customTypeSerializer: typeof(PrototypeIdSerializer<EntityPrototype>)), AutoNetworkedField]
     public string? FireAction = "ActionSpaceArtilleryFire";
 
     /// <summary>

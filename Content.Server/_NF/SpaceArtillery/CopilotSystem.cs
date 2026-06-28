@@ -118,11 +118,13 @@ public sealed class CopilotSystem : EntitySystem
                 RaiseLocalEvent(gridUid, ref activationEvent);
             }
         }
+        UpdateConsoleInterface(uid);
     }
 
     private void UpdateConsoleInterface(EntityUid uid)
     {
         var state = false;
+        int gridState = 0;
         if (TryComp<TransformComponent>(uid, out var transformComponent))
         {
             var _gridUid = transformComponent.GridUid;
@@ -132,6 +134,16 @@ public sealed class CopilotSystem : EntitySystem
                 if (TryComp<SpaceArtilleryGridComponent>(_gridUid, out var componentGrid))
                 {
                     state = true;
+
+                    //TODO make detection more proper
+                    if(componentGrid.IsCharging == true)
+                    {
+                        gridState = 1;
+                    }
+                    if(componentGrid.IsActive == true)
+                    {
+                        gridState = 2;
+                    }
                 }
             }
         }
@@ -140,7 +152,8 @@ public sealed class CopilotSystem : EntitySystem
             CopilotConsoleUiKey.Copilot,
             new CopilotConsoleBoundUserInterfaceState()
             {
-                ArmamentAvailability = state
+                ArmamentAvailability = state,
+                GridState = gridState
             }
             );
     }

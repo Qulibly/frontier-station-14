@@ -38,7 +38,7 @@ public sealed partial class CopilotConsoleWindow : FancyWindow,
     public CopilotConsoleWindow()
     {
         RobustXamlLoader.Load(this);
-        KeypadContainer.Text = "Control Terminal";
+        KeypadContainer.Text = "PLACEHOLDER Control Terminal";
         /*ShowCopilotOffButton.Group = _showCopilotButtonGroup;
         ShowCopilotOnButton.Group = _showCopilotButtonGroup;
         ShowCopilotOnButton.OnPressed += args => ShowCopilotPressed(true);
@@ -86,10 +86,29 @@ public sealed partial class CopilotConsoleWindow : FancyWindow,
         if (state.ArmamentAvailability == true)
         {
             ButtonArmamentActivation.Disabled = false;
+            ArmamentStatus.Text = "PLACEHOLDER Destructive Armanent capability detected";
+
+            //TODO do it better
+            switch(state.GridState)
+            {
+                case 0:
+                    ArmamentCurrentStatus.Text = "PLACEHOLDER Destructive Armament Inactive";
+                    break;
+                case 1:
+                    ArmamentCurrentStatus.Text = "PLACEHOLDER Destructive Armament currently charging";
+                    break;
+                case 2:
+                    ArmamentCurrentStatus.Text = "PLACEHOLDER Destructive Armament is charged and active";
+                    break;
+                default:
+                    ArmamentCurrentStatus.Text = "PLACEHOLDER Error detected";
+                    break;
+            }
         }
         else
         {
             ButtonArmamentActivation.Disabled = true;
+            ArmamentStatus.Text = "PLACEHOLDER No capability detected";
         }
         /*if ((state.AllowedFlags & CopilotFlags.HideLabel) != 0x0)
         {

@@ -38,6 +38,11 @@
         </GridContainer>
 
         <BoxContainer Orientation="Vertical" MinWidth="120" HorizontalExpand="True" VerticalExpand="True">
+            <Label Text="PLACEHOLDER Armament status" />
+            <PanelContainer VerticalExpand="True" HorizontalExpand="True" Margin="10">
+                <Label Name="ArmamentStatus" Text="PLACEHOLDER No change" />
+            </PanelContainer>
+            <Label Name="ArmamentCurrentStatus" Text="PLACEHOLDER No change" />
             <Button Name="ButtonArmamentActivation" Text="ArmamentActivation"  />
         </BoxContainer>
     </BoxContainer>

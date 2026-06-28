@@ -8,6 +8,8 @@ namespace Content.Shared._NF.SpaceArtillery.BUI;
 public sealed class CopilotConsoleBoundUserInterfaceState : BoundUserInterfaceState
 {
     public bool ArmamentAvailability = false;
+    //TODO use proper enum not integrer
+    public int GridState = 0;
     //public CopilotFlags AllowedFlags;
     //public CopilotFlags Flags;
 }
