@@ -8,6 +8,7 @@ using Robust.Client.UserInterface.XAML;
 using Content.Client._NF.SpaceArtillery.BUI;
 using Content.Shared._NF.SpaceArtillery.BUI;
 using Content.Shared.SpaceArtillery;
+using Content.Client.Message;
 
 namespace Content.Client._NF.SpaceArtillery.UI;
 
@@ -87,28 +88,32 @@ public sealed partial class CopilotConsoleWindow : FancyWindow,
         {
             ButtonArmamentActivation.Disabled = false;
             ArmamentStatus.Text = "PLACEHOLDER Destructive Armanent capability detected";
-
+            TimeLabel.SetMarkup("[color=blue] Current time: [/color]" + state.CurTime);
             //TODO do it better
             switch(state.GridState)
             {
                 case 0:
-                    ArmamentCurrentStatus.Text = "PLACEHOLDER Destructive Armament Inactive";
+                    //ArmamentCurrentStatus.Text = "PLACEHOLDER Destructive Armament Inactive";
+                    ArmamentCurrentStatus.SetMarkup("[color=green]PLACEHOLDER Destructive Armament Inactive[/color]");
                     break;
                 case 1:
-                    ArmamentCurrentStatus.Text = "PLACEHOLDER Destructive Armament currently charging";
+                    //ArmamentCurrentStatus.Text = "PLACEHOLDER Destructive Armament currently charging";
+                    ArmamentCurrentStatus.SetMarkup("[color=orange]PLACEHOLDER Destructive Armament currently charging[/color]");
                     break;
                 case 2:
-                    ArmamentCurrentStatus.Text = "PLACEHOLDER Destructive Armament is charged and active";
+                    //ArmamentCurrentStatus.Text = "PLACEHOLDER Destructive Armament is charged and active";
+                    ArmamentCurrentStatus.SetMarkup("[color=red]PLACEHOLDER Destructive Armament is charged and active[/color]");
                     break;
                 default:
-                    ArmamentCurrentStatus.Text = "PLACEHOLDER Error detected";
+                    //ArmamentCurrentStatus.Text = "PLACEHOLDER Error detected";
+                    ArmamentCurrentStatus.SetMarkup("[color=purple]PLACEHOLDER Error detected[/color]");
                     break;
             }
         }
         else
         {
             ButtonArmamentActivation.Disabled = true;
-            ArmamentStatus.Text = "PLACEHOLDER No capability detected";
+            ArmamentStatus.SetMarkup("[color=darkgrey]PLACEHOLDER No capability detected[/color]");
         }
         /*if ((state.AllowedFlags & CopilotFlags.HideLabel) != 0x0)
         {

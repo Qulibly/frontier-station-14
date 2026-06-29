@@ -10,6 +10,7 @@ public sealed class CopilotConsoleBoundUserInterfaceState : BoundUserInterfaceSt
     public bool ArmamentAvailability = false;
     //TODO use proper enum not integrer
     public int GridState = 0;
+    public TimeSpan CurTime = TimeSpan.Zero;
     //public CopilotFlags AllowedFlags;
     //public CopilotFlags Flags;
 }

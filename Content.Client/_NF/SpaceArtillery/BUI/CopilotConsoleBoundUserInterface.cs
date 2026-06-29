@@ -83,48 +83,48 @@ public sealed class CopilotConsoleBoundUserInterface : BoundUserInterface
     {
         SendMessage(new CopilotCustomButtonTwoMessage());
     }
-  private void OnCopilotCustomButtonThreePressed()
+    private void OnCopilotCustomButtonThreePressed()
     {
         SendMessage(new CopilotCustomButtonThreeMessage());
     }
-  private void OnCopilotCustomButtonFourPressed()
+    private void OnCopilotCustomButtonFourPressed()
     {
         SendMessage(new CopilotCustomButtonFourMessage());
     }
-  private void OnCopilotCustomButtonFivePressed()
+    private void OnCopilotCustomButtonFivePressed()
     {
         SendMessage(new CopilotCustomButtonFiveMessage());
     }
-  private void OnCopilotCustomButtonSixPressed()
+    private void OnCopilotCustomButtonSixPressed()
     {
         SendMessage(new CopilotCustomButtonSixMessage());
     }
-  private void OnCopilotCustomButtonSevenPressed()
+    private void OnCopilotCustomButtonSevenPressed()
     {
         SendMessage(new CopilotCustomButtonSevenMessage());
     }
-  private void OnCopilotCustomButtonEightPressed()
+    private void OnCopilotCustomButtonEightPressed()
     {
         SendMessage(new CopilotCustomButtonEightMessage());
     }
-  private void OnCopilotCustomButtonNinePressed()
+    private void OnCopilotCustomButtonNinePressed()
     {
         SendMessage(new CopilotCustomButtonNineMessage());
     }
-  private void OnCopilotCustomButtonTenPressed()
+    private void OnCopilotCustomButtonTenPressed()
     {
         SendMessage(new CopilotCustomButtonTenMessage());
     }
-  private void OnCopilotCustomButtonElevenPressed()
+    private void OnCopilotCustomButtonElevenPressed()
     {
         SendMessage(new CopilotCustomButtonElevenMessage());
     }
-  private void OnCopilotCustomButtonTwelvePressed()
+    private void OnCopilotCustomButtonTwelvePressed()
     {
         SendMessage(new CopilotCustomButtonTwelveMessage());
     }
 
-  private void OnCopilotButtonArmamentActivationPressed()
+    private void OnCopilotButtonArmamentActivationPressed()
     {
         SendMessage(new CopilotButtonArmamentActivationMessage());
     }

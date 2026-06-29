@@ -14,6 +14,7 @@ using Content.Server.DeviceLinking.Systems;
 using Content.Shared.SpaceArtillery;
 using Content.Shared._NF.SpaceArtillery.BUI;
 using Robust.Server.GameObjects;
+using Robust.Shared.Timing;
 
 namespace Content.Server._NF.SpaceArtillery.Copilot;
 
@@ -21,6 +22,9 @@ public sealed class CopilotSystem : EntitySystem
 {
     [Dependency] private readonly DeviceLinkSystem _deviceLink = default!;
     [Dependency] private readonly UserInterfaceSystem _uiSystem = default!;
+    [Dependency] private readonly IGameTiming _gameTiming = default!;
+    private TimeSpan _nextUpdateTime = TimeSpan.Zero;
+    private TimeSpan _updateInterval = TimeSpan.FromSeconds(2);
 
     public override void Initialize()
     {
@@ -121,10 +125,33 @@ public sealed class CopilotSystem : EntitySystem
         UpdateConsoleInterface(uid);
     }
 
+    public override void Update(float frameTime)
+    {
+        // TODO check if theres more sane way to do it
+        var time = _gameTiming.CurTime;
+        if (time < _nextUpdateTime)
+            return;
+
+        _nextUpdateTime = time + _updateInterval;
+
+        var query = EntityQueryEnumerator<CopilotComponent>();
+        while (query.MoveNext(out var uid, out var comp))
+        {
+            if (TryComp<TransformComponent>(uid, out var transformComponent))
+            {
+                UpdateConsoleInterface(uid);
+                var ev = new AnchorStateChangedEvent(uid, transformComponent, false);
+                RaiseLocalEvent(uid, ref ev, false);
+            }
+        }
+
+    }
+
     private void UpdateConsoleInterface(EntityUid uid)
     {
         var state = false;
         int gridState = 0;
+        var time = _gameTiming.CurTime;
         if (TryComp<TransformComponent>(uid, out var transformComponent))
         {
             var _gridUid = transformComponent.GridUid;
@@ -153,7 +180,8 @@ public sealed class CopilotSystem : EntitySystem
             new CopilotConsoleBoundUserInterfaceState()
             {
                 ArmamentAvailability = state,
-                GridState = gridState
+                GridState = gridState,
+                CurTime = time
             }
             );
     }

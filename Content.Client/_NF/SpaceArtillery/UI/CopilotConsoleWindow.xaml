@@ -40,9 +40,10 @@
         <BoxContainer Orientation="Vertical" MinWidth="120" HorizontalExpand="True" VerticalExpand="True">
             <Label Text="PLACEHOLDER Armament status" />
             <PanelContainer VerticalExpand="True" HorizontalExpand="True" Margin="10">
-                <Label Name="ArmamentStatus" Text="PLACEHOLDER No change" />
+                <RichTextLabel Name="ArmamentStatus" Text="PLACEHOLDER No change" Access="Public" />
             </PanelContainer>
-            <Label Name="ArmamentCurrentStatus" Text="PLACEHOLDER No change" />
+            <RichTextLabel Name="TimeLabel" Access="Public" />
+            <RichTextLabel Name="ArmamentCurrentStatus" Text="PLACEHOLDER No change" Access="Public" />
             <Button Name="ButtonArmamentActivation" Text="ArmamentActivation"  />
         </BoxContainer>
     </BoxContainer>
